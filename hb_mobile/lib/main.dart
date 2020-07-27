@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
         kHome: (context) => Dashboard(title: title),
         kMaterialPurchase: (context) => MaterialPurchase(),
         kMaterialPurchaseEntry: (context) => MaterialPurchaseEntry(),
+        kConfigScreen: (context) => ConfigScreen(),
+        kAddSuppliers: (context) => AddSuppliersScreen(),
       },
       title: title,
       theme: ThemeData(
@@ -96,7 +98,7 @@ class Dashboard extends StatelessWidget {
             Divider(),
             MenuItem(
               title: 'Settings',
-              onTap: null,
+              onTap: () {},
               iconData: Icons.settings,
             ),
             MenuItem(
@@ -132,7 +134,9 @@ class Dashboard extends StatelessWidget {
                             Icons.settings,
                             color: Colors.white,
                           ),
-                          onPressed: () {}),
+                          onPressed: () {
+                            Navigator.pushNamed(context, kConfigScreen);
+                          }),
                       IconButton(
                           icon: Icon(
                             Icons.account_circle,
@@ -253,86 +257,189 @@ class MaterialPurchaseEntry extends StatelessWidget {
       appBar: AppBar(
         title: Text('Material Purchase Entry'),
       ),
-      body: ListView(
-        children: [
-          Row(
+      body: Padding(
+        padding: kPrimaryPadding,
+        child: ListView(
+          children: [
+            Row(
 //            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                  decoration: kOutlineBorder,
-                  child: Padding(
-                    padding: kFieldPadding,
-                    child: Icon(Icons.date_range),
-                  )),
-              Expanded(
-                child: Container(
-                  decoration: kOutlineBorder,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('dd-mm-yy'),
-                      IconButton(
-                        icon: Icon(Icons.date_range),
-                        onPressed: () {
-                          showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2050));
-                        },
-                      ),
-                    ],
+              children: [
+                Container(
+                    decoration: kOutlineBorder,
+                    child: Padding(
+                      padding: kFieldPadding,
+                      child: Icon(Icons.date_range),
+                    )),
+                Expanded(
+                  child: Container(
+                    decoration: kOutlineBorder,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('dd-mm-yy'),
+                        IconButton(
+                          icon: Icon(Icons.date_range),
+                          onPressed: () {
+                            showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2050));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Bill Number',
+                ),
+              ),
+              iconData: Icons.receipt,
+            ),
+            //TODO: add supliers and material dropDown
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Quantity',
+                ),
+              ),
+              iconData: Icons.edit,
+            ),
+            //TODO: add unit dropDown
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Quantity',
+                ),
+              ),
+              iconData: Icons.attach_money,
+            ),
+            Padding(
+              padding: kVerticalPadding,
+              child: Container(
+                decoration: kOutlineBorder,
+                child: TextField(
+                  minLines: 2,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Remarks',
                   ),
                 ),
               ),
-            ],
-          ),
-          InputField(
-            textField: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Bill Number',
+            ),
+            Padding(
+              padding: kTopPadding,
+              child: PrimaryActionButton(
+                title: 'Upload',
+                onPressed: () {},
               ),
             ),
-            iconData: Icons.receipt,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ConfigScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Config'),
+      ),
+      body: ListView(
+        children: [
+          DualButton(
+            title: 'Add Suppliers',
+            subtitle: 'Existing suppliers',
+            primaryColor: Colors.grey,
+            onTapSecondary: () {},
+            onTapPrimary: () {
+              Navigator.pushNamed(context, kAddSuppliers);
+            },
           ),
-          //TODO: add supliers and material dropDown
-          InputField(
-            textField: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Quantity',
-              ),
-            ),
-            iconData: Icons.edit,
+          DualButton(
+            title: 'Add Material',
+            subtitle: 'Existing material',
+            primaryColor: Colors.amber,
+            onTapSecondary: () {},
+            onTapPrimary: () {},
           ),
-          //TODO: add unit dropDown
-          InputField(
-            textField: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Quantity',
-              ),
-            ),
-            iconData: Icons.attach_money,
-          ),
-          Container(
-            decoration: kOutlineBorder,
-            child: TextField(
-              minLines: 2,
-              maxLines: 4,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Remarks',
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {},
-            child: Text('Upload'),
+          DualButton(
+            title: 'Change price',
+            subtitle: 'Already prices material',
+            primaryColor: Colors.brown,
+            onTapSecondary: () {},
+            onTapPrimary: () {},
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AddSuppliersScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Supliers'),
+      ),
+      body: Padding(
+        padding: kPrimaryPadding,
+        child: ListView(
+          children: [
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Supplier Name',
+                ),
+              ),
+              iconData: Icons.person,
+            ),
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Contact',
+                ),
+              ),
+              iconData: Icons.call,
+            ),
+            InputField(
+              textField: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Address',
+                ),
+              ),
+              iconData: Icons.home,
+            ),
+            Padding(
+              padding: kTopPadding,
+              child: PrimaryActionButton(
+                title: 'Upload',
+                onPressed: () {},
+              ),
+            ),
+            FlatButton(
+              child: Text('View existing suppliers'),
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

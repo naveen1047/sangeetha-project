@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/constant.dart';
 
@@ -134,7 +135,7 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: kVerticalPadding,
+      padding: kTopPadding,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -155,6 +156,108 @@ class InputField extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DualButton extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Function onTapPrimary;
+  final Function onTapSecondary;
+  final Color primaryColor;
+
+  const DualButton({
+    Key key,
+    @required this.title,
+    @required this.subtitle,
+    @required this.onTapPrimary,
+    @required this.onTapSecondary,
+    @required this.primaryColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: kMutedColor,
+            width: 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: onTapPrimary,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: kWhiteColor,
+                          fontSize: 22.0,
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        color: kWhiteColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: onTapSecondary,
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.folder_open),
+                    SizedBox(
+                      width: 4.0,
+                    ),
+                    Text(subtitle),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PrimaryActionButton extends StatelessWidget {
+  final String title;
+  final Color color;
+  final Function onPressed;
+
+  const PrimaryActionButton(
+      {Key key,
+      @required this.title,
+      this.color = Colors.green,
+      @required this.onPressed})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      color: color,
+      onPressed: () {},
+      child: Text(
+        'Upload',
+        style: TextStyle(color: kWhiteColor),
       ),
     );
   }

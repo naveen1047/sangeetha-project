@@ -6,7 +6,7 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final IconData titleIcon;
   final String subTitle;
-  final IconData subTitleIcon;
+  // final IconData subTitleIcon;
   final Color backgroundColor;
   final Color textColor;
   final Function onTap;
@@ -17,7 +17,7 @@ class CategoryCard extends StatelessWidget {
     @required this.title,
     this.titleIcon,
     @required this.subTitle,
-    this.subTitleIcon,
+    // this.subTitleIcon,
     @required this.backgroundColor,
     this.textColor = const Color(0xFFFFFFFF),
   }) : super(key: key);
@@ -53,15 +53,15 @@ class CategoryCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Icon(
-                      subTitleIcon,
-                      color: textColor,
-                    ),
+                    // Icon(
+                    //   subTitleIcon,
+                    //   color: textColor,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         subTitle,
-                        style: TextStyle(color: textColor),
+                        style: TextStyle(color: textColor, fontSize: 12.0),
                       ),
                     )
                   ],
@@ -125,11 +125,18 @@ class MenuItem extends StatelessWidget {
   }
 }
 
+///Should provide 'isDisabled = false'
+///to disable the inputField
 class InputField extends StatelessWidget {
   final TextField textField;
   final IconData iconData;
+  final bool isDisabled;
 
-  const InputField({Key key, @required this.textField, this.iconData})
+  const InputField(
+      {Key key,
+      @required this.textField,
+      this.iconData,
+      this.isDisabled = false})
       : super(key: key);
 
   @override
@@ -140,7 +147,7 @@ class InputField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            decoration: kOutlineBorder,
+            decoration: kOutlineBorderDisabled,
             child: Padding(
               padding: kFieldPadding,
               child: Icon(iconData),
@@ -148,7 +155,7 @@ class InputField extends StatelessWidget {
           ),
           Flexible(
             child: Container(
-              decoration: kOutlineBorder,
+              decoration: isDisabled ? kOutlineBorderDisabled : kOutlineBorder,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: textField,

@@ -1,4 +1,7 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hb_mobile/simple_bloc_observer.dart';
 import 'package:hb_mobile/view/view.dart';
 
 import 'constant.dart';
@@ -8,6 +11,8 @@ import 'constant.dart';
 *   MaterialPurchase
 * */
 void main() {
+  setupServiceLocator();
+  Bloc.observer = SimpleBlocObserver();
   runApp(MyApp(
     title: 'Sangeetha groups',
   ));

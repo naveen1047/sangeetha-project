@@ -1,8 +1,6 @@
 name: core
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -18,6 +16,8 @@ dependencies:
   #state management
   equatable: ^1.2.3
   bloc: ^6.0.2
+
+  get_it: ^4.0.4
 
   #testing
   bloc_test: ^7.0.3

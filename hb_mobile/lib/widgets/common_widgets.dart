@@ -261,9 +261,9 @@ class PrimaryActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       color: color,
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(
-        'Upload',
+        title,
         style: TextStyle(color: kWhiteColor),
       ),
     );

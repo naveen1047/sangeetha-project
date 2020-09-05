@@ -1,11 +1,44 @@
-
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
-class AddSuppliersScreen extends StatelessWidget {
+class AddSuppliersScreen extends StatefulWidget {
+  @override
+  _AddSuppliersScreenState createState() => _AddSuppliersScreenState();
+}
+
+class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
+  TextEditingController _supplierNameController;
+  TextEditingController _supplierCodeController;
+  TextEditingController _contactController;
+  TextEditingController _addressController;
+  TextEditingController _addDateController;
+
+  @override
+  void initState() {
+    _supplierNameController = TextEditingController();
+    _supplierCodeController = TextEditingController();
+    _contactController = TextEditingController();
+    _addressController = TextEditingController();
+    _addDateController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _supplierNameController.dispose();
+    _supplierCodeController.dispose();
+    _contactController.dispose();
+    _addressController.dispose();
+    _addDateController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bloc = AddSupplierBloc();
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Suppliers'),
@@ -16,6 +49,7 @@ class AddSuppliersScreen extends StatelessWidget {
           children: [
             InputField(
               textField: TextField(
+                controller: _supplierNameController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Supplier Name',
@@ -25,6 +59,7 @@ class AddSuppliersScreen extends StatelessWidget {
             ),
             InputField(
               textField: TextField(
+                controller: _supplierCodeController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Supplier code',
@@ -35,6 +70,7 @@ class AddSuppliersScreen extends StatelessWidget {
             ),
             InputField(
               textField: TextField(
+                controller: _contactController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Contact',
@@ -44,6 +80,7 @@ class AddSuppliersScreen extends StatelessWidget {
             ),
             InputField(
               textField: TextField(
+                controller: _addressController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Address',
@@ -53,6 +90,7 @@ class AddSuppliersScreen extends StatelessWidget {
             ),
             InputField(
               textField: TextField(
+                controller: _addDateController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'current date',
@@ -65,7 +103,17 @@ class AddSuppliersScreen extends StatelessWidget {
               padding: kTopPadding,
               child: PrimaryActionButton(
                 title: 'Upload',
-                onPressed: () {},
+                onPressed: () {
+                  bloc.add(
+                    AddSupplier(
+                      sname: _supplierNameController.text,
+                      saddate: _addDateController.text,
+                      saddress: _addressController.text,
+                      scode: _supplierCodeController.text,
+                      snum: _contactController.text,
+                    ),
+                  );
+                },
               ),
             ),
             FlatButton(

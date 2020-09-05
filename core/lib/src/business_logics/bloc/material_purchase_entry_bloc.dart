@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:core/src/business_logics/models/material_purchase.dart';
 import 'package:core/src/services/material_purchase_service.dart';
+import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
 
 // event
@@ -43,11 +44,10 @@ class MaterialAddedState extends Equatable {
 // bloc
 class MaterialPurchaseEntryBloc
     extends Bloc<MaterialPurchaseEntryEvent, MaterialAddedState> {
-  MaterialPurchaseEntryBloc({MaterialPurchaseServices materialPurchaseServices})
-      : _materialPurchaseServices = materialPurchaseServices,
-        super(null);
+  MaterialPurchaseEntryBloc() : super(null);
 
-  final MaterialPurchaseServices _materialPurchaseServices;
+  final MaterialPurchaseServices _materialPurchaseServices =
+      serviceLocator<MaterialPurchaseServices>();
 
   @override
   Stream<MaterialAddedState> mapEventToState(
@@ -58,13 +58,14 @@ class MaterialPurchaseEntryBloc
   }
 
   Future<MaterialAddedState> _mapAddMaterialToState(AddMaterial event) async {
-    bool result = await _materialPurchaseServices
-        .setMaterialPurchaseDetail(MaterialPurchase(
-      name: event.name,
-      code: event.code,
-      unit: event.unit,
-      price: event.price,
-    ));
+    bool result = await _materialPurchaseServices.setMaterialPurchaseDetail(
+      MaterialPurchase(
+        name: event.name,
+        code: event.code,
+        unit: event.unit,
+        price: event.price,
+      ),
+    );
 
     if (result == true) {
       return MaterialAddedState.success();

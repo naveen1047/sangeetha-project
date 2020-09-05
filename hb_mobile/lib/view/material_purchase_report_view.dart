@@ -1,14 +1,38 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 
 class MaterialPurchase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Material Purchase'),
+    return BlocProvider(
+      create: (_) => MaterialPurchaseReportBloc()..add(MaterialDetails()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Material Purchase'),
+        ),
+        body: BlocBuilder<MaterialPurchaseReportBloc,
+            MaterialPurchaseReportState>(
+          builder: (context, state) {
+            return Text('${state.materialPurchase.code}');
+          },
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pushNamed(context, kMaterialPurchaseEntry);
+          },
+          label: Text('Entry'),
+          icon: Icon(Icons.add),
+          backgroundColor: Colors.pink,
+        ),
       ),
-      body: Container(
+    );
+  }
+}
+
+/*
+body: Container(
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -44,14 +68,5 @@ class MaterialPurchase extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, kMaterialPurchaseEntry);
-        },
-        label: Text('Entry'),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.pink,
-      ),
-    );
-  }
-}
+
+*/

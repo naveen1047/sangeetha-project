@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:core/src/business_logics/models/material_purchase.dart';
 import 'package:core/src/services/material_purchase_service.dart';
+import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
 
 // event
@@ -16,20 +17,23 @@ class MaterialDetails extends MaterialPurchaseReportEvent {}
 // state
 enum MaterialLoadingStatus { success, error, loading }
 
-class MaterialDetailsState extends Equatable {
+class MaterialPurchaseReportState extends Equatable {
   final MaterialLoadingStatus status;
   final MaterialPurchase materialPurchase;
 
-  const MaterialDetailsState._({this.status, this.materialPurchase});
+  const MaterialPurchaseReportState._({this.status, this.materialPurchase});
 
-  const MaterialDetailsState.loading() : this._();
+  const MaterialPurchaseReportState.loading()
+      : this._(
+          status: MaterialLoadingStatus.loading,
+        );
 
-  const MaterialDetailsState.success(MaterialPurchase materialPurchase)
+  const MaterialPurchaseReportState.success(MaterialPurchase materialPurchase)
       : this._(
             status: MaterialLoadingStatus.success,
             materialPurchase: materialPurchase);
 
-  const MaterialDetailsState.error()
+  const MaterialPurchaseReportState.error()
       : this._(status: MaterialLoadingStatus.error);
 
   @override
@@ -38,33 +42,29 @@ class MaterialDetailsState extends Equatable {
 
 // bloc
 class MaterialPurchaseReportBloc
-    extends Bloc<MaterialPurchaseReportEvent, MaterialDetailsState> {
-  MaterialPurchaseReportBloc(
-      {MaterialPurchaseServices materialPurchaseServices})
-      : _materialPurchaseServices = materialPurchaseServices,
-        super(null);
+    extends Bloc<MaterialPurchaseReportEvent, MaterialPurchaseReportState> {
+  MaterialPurchaseReportBloc() : super(MaterialPurchaseReportState.loading());
 
-  final MaterialPurchaseServices _materialPurchaseServices;
+  final MaterialPurchaseServices _materialPurchaseServices =
+      serviceLocator<MaterialPurchaseServices>();
 
   @override
-  Stream<MaterialDetailsState> mapEventToState(
+  Stream<MaterialPurchaseReportState> mapEventToState(
       MaterialPurchaseReportEvent event) async* {
     if (event is MaterialDetails) {
       yield* _mapMaterialDetailsToState();
     }
   }
 
-  Stream<MaterialDetailsState> _mapMaterialDetailsToState() async* {
+  Stream<MaterialPurchaseReportState> _mapMaterialDetailsToState() async* {
     try {
-      yield MaterialDetailsState.loading();
+      yield MaterialPurchaseReportState.loading();
       MaterialPurchase _materialPurchase =
           await _materialPurchaseServices.getMaterialPurchaseEntryDetail();
 
-      if (_materialPurchase != null) {
-        yield MaterialDetailsState.success(_materialPurchase);
-      }
+      yield MaterialPurchaseReportState.success(_materialPurchase);
     } catch (e) {
-      yield MaterialDetailsState.error();
+      yield MaterialPurchaseReportState.error();
     }
   }
 }

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         kMaterialPurchase: (context) => MaterialPurchase(),
         kMaterialPurchaseEntry: (context) => MaterialPurchaseEntry(),
         kConfigScreen: (context) => ConfigScreen(),
-        kAddSuppliers: (context) => AddSuppliersScreen(),
+        kAddSuppliers: (context) => AddSuppliersScreen(title: "Add Suppliers"),
         kExistingSuppliersScreen: (context) => ExistingSuppliersScreen(),
       },
       title: title,

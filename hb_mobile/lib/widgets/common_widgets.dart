@@ -34,39 +34,43 @@ class CategoryCard extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(8.0))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      titleIcon,
-                      color: textColor,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        title,
-                        style: TextStyle(color: textColor),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        titleIcon,
+                        color: textColor,
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    // Icon(
-                    //   subTitleIcon,
-                    //   color: textColor,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        subTitle,
-                        style: TextStyle(color: textColor, fontSize: 12.0),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          title,
+                          style: TextStyle(color: textColor),
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      // Icon(
+                      //   subTitleIcon,
+                      //   color: textColor,
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          subTitle,
+                          style: TextStyle(color: textColor, fontSize: 12.0),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -125,8 +129,8 @@ class MenuItem extends StatelessWidget {
   }
 }
 
-///Should provide 'isDisabled = false'
-///to disable the inputField
+/// Should provide 'isDisabled = false'
+/// to disable the inputField
 class InputField extends StatelessWidget {
   final TextField textField;
   final IconData iconData;
@@ -212,7 +216,7 @@ class DualButton extends StatelessWidget {
                         title,
                         style: TextStyle(
                           color: kWhiteColor,
-                          fontSize: 22.0,
+                          fontSize: 20.0,
                         ),
                       ),
                       Icon(
@@ -224,18 +228,21 @@ class DualButton extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: onTapSecondary,
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.folder_open),
-                    SizedBox(
-                      width: 4.0,
-                    ),
-                    Text(subtitle),
-                  ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: GestureDetector(
+                onTap: onTapSecondary,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.folder_open),
+                      SizedBox(
+                        width: 4.0,
+                      ),
+                      Text(subtitle),
+                    ],
+                  ),
                 ),
               ),
             ),

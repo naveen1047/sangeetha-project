@@ -6,6 +6,7 @@ class HomeScreen extends StatelessWidget {
   final String title;
 
   const HomeScreen({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,86 +121,91 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              CategoryLabel(
-                title: 'Hollow Block',
-                subTitle: 'DashBoard',
-                fontSize: 18.0,
-              ),
-              CategoryCard(
-                title: 'Material Purchase',
-                titleIcon: Icons.note,
-                subTitle: 'add and edit materials',
-                // subTitleIcon: Icons.edit,
-                backgroundColor: Colors.green,
-                onTap: () {
-                  Navigator.pushNamed(context, kMaterialPurchase);
-                },
-              ),
-              // CategoryCard(
-              //   title: 'Material Purchase',
-              //   titleIcon: Icons.note,
-              //   subTitle: 'Report',
-              //   subTitleIcon: Icons.description,
-              //   backgroundColor: Colors.grey,
-              // ),
-              CategoryCard(
-                title: 'Production',
-                titleIcon: Icons.add_circle,
-                subTitle: 'Entry',
-                // subTitleIcon: Icons.edit,
-                backgroundColor: Colors.amber,
-              ),
-              CategoryCard(
-                title: 'Production',
-                titleIcon: Icons.add_circle,
-                subTitle: 'Report',
-                // subTitleIcon: Icons.description,
-                backgroundColor: Colors.deepOrange,
-              ),
-              CategoryCard(
-                title: 'Sales',
-                titleIcon: Icons.trending_up,
-                subTitle: 'Entry',
-                // subTitleIcon: Icons.edit,
-                backgroundColor: Colors.blue,
-              ),
-              CategoryCard(
-                title: 'Sales',
-                titleIcon: Icons.trending_up,
-                subTitle: 'Report',
-                // subTitleIcon: Icons.description,
-                backgroundColor: Colors.pinkAccent,
-              ),
-              CategoryCard(
-                title: 'Payment',
-                titleIcon: Icons.attach_money,
-                subTitle: 'sales',
-                // subTitleIcon: Icons.trending_up,
-                backgroundColor: Colors.brown,
-              ),
-              CategoryCard(
-                title: 'Payment',
-                titleIcon: Icons.attach_money,
-                subTitle: 'Client',
-                // subTitleIcon: Icons.person_outline,
-                backgroundColor: Colors.lightGreen,
-              ),
-              CategoryCard(
-                title: 'Stock',
-                titleIcon: Icons.access_time,
-                subTitle: 'Detail',
-//            subTitleIcon: Icons.description,
-                backgroundColor: Colors.teal,
-              ),
-            ]),
-          ),
+          buildHomeList(context, MediaQuery.of(context).orientation),
         ],
-//        children: [
-
-//        ],
       ),
     );
+  }
+
+  Widget buildHomeList(BuildContext context, Orientation deviceOrientation) {
+    if (deviceOrientation == Orientation.portrait) {
+      return SliverList(
+        delegate: SliverChildListDelegate(categories(context)),
+      );
+    } else {
+      return SliverGrid.count(
+        crossAxisCount: 4,
+        children: categories(context),
+      );
+    }
+  }
+
+  List<Widget> categories(BuildContext context) {
+    return [
+      CategoryLabel(
+        title: 'Hollow Block',
+        subTitle: 'DashBoard',
+        fontSize: 18.0,
+      ),
+      CategoryCard(
+        title: 'Material Purchase',
+        titleIcon: Icons.note,
+        subTitle: 'add and edit materials',
+        // subTitleIcon: Icons.edit,
+        backgroundColor: Colors.green,
+        onTap: () {
+          Navigator.pushNamed(context, kMaterialPurchase);
+        },
+      ),
+      CategoryCard(
+        title: 'Production',
+        titleIcon: Icons.add_circle,
+        subTitle: 'Entry',
+        // subTitleIcon: Icons.edit,
+        backgroundColor: Colors.amber,
+      ),
+      CategoryCard(
+        title: 'Production',
+        titleIcon: Icons.add_circle,
+        subTitle: 'Report',
+        // subTitleIcon: Icons.description,
+        backgroundColor: Colors.deepOrange,
+      ),
+      CategoryCard(
+        title: 'Sales',
+        titleIcon: Icons.trending_up,
+        subTitle: 'Entry',
+        // subTitleIcon: Icons.edit,
+        backgroundColor: Colors.blue,
+      ),
+      CategoryCard(
+        title: 'Sales',
+        titleIcon: Icons.trending_up,
+        subTitle: 'Report',
+        // subTitleIcon: Icons.description,
+        backgroundColor: Colors.pinkAccent,
+      ),
+      CategoryCard(
+        title: 'Payment',
+        titleIcon: Icons.attach_money,
+        subTitle: 'sales',
+        // subTitleIcon: Icons.trending_up,
+        backgroundColor: Colors.brown,
+      ),
+      CategoryCard(
+        title: 'Payment',
+        titleIcon: Icons.attach_money,
+        subTitle: 'Client',
+        // subTitleIcon: Icons.person_outline,
+        backgroundColor: Colors.lightGreen,
+      ),
+      CategoryCard(
+        title: 'Stock',
+        titleIcon: Icons.access_time,
+        subTitle: 'Detail',
+//            subTitleIcon: Icons.description,
+        backgroundColor: Colors.teal,
+      ),
+    ];
   }
 }

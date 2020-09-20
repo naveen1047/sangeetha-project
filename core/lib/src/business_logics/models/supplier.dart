@@ -33,3 +33,22 @@ class Supplier extends Equatable {
         saddate,
       ];
 }
+
+@JsonSerializable()
+class Suppliers extends Equatable {
+  final int totalResults;
+  final List<Supplier> suppliers;
+
+  Suppliers({
+    this.totalResults,
+    this.suppliers,
+  });
+
+  factory Suppliers.fromJson(Map<String, dynamic> json) =>
+      _$SuppliersFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SuppliersToJson(this);
+
+  @override
+  List<Object> get props => [totalResults, suppliers];
+}

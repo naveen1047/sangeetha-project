@@ -1,35 +1,79 @@
 import 'dart:convert';
 
+import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/supplier.dart';
 import 'package:core/src/services/supplier_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class SupplierServiceFake implements SupplierService {
+  String _baseUrl = "http://192.168.1.5/hb_php";
+
   @override
-  Future<bool> submitSupplier(Supplier supplier) async {
-    print(supplier.sname);
-    downloadJSON(
-      sname: supplier.sname,
-      scode: supplier.scode,
-      snum: supplier.snum,
-    );
-    return true;
-  }
-
-  Future<void> downloadJSON({String sname, String scode, String snum}) async {
-    final data = {'sname': sname, 'scode': scode, 'snum': snum};
-    final url = "http://sangeethagroups.000webhostapp.com/get.php";
-
+  Future<ResponseResult> submitSupplier(Supplier supplier) async {
+    final data = supplier.toJson();
+    final url = "$_baseUrl/add_supplier.php";
     var response = await http.post(url, body: json.encode(data));
-//    final response = await get(jsonEndpoint);
-//    var message = jsonDecode(response.body);
-
+    print(response.body.toString());
     if (response.statusCode == 200) {
       var result = json.decode(response.body);
+      return ResponseResult.fromJson(result);
+    } else {
+      throw Exception(
+          ' Error Code: ${response.statusCode}\nWe were not able to successfully download the json data.');
+    }
+  }
 
-      print(result.toString());
-    } else
+  @override
+  Future<ResponseResult> editSupplierByCode(Supplier supplier) async {
+    final data = supplier.toJson();
+    print(data.toString());
+    final url = "$_baseUrl/edit_existing_supplier.php";
+    var response = await http.post(url, body: json.encode(data));
+    if (response.statusCode == 200) {
+      var result = json.decode(response.body);
+      return ResponseResult.fromJson(result);
+    } else {
       throw Exception(
           'We were not able to successfully download the json data.');
+    }
   }
+
+  @override
+  Future<ResponseResult> deleteSupplier(Map<String, dynamic> scode) async {
+    final url = "$_baseUrl/delete_supplier.php";
+    var response = await http.post(url, body: json.encode(scode));
+    print('here');
+    print(response.body.toString());
+    if (response.statusCode == 200) {
+      var result = json.decode(response.body);
+      return ResponseResult.fromJson(result);
+    } else {
+      throw Exception(
+          'We were not able to successfully download the json data.');
+    }
+  }
+
+  @override
+  Future<Suppliers> getAllSuppliers() async {
+    final url = "$_baseUrl/fetch_supplier.php";
+    var response = await http.get(url);
+    print(response.body.toString());
+    if (response.statusCode == 200) {
+      return compute(parseSuppliers, response.body);
+    } else {
+      throw Exception(
+          'Error Code: ${response.statusCode}\nWe were not able to successfully download the json data.');
+    }
+  }
+
+  @override
+  Future<Supplier> getSupplierByName(String supplierName) {
+    // TODO: implement getSupplierByName
+    throw UnimplementedError();
+  }
+}
+
+Suppliers parseSuppliers(String response) {
+  return Suppliers.fromJson(json.decode(response));
 }

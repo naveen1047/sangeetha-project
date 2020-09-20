@@ -4,12 +4,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
-class AddSuppliersScreen extends StatefulWidget {
+class AddSuppliersScreen extends StatelessWidget {
+  final String title;
+
+  const AddSuppliersScreen({Key key, this.title}) : super(key: key);
   @override
-  _AddSuppliersScreenState createState() => _AddSuppliersScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => SupplierBloc(),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => ScodeCubit("Supplier code"),
+          ),
+        ],
+        child: AddSupplierForm(),
+      ),
+    );
+  }
 }
 
-class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
+class AddSupplierForm extends StatefulWidget {
+  @override
+  _AddSupplierFormState createState() => _AddSupplierFormState();
+}
+
+class _AddSupplierFormState extends State<AddSupplierForm> {
+  SupplierBloc _addSupplierBloc;
   TextEditingController _supplierNameController;
   TextEditingController _supplierCodeController;
   TextEditingController _contactController;
@@ -18,12 +42,18 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
 
   @override
   void initState() {
+    _addSupplierBloc = BlocProvider.of<SupplierBloc>(context);
     _supplierNameController = TextEditingController();
     _supplierCodeController = TextEditingController();
     _contactController = TextEditingController();
     _addressController = TextEditingController();
     _addDateController = TextEditingController();
+    setDate();
     super.initState();
+  }
+
+  void setDate() {
+    _addDateController.text = _addSupplierBloc.getDateInFormat;
   }
 
   @override
@@ -38,18 +68,44 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = AddSupplierBloc();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Suppliers'),
-      ),
-      body: Padding(
+    return BlocListener<SupplierBloc, SupplierState>(
+      listener: (BuildContext context, state) {
+        if (state is SupplierError) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${state.message}',
+                  softWrap: true,
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+        if (state is SupplierSuccess) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${state.message}',
+                  softWrap: true,
+                ),
+              ),
+            );
+        }
+      },
+      child: Padding(
         padding: kPrimaryPadding,
         child: ListView(
           children: [
             InputField(
               textField: TextField(
                 controller: _supplierNameController,
+                onChanged: (text) {
+                  context.bloc<ScodeCubit>().generate(text);
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Supplier Name',
@@ -57,17 +113,21 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
               ),
               iconData: Icons.person,
             ),
-            InputField(
-              textField: TextField(
-                controller: _supplierCodeController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Supplier code',
+            BlocBuilder<ScodeCubit, String>(builder: (context, state) {
+              _supplierCodeController.text = '$state';
+              return InputField(
+                textField: TextField(
+                  enabled: false,
+                  controller: _supplierCodeController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Supplier code',
+                  ),
                 ),
-              ),
-              iconData: Icons.info,
-              isDisabled: true,
-            ),
+                iconData: Icons.info,
+                isDisabled: true,
+              );
+            }),
             InputField(
               textField: TextField(
                 controller: _contactController,
@@ -90,10 +150,10 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
             ),
             InputField(
               textField: TextField(
+                enabled: false,
                 controller: _addDateController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'current date',
                 ),
               ),
               iconData: Icons.date_range,
@@ -104,15 +164,7 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
               child: PrimaryActionButton(
                 title: 'Upload',
                 onPressed: () {
-                  bloc.add(
-                    AddSupplier(
-                      sname: _supplierNameController.text,
-                      saddate: _addDateController.text,
-                      saddress: _addressController.text,
-                      scode: _supplierCodeController.text,
-                      snum: _contactController.text,
-                    ),
-                  );
+                  uploadData();
                 },
               ),
             ),
@@ -124,6 +176,18 @@ class _AddSuppliersScreenState extends State<AddSuppliersScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void uploadData() {
+    _addSupplierBloc.add(
+      AddSupplier(
+        sname: _supplierNameController.text,
+        saddate: _addDateController.text,
+        saddress: _addressController.text,
+        scode: _supplierCodeController.text,
+        snum: _contactController.text,
       ),
     );
   }

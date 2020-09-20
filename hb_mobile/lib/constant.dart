@@ -35,6 +35,7 @@ const Color kWhiteColor = Color(0xFFFFFFFF);
 
 //padding
 const kVerticalPadding = const EdgeInsets.symmetric(vertical: 8.0);
+const kHorizontalPadding = const EdgeInsets.symmetric(horizontal: 16.0);
 const kTopPadding = const EdgeInsets.only(top: 8.0);
 const kFieldPadding = const EdgeInsets.all(12.0);
 const kPrimaryPadding = const EdgeInsets.all(8.0);

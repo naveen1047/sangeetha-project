@@ -23,3 +23,18 @@ Map<String, dynamic> _$SupplierToJson(Supplier instance) => <String, dynamic>{
       'saddress': instance.saddress,
       'saddate': instance.saddate,
     };
+
+Suppliers _$SuppliersFromJson(Map<String, dynamic> json) {
+  return Suppliers(
+    totalResults: json['totalResults'] as int,
+    suppliers: (json['suppliers'] as List)
+        ?.map((e) =>
+            e == null ? null : Supplier.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$SuppliersToJson(Suppliers instance) => <String, dynamic>{
+      'totalResults': instance.totalResults,
+      'suppliers': instance.suppliers,
+    };

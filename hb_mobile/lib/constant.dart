@@ -4,8 +4,10 @@ const String kHome = '/dash_board';
 const String kMaterialPurchase = '/material_purchase';
 const String kMaterialPurchaseEntry = '/material_purchase_entry';
 const String kConfigScreen = '/configScreen';
-const String kAddSuppliers = '/addSuppliers';
+const String kAddSuppliersScreen = '/addSuppliers';
 const String kExistingSuppliersScreen = '/existingSuppliersScreen';
+const String kAddMaterialScreen = '/addMaterialScreen';
+const String kExistingMaterialScreen = '/existingMaterialScreen';
 
 //decoration
 Decoration kOutlineBorder = BoxDecoration(

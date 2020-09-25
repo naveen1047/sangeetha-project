@@ -1,13 +1,15 @@
 import 'package:core/core.dart';
+import 'package:core/src/business_logics/bloc/material_bloc.dart'
+    as materialBloc;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
-class AddSuppliersScreen extends StatelessWidget {
+class AddMaterialScreen extends StatelessWidget {
   final String title;
 
-  const AddSuppliersScreen({Key key, this.title}) : super(key: key);
+  const AddMaterialScreen({Key key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,69 +17,61 @@ class AddSuppliersScreen extends StatelessWidget {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (BuildContext context) => SupplierBloc(),
+            create: (BuildContext context) => MaterialBloc(),
           ),
           BlocProvider(
             create: (BuildContext context) => RandomCodeCubit("Supplier code"),
           ),
         ],
-        child: AddSupplierForm(),
+        child: AddMaterialForm(),
       ),
     );
   }
 }
 
-class AddSupplierForm extends StatefulWidget {
+class AddMaterialForm extends StatefulWidget {
   @override
-  _AddSupplierFormState createState() => _AddSupplierFormState();
+  _AddMaterialFormState createState() => _AddMaterialFormState();
 }
 
-class _AddSupplierFormState extends State<AddSupplierForm> {
-  SupplierBloc _addSupplierBloc;
-  TextEditingController _supplierNameController;
-  TextEditingController _supplierCodeController;
-  TextEditingController _contactController;
-  TextEditingController _addressController;
-  TextEditingController _addDateController;
+class _AddMaterialFormState extends State<AddMaterialForm> {
+  MaterialBloc _addMaterialBloc;
+  TextEditingController _materialNameController;
+  TextEditingController _materialCodeController;
+  TextEditingController _unitController;
+  TextEditingController _priceController;
 
   @override
   void initState() {
-    _addSupplierBloc = BlocProvider.of<SupplierBloc>(context);
-    _supplierNameController = TextEditingController();
-    _supplierCodeController = TextEditingController();
-    _contactController = TextEditingController();
-    _addressController = TextEditingController();
-    _addDateController = TextEditingController();
-    setDate();
+    _addMaterialBloc = BlocProvider.of<MaterialBloc>(context);
+    _materialNameController = TextEditingController();
+    _materialCodeController = TextEditingController();
+    _unitController = TextEditingController();
+    _priceController = TextEditingController();
     super.initState();
-  }
-
-  void setDate() {
-    _addDateController.text = _addSupplierBloc.getDateInFormat;
   }
 
   @override
   void dispose() {
-    _supplierNameController.dispose();
-    _supplierCodeController.dispose();
-    _contactController.dispose();
-    _addressController.dispose();
-    _addDateController.dispose();
+    _materialNameController.dispose();
+    _materialCodeController.dispose();
+    _unitController.dispose();
+    _priceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SupplierBloc, SupplierState>(
+    return BlocListener<MaterialBloc, materialBloc.MaterialState>(
       listener: (BuildContext context, state) {
-        if (state is SupplierError) {
+        if (state is MaterialError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               warningSnackBar(message: state.message),
             );
         }
-        if (state is SupplierSuccess) {
+        if (state is MaterialSuccess) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
@@ -89,26 +83,26 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
           children: [
             InputField(
               textField: TextField(
-                controller: _supplierNameController,
+                controller: _materialNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Supplier Name',
+                  hintText: 'Material Name',
                 ),
               ),
-              iconData: Icons.person,
+              iconData: Icons.bookmark,
             ),
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _supplierCodeController.text = '$state';
+              _materialCodeController.text = '$state';
               return InputField(
                 textField: TextField(
                   enabled: false,
-                  controller: _supplierCodeController,
+                  controller: _materialCodeController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Supplier code',
+                    hintText: 'Material code',
                   ),
                 ),
                 iconData: Icons.info,
@@ -117,34 +111,23 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             }),
             InputField(
               textField: TextField(
-                controller: _contactController,
+                controller: _unitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Contact',
+                  hintText: 'Unit (kg, load etc..,)',
                 ),
               ),
-              iconData: Icons.call,
+              iconData: Icons.arrow_forward_ios,
             ),
             InputField(
               textField: TextField(
-                controller: _addressController,
+                controller: _priceController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Address',
+                  hintText: 'Price per unit',
                 ),
               ),
-              iconData: Icons.home,
-            ),
-            InputField(
-              textField: TextField(
-                enabled: false,
-                controller: _addDateController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-              iconData: Icons.date_range,
-              isDisabled: true,
+              iconData: Icons.attach_money,
             ),
             Padding(
               padding: kTopPadding,
@@ -156,9 +139,9 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               ),
             ),
             FlatButton(
-              child: Text('View existing suppliers'),
+              child: Text('View existing materials'),
               onPressed: () {
-                Navigator.pushNamed(context, kExistingSuppliersScreen);
+                Navigator.pushNamed(context, kExistingMaterialScreen);
               },
             ),
           ],
@@ -168,13 +151,12 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
   }
 
   void uploadData() {
-    _addSupplierBloc.add(
-      AddSupplier(
-        sname: _supplierNameController.text,
-        saddate: _addDateController.text,
-        saddress: _addressController.text,
-        scode: _supplierCodeController.text,
-        snum: _contactController.text,
+    _addMaterialBloc.add(
+      AddMaterial(
+        mname: _materialNameController.text,
+        mpriceperunit: _priceController.text,
+        mcode: _materialCodeController.text,
+        munit: _unitController.text,
       ),
     );
   }

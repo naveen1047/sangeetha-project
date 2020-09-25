@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/simple_bloc_observer.dart';
+import 'package:hb_mobile/view/existing_material_view.dart';
 import 'package:hb_mobile/view/view.dart';
 
 import 'constant.dart';
@@ -28,11 +29,15 @@ class MyApp extends StatelessWidget {
       initialRoute: kHome,
       routes: {
         kHome: (context) => HomeScreen(title: title),
-        kMaterialPurchase: (context) => MaterialPurchase(),
+        // kMaterialPurchase: (context) => MaterialPurchase(),
         kMaterialPurchaseEntry: (context) => MaterialPurchaseEntry(),
         kConfigScreen: (context) => ConfigScreen(),
-        kAddSuppliers: (context) => AddSuppliersScreen(title: "Add Suppliers"),
+        kAddSuppliersScreen: (context) =>
+            AddSuppliersScreen(title: "Add Suppliers"),
         kExistingSuppliersScreen: (context) => ExistingSuppliersScreen(),
+        kAddMaterialScreen: (context) =>
+            AddMaterialScreen(title: "Add Material"),
+        kExistingMaterialScreen: (context) => ExistingMaterialsScreen(),
       },
       title: title,
       theme: ThemeData(

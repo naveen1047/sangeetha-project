@@ -276,3 +276,41 @@ class PrimaryActionButton extends StatelessWidget {
     );
   }
 }
+
+SnackBar warningSnackBar({@required String message, Widget widget}) {
+  return SnackBar(
+    duration: Duration(seconds: 2),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            '${message}',
+            softWrap: true,
+          ),
+        ),
+        widget != null ? widget : Icon(Icons.info),
+      ],
+    ),
+    backgroundColor: Colors.red,
+  );
+}
+
+/// For positive result
+SnackBar progressSnackBar({@required String message, Widget widget}) {
+  return SnackBar(
+    duration: Duration(seconds: 2),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            '${message}',
+            softWrap: true,
+          ),
+        ),
+        widget != null ? widget : CircularProgressIndicator(),
+      ],
+    ),
+  );
+}

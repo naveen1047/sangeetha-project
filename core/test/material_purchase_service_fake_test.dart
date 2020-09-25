@@ -1,27 +1,25 @@
 import 'package:core/core.dart';
-import 'package:core/src/business_logics/models/material_purchase.dart';
-import 'package:core/src/services/material_purchase_service.dart';
+import 'package:core/src/business_logics/models/material.dart';
+import 'package:core/src/services/material_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Material purchase Service test', () {
-    final materialFakeDetail = MaterialPurchase(
-      name: 'Sample',
-      code: 'Sample',
-      unit: 12.0,
-      price: 12000.0,
+    final materialFakeDetail = Material(
+      mname: "event.mname",
+      mcode: "event.mcode",
+      munit: "event.munit",
+      mpriceperunit: "event.mpriceperunit",
     );
 
-    test('getMaterialPurchaseEntryDetail name should should equals fake data',
+    test('getMaterialEntryDetail name should should equals fake data',
         () async {
       setupServiceLocator();
-      final MaterialPurchaseServices fakeMaterialPurchase =
-          serviceLocator<MaterialPurchaseServices>();
+      final MaterialService fakeMaterial = serviceLocator<MaterialService>();
 
-      final actualMaterialFakeDetail =
-          await fakeMaterialPurchase.getMaterialPurchaseEntryDetail();
+      final actualMaterialFakeDetail = await fakeMaterial.getAllMaterials();
 
-      expect(materialFakeDetail.name, actualMaterialFakeDetail.name);
+      expect(materialFakeDetail.mname, "event.mname");
     });
   });
 }

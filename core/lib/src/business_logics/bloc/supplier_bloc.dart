@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/supplier.dart';
@@ -69,7 +67,7 @@ abstract class SupplierState {
   const SupplierState();
 }
 
-class IdleState extends SupplierState {}
+class SupplierIdleState extends SupplierState {}
 
 class SupplierSuccess extends SupplierState {
   final bool status;
@@ -87,7 +85,7 @@ class SupplierError extends SupplierState {
 
 // bloc
 class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
-  SupplierBloc() : super(IdleState());
+  SupplierBloc() : super(SupplierIdleState());
 
   final SupplierService _supplierServices = serviceLocator<SupplierService>();
 
@@ -165,27 +163,5 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     } else {
       yield SupplierError(result.status, result.message);
     }
-  }
-}
-
-// scode cubit
-class ScodeCubit extends Cubit<String> {
-  ScodeCubit(String state) : super('');
-
-  void generate(String sname) => emit(_convertToCode(sname));
-
-  String _convertToCode(String text) {
-    if (text == '' || text == null) return '';
-    text = text
-        .replaceAll("_", "")
-        .split(new RegExp(r"[\s-]"))
-        .map((word) => word.length > 1 ? word[0] : word)
-        .map((letter) => letter.toUpperCase())
-        .where((item) => item.contains(new RegExp(r"[A-Z]")))
-        .reduce((result, item) => result + item);
-    text += Random().nextInt(99).toString();
-    text += Random().nextInt(9).toString();
-    text += String.fromCharCode((Random().nextInt(26) + 65));
-    return text;
   }
 }

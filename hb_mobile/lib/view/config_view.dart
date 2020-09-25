@@ -10,19 +10,16 @@ class ConfigScreen extends StatelessWidget {
         title: 'Add Suppliers',
         subtitle: 'Existing suppliers',
         primaryColor: Colors.grey,
-        onTapSecondary: () {
-          Navigator.pushNamed(context, kExistingSuppliersScreen);
-        },
-        onTapPrimary: () {
-          Navigator.pushNamed(context, kAddSuppliers);
-        },
+        onTapSecondary: () =>
+            Navigator.pushNamed(context, kExistingSuppliersScreen),
+        onTapPrimary: () => Navigator.pushNamed(context, kAddSuppliersScreen),
       ),
       DualButton(
         title: 'Add Material',
         subtitle: 'Existing material',
         primaryColor: Colors.amber,
-        onTapSecondary: () {},
-        onTapPrimary: () {},
+        onTapSecondary: () => Navigator.pushNamed(context, kAddMaterialScreen),
+        onTapPrimary: () => Navigator.pushNamed(context, kAddMaterialScreen),
       ),
       DualButton(
         title: 'Change price',

@@ -39,18 +39,12 @@ abstract class ViewMaterialState {
   const ViewMaterialState();
 }
 
-class MaterialLoadingState extends ViewMaterialState {
-  @override
-  List<Object> get props => [];
-}
+class MaterialLoadingState extends ViewMaterialState {}
 
 class MaterialLoadedState extends ViewMaterialState {
   final List<Material> materials;
 
   MaterialLoadedState(this.materials);
-
-  @override
-  List<Object> get props => [];
 }
 
 class MaterialErrorState extends ViewMaterialState {
@@ -59,6 +53,7 @@ class MaterialErrorState extends ViewMaterialState {
   MaterialErrorState(this.message);
 
   @override
+  // ignore: override_on_non_overriding_member
   List<Object> get props => [message];
 }
 

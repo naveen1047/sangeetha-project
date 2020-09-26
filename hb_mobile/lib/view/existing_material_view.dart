@@ -4,6 +4,8 @@ import 'package:core/src/business_logics/bloc/material_bloc.dart'
 import 'package:core/src/business_logics/models/material.dart' as material;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hb_mobile/constant.dart';
+import 'package:hb_mobile/widgets/common_widgets.dart';
 
 class ExistingMaterialsScreen extends StatelessWidget {
   @override
@@ -54,8 +56,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () => BlocProvider.of<ViewMaterialBloc>(context)
-                .add(FetchMaterialEvent()),
+            onPressed: () => _viewMaterialBloc.add(FetchMaterialEvent()),
           )
         ],
       ),
@@ -100,6 +101,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
   Widget _buildTable(
       MaterialLoadedState state, List<material.Material> materials) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -109,6 +111,10 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(), hintText: 'Search materials'),
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: Text('total results: ${materials.length}'),
         ),
         Expanded(
           child: _buildDataTable(state, materials),
@@ -136,6 +142,8 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
             DataColumn(label: Text("Code")),
             DataColumn(label: Text("Unit")),
             DataColumn(label: Text("Price per unit")),
+            DataColumn(
+                label: Text("Modify / delete", textAlign: TextAlign.center)),
           ],
           rows: materials
               .map(
@@ -145,6 +153,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
                     DataCell(Text(data.mcode)),
                     DataCell(Text(data.munit)),
                     DataCell(Text(data.mpriceperunit)),
+                    _modifyDataCell(data),
                   ],
                 ),
               )
@@ -154,89 +163,70 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     );
   }
 
-  // Widget _buildCard(
-  //     List<material.Material> materials, int index, BuildContext context) {
-  //   return ExpansionTile(
-  //     title: Text('${materials[index].sname}'),
-  //     subtitle: Text('${materials[index].snum}'),
-  //     trailing: Text('${materials[index].saddate}'),
-  //     children: [
-  //       Row(
-  //         children: [
-  //           Padding(
-  //             padding: kHorizontalPadding,
-  //             child: Text('${materials[index].saddress}'),
-  //           ),
-  //         ],
-  //       ),
-  //       Row(
-  //         children: [
-  //           Padding(
-  //             padding: kHorizontalPadding,
-  //             child: Text('${materials[index].scode}'),
-  //           ),
-  //           IconButton(
-  //             onPressed: () {
-  //               _showModalBottomSheet(context, materials, index);
-  //             },
-  //             icon: Icon(Icons.edit),
-  //           ),
-  //           IconButton(
-  //             onPressed: () {
-  //               showDialog(
-  //                 context: context,
-  //                 builder: (_) => AlertDialog(
-  //                   title: Text(
-  //                     'Are you sure you want to delete "${materials[index].sname}"?',
-  //                   ),
-  //                   actions: [
-  //                     FlatButton(
-  //                         onPressed: () {
-  //                           _editMaterialBloc.add(
-  //                               DeleteMaterial(scode: materials[index].scode));
-  //                           Navigator.pop(context);
-  //                         },
-  //                         child: Text('Yes')),
-  //                     FlatButton(
-  //                         onPressed: () => Navigator.pop(context),
-  //                         child: Text('No')),
-  //                   ],
-  //                 ),
-  //               );
-  //             },
-  //             icon: Icon(Icons.delete),
-  //           ),
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-  //
-  // Future<void> _showModalBottomSheet(
-  //     BuildContext context, List<material.Material> materials, int index) {
-  //   return showModalBottomSheet<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return SingleChildScrollView(
-  //         child: Container(
-  //           padding: EdgeInsets.only(
-  //               bottom: MediaQuery.of(context).viewInsets.bottom),
-  //           child: BlocProvider(
-  //             create: (BuildContext context) => MaterialBloc(),
-  //             child: BottomSheet(
-  //               viewMaterialBloc: _viewMaterialBloc,
-  //               materialcode: materials[index].scode,
-  //               materialContact: materials[index].snum,
-  //               materialName: materials[index].sname,
-  //               materialAddress: materials[index].saddress,
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //     isScrollControlled: true,
-  //   );
-  // }
+  DataCell _modifyDataCell(material.Material data) {
+    return DataCell(
+      Row(
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              _showModalBottomSheet(context, data);
+            },
+          ),
+          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(
+                      'Are you sure you want to delete "${data.mname}"?',
+                    ),
+                    actions: [
+                      FlatButton(
+                          onPressed: () {
+                            _editMaterialBloc
+                                .add(DeleteMaterial(mcode: data.mcode));
+                            Navigator.pop(context);
+                          },
+                          child: Text('Yes')),
+                      FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('No')),
+                    ],
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showModalBottomSheet(
+      BuildContext context, material.Material data) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: BlocProvider(
+              create: (BuildContext context) => MaterialBloc(),
+              child: BottomSheet(
+                viewMaterialBloc: _viewMaterialBloc,
+                materialName: data.mname,
+                materialcode: data.mcode,
+                materialUnit: data.munit,
+                materialPrice: data.mpriceperunit,
+              ),
+            ),
+          ),
+        );
+      },
+      isScrollControlled: true,
+    );
+  }
 
   Widget _errorMessage(MaterialErrorState state, BuildContext context) {
     return Center(
@@ -255,190 +245,171 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     );
   }
 }
-//
-// class BottomSheet extends StatefulWidget {
-//   final viewMaterialBloc;
-//   final String materialcode;
-//   final String materialName;
-//   final String materialContact;
-//   final String materialAddress;
-//
-//   const BottomSheet({
-//     Key key,
-//     @required this.materialcode,
-//     @required this.materialName,
-//     @required this.materialContact,
-//     @required this.materialAddress,
-//     this.viewMaterialBloc,
-//   }) : super(key: key);
-//
-//   @override
-//   _BottomSheetState createState() => _BottomSheetState();
-// }
-//
-// class _BottomSheetState extends State<BottomSheet> {
-//   MaterialBloc _addMaterialBloc;
-//   TextEditingController _materialNameController;
-//   TextEditingController _materialCodeController;
-//   TextEditingController _contactController;
-//   TextEditingController _addressController;
-//   TextEditingController _addDateController;
-//
-//   @override
-//   void initState() {
-//     _addMaterialBloc = BlocProvider.of<MaterialBloc>(context);
-//     _materialNameController = TextEditingController();
-//     _materialCodeController = TextEditingController();
-//     _contactController = TextEditingController();
-//     _addressController = TextEditingController();
-//     _addDateController = TextEditingController();
-//     setValues();
-//     super.initState();
-//   }
-//
-//   void setValues() {
-//     _materialCodeController.text = widget.materialcode;
-//     _materialNameController.text = widget.materialName;
-//     _contactController.text = widget.materialContact;
-//     _addressController.text = widget.materialAddress;
-//     _addDateController.text = _addMaterialBloc.getDateInFormat;
-//   }
-//
-//   @override
-//   void dispose() {
-//     _materialNameController.dispose();
-//     _materialCodeController.dispose();
-//     _contactController.dispose();
-//     _addressController.dispose();
-//     _addDateController.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: kPrimaryPadding,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         mainAxisSize: MainAxisSize.min,
-//         children: <Widget>[
-//           BlocListener<MaterialBloc, MaterialState>(
-//             listener: (context, state) {
-//               if (state is MaterialSuccess) {
-//                 widget.viewMaterialBloc.add(FetchMaterialEvent());
-//                 Navigator.pop(context);
-//               }
-//             },
-//             child: BlocBuilder<MaterialBloc, MaterialState>(
-//               builder: (context, state) {
-//                 if (state is MaterialError) {
-//                   return Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Text(
-//                       '${state.message}',
-//                       style: TextStyle(
-//                         color: Colors.red,
-//                       ),
-//                     ),
-//                   );
-//                 } else {
-//                   return Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Text('Edit Material'),
-//                   );
-//                 }
-//               },
-//             ),
-//           ),
-//           InputField(
-//             textField: TextField(
-//               enabled: false,
-//               controller: _materialCodeController,
-//               decoration: InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: 'Material code',
-//               ),
-//             ),
-//             iconData: Icons.info,
-//             isDisabled: true,
-//           ),
-//           InputField(
-//             textField: TextField(
-//               enabled: false,
-//               controller: _addDateController,
-//               decoration: InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: 'Date',
-//               ),
-//             ),
-//             iconData: Icons.calendar_today,
-//             isDisabled: true,
-//           ),
-//           InputField(
-//             textField: TextField(
-//               controller: _materialNameController,
-//               decoration: InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: 'Name',
-//               ),
-//             ),
-//             iconData: Icons.person,
-//           ),
-//           InputField(
-//             textField: TextField(
-//               controller: _contactController,
-//               decoration: InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: 'Contact',
-//               ),
-//             ),
-//             iconData: Icons.call,
-//           ),
-//           InputField(
-//             textField: TextField(
-//               minLines: 1,
-//               maxLines: 2,
-//               controller: _addressController,
-//               decoration: InputDecoration(
-//                 border: InputBorder.none,
-//                 hintText: 'Address',
-//               ),
-//             ),
-//             iconData: Icons.home,
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//               children: [
-//                 PrimaryActionButton(
-//                   title: 'Change',
-//                   onPressed: () {
-//                     uploadData();
-//                   },
-//                 ),
-//                 RaisedButton(
-//                   child: const Text('Cancel'),
-//                   onPressed: () => Navigator.pop(context),
-//                 ),
-//               ],
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-//
-//   void uploadData() {
-//     _addMaterialBloc
-//       ..add(
-//         EditMaterial(
-//           sname: _materialNameController.text,
-//           saddate: _addDateController.text,
-//           saddress: _addressController.text,
-//           scode: _materialCodeController.text,
-//           snum: _contactController.text,
-//         ),
-//       );
-//   }
-// }
+
+class BottomSheet extends StatefulWidget {
+  final viewMaterialBloc;
+  final String materialcode;
+  final String materialName;
+  final String materialUnit;
+  final String materialPrice;
+
+  const BottomSheet({
+    Key key,
+    @required this.materialcode,
+    @required this.materialName,
+    @required this.materialUnit,
+    @required this.materialPrice,
+    this.viewMaterialBloc,
+  }) : super(key: key);
+
+  @override
+  _BottomSheetState createState() => _BottomSheetState();
+}
+
+class _BottomSheetState extends State<BottomSheet> {
+  MaterialBloc _addMaterialBloc;
+  TextEditingController _materialNameController;
+  TextEditingController _materialCodeController;
+  TextEditingController _materialUnitController;
+  TextEditingController _materialPriceController;
+
+  @override
+  void initState() {
+    _addMaterialBloc = BlocProvider.of<MaterialBloc>(context);
+    _materialNameController = TextEditingController();
+    _materialCodeController = TextEditingController();
+    _materialUnitController = TextEditingController();
+    _materialPriceController = TextEditingController();
+    setValues();
+    super.initState();
+  }
+
+  void setValues() {
+    _materialNameController.text = widget.materialName;
+    _materialCodeController.text = widget.materialcode;
+    _materialUnitController.text = widget.materialUnit;
+    _materialPriceController.text = widget.materialPrice;
+  }
+
+  @override
+  void dispose() {
+    _materialNameController.dispose();
+    _materialCodeController.dispose();
+    _materialUnitController.dispose();
+    _materialPriceController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          BlocListener<MaterialBloc, materialBloc.MaterialState>(
+            listener: (context, state) {
+              if (state is MaterialSuccess) {
+                widget.viewMaterialBloc.add(FetchMaterialEvent());
+                Navigator.pop(context);
+              }
+            },
+            child: BlocBuilder<MaterialBloc, materialBloc.MaterialState>(
+              builder: (context, state) {
+                if (state is MaterialError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '${state.message}',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Edit Material'),
+                  );
+                }
+              },
+            ),
+          ),
+          InputField(
+            textField: TextField(
+              controller: _materialNameController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Material Name',
+              ),
+            ),
+            iconData: Icons.bookmark,
+          ),
+          InputField(
+            textField: TextField(
+              enabled: false,
+              controller: _materialCodeController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Material code',
+              ),
+            ),
+            iconData: Icons.info,
+            isDisabled: true,
+          ),
+          InputField(
+            textField: TextField(
+              controller: _materialUnitController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Unit',
+              ),
+            ),
+            iconData: Icons.chevron_right,
+          ),
+          InputField(
+            textField: TextField(
+              controller: _materialPriceController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Price per unit',
+              ),
+            ),
+            iconData: Icons.attach_money,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                PrimaryActionButton(
+                  title: 'Change',
+                  onPressed: () {
+                    _uploadData();
+                  },
+                ),
+                RaisedButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _uploadData() {
+    _addMaterialBloc
+      ..add(
+        EditMaterial(
+          mname: _materialNameController.text,
+          mpriceperunit: _materialPriceController.text,
+          mcode: _materialCodeController.text,
+          munit: _materialUnitController.text,
+        ),
+      );
+  }
+}

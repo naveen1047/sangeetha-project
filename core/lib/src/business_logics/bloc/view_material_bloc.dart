@@ -6,6 +6,11 @@ import 'package:core/src/services/material_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
 
+enum sorting { ascending, descending }
+
+// TODO: return state with value (sortBy, sorting)
+enum sortBy { name, unit, price }
+
 // event
 abstract class ViewMaterialEvent extends Equatable {
   const ViewMaterialEvent();
@@ -33,6 +38,13 @@ class SearchAndFetchMaterialEvent extends ViewMaterialEvent {
   @override
   List<Object> get props => [mname];
 }
+
+// event sorting
+class SortMaterialByName extends ViewMaterialEvent {}
+
+class SortMaterialByPrice extends ViewMaterialEvent {}
+
+class SortMaterialByUnit extends ViewMaterialEvent {}
 
 // state
 abstract class ViewMaterialState {
@@ -67,6 +79,14 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
   Materials _materials;
   List<Material> _filteredMaterial;
 
+  // search key
+  String _query = '';
+
+  // sorting
+  var sortByName = sorting.ascending;
+  var sortByUnit = sorting.ascending;
+  var sortByPrice = sorting.ascending;
+
   @override
   Stream<ViewMaterialState> mapEventToState(ViewMaterialEvent event) async* {
     if (event is FetchMaterialEvent) {
@@ -75,18 +95,24 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
     if (event is SearchAndFetchMaterialEvent) {
       yield* _mapSearchAndFetchMaterialToState(event.mname);
     }
+    if (event is SortMaterialByName) {
+      yield* _mapSortMaterialByNameToState();
+    }
   }
 
   // TODO: ugly state do sink and stream
   Stream<ViewMaterialState> _mapSearchAndFetchMaterialToState(
       String mname) async* {
     try {
-      if (mname != null) {
-        print(mname);
-        _filteredMaterial = _materials.materials
-            .where((element) =>
-                element.mname.toLowerCase().contains(mname.toLowerCase()))
-            .toList();
+      _query = mname;
+      if (_query != null) {
+        print(_query);
+        _extractResult();
+        if (sortByName == sorting.ascending) {
+          _sortAscendingByMName();
+        } else {
+          _sortDescendingByMName();
+        }
         print(_filteredMaterial.toString());
 
         yield MaterialLoadedState(_filteredMaterial);
@@ -104,9 +130,27 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
       yield MaterialLoadingState();
 
       _filteredMaterial = _materials.materials.toList();
-      _filteredMaterial.sort(
-          (a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
+      _sortAscendingByMName();
 
+      yield _eventResult();
+    } catch (e) {
+      yield MaterialErrorState(e.toString());
+    }
+  }
+
+  /// TODO: sort materials by (unit, price) and yield result
+  Stream<ViewMaterialState> _mapSortMaterialByNameToState() async* {
+    try {
+      _filteredMaterial = _materials.materials.toList();
+      if (sortByName != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByMName();
+        sortByName = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByMName();
+        sortByName = sorting.descending;
+      }
       yield _eventResult();
     } catch (e) {
       yield MaterialErrorState(e.toString());
@@ -119,5 +163,22 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
     } else {
       return MaterialErrorState("no data found");
     }
+  }
+
+  void _sortAscendingByMName() {
+    _filteredMaterial
+        .sort((a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
+  }
+
+  void _sortDescendingByMName() {
+    _filteredMaterial
+        .sort((a, b) => b.mname.toLowerCase().compareTo(a.mname.toLowerCase()));
+  }
+
+  void _extractResult() {
+    _filteredMaterial = _materials.materials
+        .where((element) =>
+            element.mname.toLowerCase().contains(_query.toLowerCase()))
+        .toList();
   }
 }

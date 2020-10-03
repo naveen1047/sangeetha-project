@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/material.dart';
+import 'package:core/src/services/config.dart';
 import 'package:core/src/services/material_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class MaterialServiceFake implements MaterialService {
-  String _baseUrl = "http://192.168.1.5/hb_php";
+  String _baseUrl = kBaseUrl;
 
   @override
   Future<ResponseResult> submitMaterial(Material material) async {

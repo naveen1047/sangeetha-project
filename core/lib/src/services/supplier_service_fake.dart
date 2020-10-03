@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/supplier.dart';
+import 'package:core/src/services/config.dart';
 import 'package:core/src/services/supplier_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class SupplierServiceFake implements SupplierService {
-  String _baseUrl = "http://192.168.1.5/hb_php";
+  String _baseUrl = kBaseUrl;
 
   @override
   Future<ResponseResult> submitSupplier(Supplier supplier) async {

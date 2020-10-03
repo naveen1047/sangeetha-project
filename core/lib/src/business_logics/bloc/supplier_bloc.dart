@@ -113,55 +113,69 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
   }
 
   Stream<SupplierState> _mapAddSupplierToState(AddSupplier event) async* {
-    if (event.sname != '' && event.snum != '' && event.saddress != '') {
-      ResponseResult result = await _supplierServices.submitSupplier(
-        Supplier(
-          sname: event.sname,
-          saddate: event.saddate,
-          saddress: event.saddress,
-          scode: event.scode,
-          snum: event.snum,
-        ),
-      );
+    if (_isEventAttributeIsNotNull(event)) {
+      ResponseResult result =
+          await _supplierServices.submitSupplier(_supplier(event));
       if (result.status == true) {
-        yield SupplierSuccess(result.status, result.message);
+        yield _success(result);
       } else {
-        yield SupplierError(result.status, result.message);
+        yield _error(result);
       }
     } else {
-      yield SupplierError(false, 'please fill required fields');
+      yield _nullValueError();
     }
   }
 
   Stream<SupplierState> _mapEditSupplierToState(EditSupplier event) async* {
-    if (event.sname != '' && event.snum != '' && event.saddress != '') {
-      ResponseResult result = await _supplierServices.editSupplierByCode(
-        Supplier(
-          sname: event.sname,
-          saddate: event.saddate,
-          saddress: event.saddress,
-          scode: event.scode,
-          snum: event.snum,
-        ),
-      );
+    if (_isEventAttributeIsNotNull(event)) {
+      ResponseResult result =
+          await _supplierServices.editSupplierByCode(_supplier(event));
       if (result.status == true) {
-        yield SupplierSuccess(result.status, result.message);
+        yield _success(result);
       } else {
-        yield SupplierError(result.status, result.message);
+        yield _error(result);
       }
     } else {
-      yield SupplierError(false, 'please fill required fields');
+      yield _nullValueError();
     }
   }
 
   Stream<SupplierState> _mapDeleteSupplierToState(DeleteSupplier event) async* {
     Map<String, String> scode = {'scode': event.scode};
-    print(scode.toString());
     ResponseResult result = await _supplierServices.deleteSupplier(scode);
     if (result.status == true) {
-      yield SupplierSuccess(result.status, result.message);
+      yield _success(result);
     } else {
-      yield SupplierError(result.status, result.message);
+      yield _error(result);
     }
+  }
+
+  bool _isEventAttributeIsNotNull(var event) {
+    if (event.sname != '' && event.snum != '' && event.saddress != '') {
+      return true;
+    }
+    return false;
+  }
+
+  Supplier _supplier(var event) {
+    return Supplier(
+      sname: event.sname,
+      saddate: event.saddate,
+      saddress: event.saddress,
+      scode: event.scode,
+      snum: event.snum,
+    );
+  }
+
+  SupplierState _success(ResponseResult result) {
+    return SupplierSuccess(result.status, result.message);
+  }
+
+  SupplierState _error(ResponseResult result) {
+    return SupplierError(result.status, result.message);
+  }
+
+  SupplierState _nullValueError() {
+    return SupplierError(false, 'please fill required fields');
   }
 }

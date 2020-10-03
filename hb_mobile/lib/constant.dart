@@ -9,7 +9,7 @@ const String kExistingSuppliersScreen = '/existingSuppliersScreen';
 const String kAddMaterialScreen = '/addMaterialScreen';
 const String kExistingMaterialScreen = '/existingMaterialScreen';
 
-//decoration
+// decoration
 Decoration kOutlineBorder = BoxDecoration(
   border: Border.all(
     color: kMutedColor,
@@ -18,7 +18,7 @@ Decoration kOutlineBorder = BoxDecoration(
   borderRadius: BorderRadius.circular(4.0),
 );
 
-///enabled input field
+// enabled input field
 Decoration kOutlineBorderDisabled = BoxDecoration(
   color: kMutedColorLite,
   border: Border.all(
@@ -26,6 +26,12 @@ Decoration kOutlineBorderDisabled = BoxDecoration(
     width: 1,
   ),
   borderRadius: BorderRadius.circular(4.0),
+);
+
+// data table label style
+TextStyle kDatatableLabelStyle = TextStyle(
+  fontStyle: FontStyle.italic,
+  fontWeight: FontWeight.bold,
 );
 
 //color

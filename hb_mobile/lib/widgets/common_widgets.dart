@@ -314,3 +314,21 @@ SnackBar progressSnackBar({@required String message, Widget widget}) {
     ),
   );
 }
+
+Widget datatableLabel(String message, {bool isSortable = false}) {
+  if (isSortable) {
+    return Row(
+      children: [
+        Text(
+          message,
+          style: kDatatableLabelStyle,
+        ),
+        Icon(Icons.swap_vert),
+      ],
+    );
+  }
+  return Text(
+    message,
+    style: kDatatableLabelStyle,
+  );
+}

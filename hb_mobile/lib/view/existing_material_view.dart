@@ -106,6 +106,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
+            autofocus: false,
             onChanged: (query) => _viewMaterialBloc
                 .add(SearchAndFetchMaterialEvent(mname: query)),
             decoration: InputDecoration(
@@ -133,26 +134,41 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
+          columnSpacing: 1.0,
           columns: [
             DataColumn(
-                label: Text("Material"),
+                label: datatableLabel("Material", isSortable: true),
                 onSort: (columnIndex, ascending) {
-                  setState(() {});
+                  _viewMaterialBloc.add(SortMaterialByName());
                 }),
-            DataColumn(label: Text("Code")),
-            DataColumn(label: Text("Unit")),
-            DataColumn(label: Text("Price per unit")),
             DataColumn(
-                label: Text("Modify / delete", textAlign: TextAlign.center)),
+                label: datatableLabel("Unit", isSortable: true),
+                numeric: true,
+                onSort: (columnIndex, ascending) {
+                  _viewMaterialBloc.add(SortMaterialByUnit());
+                }),
+            DataColumn(
+                label: datatableLabel("Price per unit", isSortable: true),
+                numeric: true,
+                onSort: (columnIndex, ascending) {
+                  _viewMaterialBloc.add(SortMaterialByPrice());
+                }),
+            DataColumn(
+              label: datatableLabel("Code"),
+            ),
+            DataColumn(
+                label: datatableLabel(
+              "Modify / delete",
+            )),
           ],
           rows: materials
               .map(
                 (data) => DataRow(
                   cells: [
                     DataCell(Text(data.mname)),
-                    DataCell(Text(data.mcode)),
                     DataCell(Text(data.munit)),
                     DataCell(Text(data.mpriceperunit)),
+                    DataCell(Text(data.mcode), placeholder: true),
                     _modifyDataCell(data),
                   ],
                 ),

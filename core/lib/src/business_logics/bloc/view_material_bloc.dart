@@ -98,6 +98,12 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
     if (event is SortMaterialByName) {
       yield* _mapSortMaterialByNameToState();
     }
+    if (event is SortMaterialByUnit) {
+      yield* _mapSortMaterialByUnitToState();
+    }
+    if (event is SortMaterialByPrice) {
+      yield* _mapSortMaterialByPriceToState();
+    }
   }
 
   // TODO: ugly state do sink and stream
@@ -138,7 +144,7 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
     }
   }
 
-  /// TODO: sort materials by (unit, price) and yield result
+  /// TODO: sort materials by ( price) and yield result
   Stream<ViewMaterialState> _mapSortMaterialByNameToState() async* {
     try {
       _filteredMaterial = _materials.materials.toList();
@@ -150,6 +156,42 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
         _extractResult();
         _sortDescendingByMName();
         sortByName = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield MaterialErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMaterialState> _mapSortMaterialByUnitToState() async* {
+    try {
+      _filteredMaterial = _materials.materials.toList();
+      if (sortByUnit != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByMUnit();
+        sortByUnit = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByMUnit();
+        sortByUnit = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield MaterialErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMaterialState> _mapSortMaterialByPriceToState() async* {
+    try {
+      _filteredMaterial = _materials.materials.toList();
+      if (sortByPrice != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByMPrice();
+        sortByPrice = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByMPrice();
+        sortByPrice = sorting.descending;
       }
       yield _eventResult();
     } catch (e) {
@@ -173,6 +215,26 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
   void _sortDescendingByMName() {
     _filteredMaterial
         .sort((a, b) => b.mname.toLowerCase().compareTo(a.mname.toLowerCase()));
+  }
+
+  void _sortAscendingByMUnit() {
+    _filteredMaterial
+        .sort((a, b) => double.parse(a.munit).compareTo(double.parse(b.munit)));
+  }
+
+  void _sortDescendingByMUnit() {
+    _filteredMaterial
+        .sort((a, b) => double.parse(b.munit).compareTo(double.parse(a.munit)));
+  }
+
+  void _sortAscendingByMPrice() {
+    _filteredMaterial.sort((a, b) =>
+        double.parse(a.mpriceperunit).compareTo(double.parse(b.mpriceperunit)));
+  }
+
+  void _sortDescendingByMPrice() {
+    _filteredMaterial.sort((a, b) =>
+        double.parse(b.mpriceperunit).compareTo(double.parse(a.mpriceperunit)));
   }
 
   void _extractResult() {

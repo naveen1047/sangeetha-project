@@ -20,7 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8991e830-cedf-468f-99a5-e68ee3414368" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/hb_mobile/lib/view/existing_material_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/hb_mobile/lib/view/existing_material_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,34 +127,34 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="484" y="168" key="#return_response/0.0.1536.864@0.0.1536.864" timestamp="1595840628178" />
-    <state x="530" y="73" width="487" height="757" key="FileChooserDialogImpl" timestamp="1600067298745">
+    <state x="530" y="73" width="487" height="757" key="FileChooserDialogImpl" timestamp="1601662177664">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="530" y="73" width="487" height="757" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1600067298745" />
-    <state width="1493" height="298" key="GridCell.Tab.0.bottom" timestamp="1601122889795">
+    <state x="530" y="73" width="487" height="757" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1601662177664" />
+    <state width="1493" height="125" key="GridCell.Tab.0.bottom" timestamp="1602336493371">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="298" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1601122889795" />
-    <state width="1493" height="298" key="GridCell.Tab.0.center" timestamp="1601122889795">
+    <state width="1493" height="125" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1602336493371" />
+    <state width="1493" height="125" key="GridCell.Tab.0.center" timestamp="1602336493371">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="298" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1601122889795" />
-    <state width="1493" height="298" key="GridCell.Tab.0.left" timestamp="1601122889795">
+    <state width="1493" height="125" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1602336493371" />
+    <state width="1493" height="125" key="GridCell.Tab.0.left" timestamp="1602336493370">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="298" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1601122889795" />
-    <state width="1493" height="298" key="GridCell.Tab.0.right" timestamp="1601122889795">
+    <state width="1493" height="125" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1602336493370" />
+    <state width="1493" height="125" key="GridCell.Tab.0.right" timestamp="1602336493371">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="298" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1601122889795" />
+    <state width="1493" height="125" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1602336493371" />
     <state x="439" y="137" width="668" height="579" key="NewModule_or_Project.wizard" timestamp="1600067325692">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="439" y="137" width="668" height="579" key="NewModule_or_Project.wizard/0.0.1536.864@0.0.1536.864" timestamp="1600067325692" />
-    <state x="318" y="0" key="SettingsEditor" timestamp="1600000137987">
+    <state x="318" y="0" key="SettingsEditor" timestamp="1601662184571">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="318" y="0" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1600000137987" />
+    <state x="318" y="0" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1601662184571" />
     <state width="775" height="439" key="XDebugger.FullValuePopup" timestamp="1599558335502">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -171,17 +171,17 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="7" y="64" width="1164" height="849" maximized="true" key="dock-window-1/0.0.1536.864@0.0.1536.864" timestamp="1599475807936" />
-    <state x="360" y="118" key="new project wizard" timestamp="1600875121346">
+    <state x="360" y="118" key="new project wizard" timestamp="1601915876594">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="360" y="118" key="new project wizard/0.0.1536.864@0.0.1536.864" timestamp="1600875121346" />
-    <state x="425" y="197" key="run.anything.popup" timestamp="1599646335490">
+    <state x="360" y="118" key="new project wizard/0.0.1536.864@0.0.1536.864" timestamp="1601915876594" />
+    <state x="425" y="197" key="run.anything.popup" timestamp="1601573280246">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="425" y="197" key="run.anything.popup/0.0.1536.864@0.0.1536.864" timestamp="1599646335490" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1599744161237">
+    <state x="425" y="197" key="run.anything.popup/0.0.1536.864@0.0.1536.864" timestamp="1601573280246" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1601730723469">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1599744161237" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1601730723469" />
   </component>
 </project>

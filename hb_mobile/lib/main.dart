@@ -36,8 +36,12 @@ class MyApp extends StatelessWidget {
             AddSuppliersScreen(title: "Add Suppliers"),
         kExistingSuppliersScreen: (context) => ExistingSuppliersScreen(),
         kAddMaterialScreen: (context) =>
-            AddMaterialScreen(title: "Add Material"),
+            AddMaterialScreen(title: "Change price"),
         kExistingMaterialScreen: (context) => ExistingMaterialsScreen(),
+        kChangePriceScreen: (context) =>
+            ChangePriceScreen(title: "Already Priced material"),
+        // kAlreadyPricedMaterialScreen: (context) =>
+        //     AlreadyPricedMaterialScreen(),
       },
       title: title,
       theme: ThemeData(

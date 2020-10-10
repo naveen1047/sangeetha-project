@@ -8,6 +8,8 @@ const String kAddSuppliersScreen = '/addSuppliers';
 const String kExistingSuppliersScreen = '/existingSuppliersScreen';
 const String kAddMaterialScreen = '/addMaterialScreen';
 const String kExistingMaterialScreen = '/existingMaterialScreen';
+const String kChangePriceScreen = '/addPriceScreen';
+const String kAlreadyPricedMaterialScreen = '/alreadyPriceMaterialScreen';
 
 // decoration
 Decoration kOutlineBorder = BoxDecoration(

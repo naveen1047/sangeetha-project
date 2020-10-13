@@ -4,72 +4,72 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
-class ExistingSuppliersScreen extends StatelessWidget {
+class ExistingEmployeesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (BuildContext context) =>
-              ViewSupplierBloc()..add(FetchSupplierEvent()),
+              ViewEmployeeBloc()..add(FetchEmployeeEvent()),
         ),
         BlocProvider(
-          create: (BuildContext context) => SupplierBloc(),
+          create: (BuildContext context) => EmployeeBloc(),
         ),
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Existing Suppliers'),
+          title: Text('Existing Employees'),
           actions: [
-            SupplierAppBarAction(),
+            EmployeeAppBarAction(),
           ],
         ),
-        body: ExistingSuppliersList(),
+        body: ExistingEmployeesList(),
       ),
     );
   }
 }
 
-class SupplierAppBarAction extends StatelessWidget {
+class EmployeeAppBarAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.refresh),
       onPressed: () =>
-          BlocProvider.of<ViewSupplierBloc>(context).add(FetchSupplierEvent()),
+          BlocProvider.of<ViewEmployeeBloc>(context).add(FetchEmployeeEvent()),
     );
   }
 }
 
-class ExistingSuppliersList extends StatefulWidget {
+class ExistingEmployeesList extends StatefulWidget {
   @override
-  _ExistingSuppliersListState createState() => _ExistingSuppliersListState();
+  _ExistingEmployeesListState createState() => _ExistingEmployeesListState();
 }
 
-class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
-  ViewSupplierBloc _viewSupplierBloc;
-  SupplierBloc _editSupplierBloc;
+class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
+  ViewEmployeeBloc _viewEmployeeBloc;
+  EmployeeBloc _editEmployeeBloc;
 
   @override
   void initState() {
-    _viewSupplierBloc = BlocProvider.of<ViewSupplierBloc>(context);
-    _editSupplierBloc = BlocProvider.of<SupplierBloc>(context);
+    _viewEmployeeBloc = BlocProvider.of<ViewEmployeeBloc>(context);
+    _editEmployeeBloc = BlocProvider.of<EmployeeBloc>(context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _viewSupplierBloc.close();
-    _editSupplierBloc.close();
+    _viewEmployeeBloc.close();
+    _editEmployeeBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SupplierBloc, SupplierState>(
+    return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
-        if (state is SupplierSuccess) {
-          _viewSupplierBloc.add(FetchSupplierEvent());
+        if (state is EmployeeSuccess) {
+          _viewEmployeeBloc.add(FetchEmployeeEvent());
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -83,17 +83,17 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
             );
         }
       },
-      child: BlocBuilder<ViewSupplierBloc, ViewSupplierState>(
+      child: BlocBuilder<ViewEmployeeBloc, ViewEmployeeState>(
         builder: (context, state) {
-          if (state is SupplierLoadingState) {
+          if (state is EmployeeLoadingState) {
             return LinearProgressIndicator();
           }
-          if (state is SupplierLoadedState) {
-            final suppliers = state.suppliers;
+          if (state is EmployeeLoadedState) {
+            final employees = state.employees;
 
-            return _buildCards(state, suppliers);
+            return _buildCards(state, employees);
           }
-          if (state is SupplierErrorState) {
+          if (state is EmployeeErrorState) {
             return _errorMessage(state, context);
           } else {
             return Text('unknown state error please report to developer');
@@ -103,48 +103,48 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     );
   }
 
-  Widget _buildCards(SupplierLoadedState state, List<Supplier> suppliers) {
+  Widget _buildCards(EmployeeLoadedState state, List<Employee> employees) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
-            onChanged: (query) => _viewSupplierBloc
-                .add(SearchAndFetchSupplierEvent(sname: query)),
+            onChanged: (query) => _viewEmployeeBloc
+                .add(SearchAndFetchEmployeeEvent(ename: query)),
             decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Search suppliers'),
+                border: OutlineInputBorder(), hintText: 'Search employees'),
           ),
         ),
         Expanded(
-          child: _buildCardList(state, suppliers),
+          child: _buildCardList(state, employees),
         ),
       ],
     );
   }
 
-  Widget _buildCardList(SupplierLoadedState state, List<Supplier> suppliers) {
-    if (suppliers.length == 0) {
+  Widget _buildCardList(EmployeeLoadedState state, List<Employee> employees) {
+    if (employees.length == 0) {
       return Center(child: Text("no results found"));
     }
     return ListView.builder(
-      itemCount: state.suppliers.length,
+      itemCount: state.employees.length,
       itemBuilder: (context, index) {
-        return _buildCard(suppliers, index, context);
+        return _buildCard(employees, index, context);
       },
     );
   }
 
-  Widget _buildCard(List<Supplier> suppliers, int index, BuildContext context) {
+  Widget _buildCard(List<Employee> employees, int index, BuildContext context) {
     return ExpansionTile(
-      title: Text('${suppliers[index].sname}'),
-      subtitle: Text('${suppliers[index].snum}'),
-      trailing: Text('${suppliers[index].saddate}'),
+      title: Text('${employees[index].ename}'),
+      subtitle: Text('${employees[index].enumber}'),
+      trailing: Text('${employees[index].eaddate}'),
       children: [
         Row(
           children: [
             Padding(
               padding: kHorizontalPadding,
-              child: Text('${suppliers[index].saddress}'),
+              child: Text('${employees[index].eaddress}'),
             ),
           ],
         ),
@@ -152,11 +152,11 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
           children: [
             Padding(
               padding: kHorizontalPadding,
-              child: Text('${suppliers[index].scode}'),
+              child: Text('${employees[index].ecode}'),
             ),
             IconButton(
               onPressed: () {
-                _showModalBottomSheet(context, suppliers, index);
+                _showModalBottomSheet(context, employees, index);
               },
               icon: Icon(Icons.edit),
             ),
@@ -166,13 +166,13 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
                   context: context,
                   builder: (_) => AlertDialog(
                     title: Text(
-                      'Are you sure you want to delete "${suppliers[index].sname}"?',
+                      'Are you sure you want to delete "${employees[index].ename}"?',
                     ),
                     actions: [
                       FlatButton(
                           onPressed: () {
-                            _editSupplierBloc.add(
-                                DeleteSupplier(scode: suppliers[index].scode));
+                            _editEmployeeBloc.add(
+                                DeleteEmployee(ecode: employees[index].ecode));
                             Navigator.pop(context);
                           },
                           child: Text('Yes')),
@@ -192,7 +192,7 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   }
 
   Future<void> _showModalBottomSheet(
-      BuildContext context, List<Supplier> suppliers, int index) {
+      BuildContext context, List<Employee> employees, int index) {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -201,13 +201,13 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: BlocProvider(
-              create: (BuildContext context) => SupplierBloc(),
-              child: SupplierBottomSheet(
-                viewSupplierBloc: _viewSupplierBloc,
-                suppliercode: suppliers[index].scode,
-                supplierContact: suppliers[index].snum,
-                supplierName: suppliers[index].sname,
-                supplierAddress: suppliers[index].saddress,
+              create: (BuildContext context) => EmployeeBloc(),
+              child: EmployeeBottomSheet(
+                viewEmployeeBloc: _viewEmployeeBloc,
+                employeecode: employees[index].ecode,
+                employeeContact: employees[index].enumber,
+                employeeName: employees[index].ename,
+                employeeAddress: employees[index].eaddress,
               ),
             ),
           ),
@@ -217,7 +217,7 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     );
   }
 
-  Widget _errorMessage(SupplierErrorState state, BuildContext context) {
+  Widget _errorMessage(EmployeeErrorState state, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -225,8 +225,8 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
           Text('${state.message}'),
           RaisedButton(
               onPressed: () {
-                BlocProvider.of<ViewSupplierBloc>(context)
-                    .add(FetchSupplierEvent());
+                BlocProvider.of<ViewEmployeeBloc>(context)
+                    .add(FetchEmployeeEvent());
               },
               child: Text('refresh')),
         ],
@@ -235,39 +235,39 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   }
 }
 
-class SupplierBottomSheet extends StatefulWidget {
-  final viewSupplierBloc;
-  final String suppliercode;
-  final String supplierName;
-  final String supplierContact;
-  final String supplierAddress;
+class EmployeeBottomSheet extends StatefulWidget {
+  final viewEmployeeBloc;
+  final String employeecode;
+  final String employeeName;
+  final String employeeContact;
+  final String employeeAddress;
 
-  const SupplierBottomSheet({
+  const EmployeeBottomSheet({
     Key key,
-    @required this.suppliercode,
-    @required this.supplierName,
-    @required this.supplierContact,
-    @required this.supplierAddress,
-    this.viewSupplierBloc,
+    @required this.employeecode,
+    @required this.employeeName,
+    @required this.employeeContact,
+    @required this.employeeAddress,
+    this.viewEmployeeBloc,
   }) : super(key: key);
 
   @override
   _BottomSheetState createState() => _BottomSheetState();
 }
 
-class _BottomSheetState extends State<SupplierBottomSheet> {
-  SupplierBloc _addSupplierBloc;
-  TextEditingController _supplierNameController;
-  TextEditingController _supplierCodeController;
+class _BottomSheetState extends State<EmployeeBottomSheet> {
+  EmployeeBloc _addEmployeeBloc;
+  TextEditingController _employeeNameController;
+  TextEditingController _employeeCodeController;
   TextEditingController _contactController;
   TextEditingController _addressController;
   TextEditingController _addDateController;
 
   @override
   void initState() {
-    _addSupplierBloc = BlocProvider.of<SupplierBloc>(context);
-    _supplierNameController = TextEditingController();
-    _supplierCodeController = TextEditingController();
+    _addEmployeeBloc = BlocProvider.of<EmployeeBloc>(context);
+    _employeeNameController = TextEditingController();
+    _employeeCodeController = TextEditingController();
     _contactController = TextEditingController();
     _addressController = TextEditingController();
     _addDateController = TextEditingController();
@@ -276,17 +276,17 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   }
 
   void setValues() {
-    _supplierCodeController.text = widget.suppliercode;
-    _supplierNameController.text = widget.supplierName;
-    _contactController.text = widget.supplierContact;
-    _addressController.text = widget.supplierAddress;
-    _addDateController.text = _addSupplierBloc.getDateInFormat;
+    _employeeCodeController.text = widget.employeecode;
+    _employeeNameController.text = widget.employeeName;
+    _contactController.text = widget.employeeContact;
+    _addressController.text = widget.employeeAddress;
+    _addDateController.text = _addEmployeeBloc.getDateInFormat;
   }
 
   @override
   void dispose() {
-    _supplierNameController.dispose();
-    _supplierCodeController.dispose();
+    _employeeNameController.dispose();
+    _employeeCodeController.dispose();
     _contactController.dispose();
     _addressController.dispose();
     _addDateController.dispose();
@@ -301,16 +301,16 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          BlocListener<SupplierBloc, SupplierState>(
+          BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) {
-              if (state is SupplierSuccess) {
-                widget.viewSupplierBloc.add(FetchSupplierEvent());
+              if (state is EmployeeSuccess) {
+                widget.viewEmployeeBloc.add(FetchEmployeeEvent());
                 Navigator.pop(context);
               }
             },
-            child: BlocBuilder<SupplierBloc, SupplierState>(
+            child: BlocBuilder<EmployeeBloc, EmployeeState>(
               builder: (context, state) {
-                if (state is SupplierError) {
+                if (state is EmployeeError) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -323,7 +323,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
                 } else {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Edit Supplier'),
+                    child: Text('Edit Employee'),
                   );
                 }
               },
@@ -332,10 +332,10 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
           InputField(
             textField: TextField(
               enabled: false,
-              controller: _supplierCodeController,
+              controller: _employeeCodeController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Supplier code',
+                hintText: 'Employee code',
               ),
             ),
             iconData: Icons.info,
@@ -355,7 +355,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
           ),
           InputField(
             textField: TextField(
-              controller: _supplierNameController,
+              controller: _employeeNameController,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Name',
@@ -409,14 +409,14 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   }
 
   void uploadData() {
-    _addSupplierBloc
+    _addEmployeeBloc
       ..add(
-        EditSupplier(
-          sname: _supplierNameController.text,
-          saddate: _addDateController.text,
-          saddress: _addressController.text,
-          scode: _supplierCodeController.text,
-          snum: _contactController.text,
+        EditEmployee(
+          ename: _employeeNameController.text,
+          eaddate: _addDateController.text,
+          eaddress: _addressController.text,
+          ecode: _employeeCodeController.text,
+          enumber: _contactController.text,
         ),
       );
   }

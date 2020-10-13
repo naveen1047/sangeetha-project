@@ -1,3 +1,5 @@
+import 'package:core/src/services/employee_service.dart';
+import 'package:core/src/services/employee_service_fake.dart';
 import 'package:core/src/services/material_service.dart';
 import 'package:core/src/services/material_service_fake.dart';
 import 'package:core/src/services/supplier_service.dart';
@@ -10,6 +12,9 @@ void setupServiceLocator() {
   // services
   // serviceLocator.registerLazySingleton<MaterialPurchaseServices>(
   //     () => FakeMaterialPurchase());
+  serviceLocator
+      .registerLazySingleton<EmployeeService>(() => EmployeeServiceFake());
+
   serviceLocator
       .registerLazySingleton<MaterialService>(() => MaterialServiceFake());
 

@@ -34,8 +34,8 @@ class AddEmployeeForm extends StatefulWidget {
 
 class _AddEmployeeFormState extends State<AddEmployeeForm> {
   EmployeeBloc _addEmployeeBloc;
-  TextEditingController _supplierNameController;
-  TextEditingController _supplierCodeController;
+  TextEditingController _employeeNameController;
+  TextEditingController _employeeCodeController;
   TextEditingController _contactController;
   TextEditingController _addressController;
   TextEditingController _addDateController;
@@ -43,8 +43,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   @override
   void initState() {
     _addEmployeeBloc = BlocProvider.of<EmployeeBloc>(context);
-    _supplierNameController = TextEditingController();
-    _supplierCodeController = TextEditingController();
+    _employeeNameController = TextEditingController();
+    _employeeCodeController = TextEditingController();
     _contactController = TextEditingController();
     _addressController = TextEditingController();
     _addDateController = TextEditingController();
@@ -58,8 +58,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
 
   @override
   void dispose() {
-    _supplierNameController.dispose();
-    _supplierCodeController.dispose();
+    _employeeNameController.dispose();
+    _employeeCodeController.dispose();
     _contactController.dispose();
     _addressController.dispose();
     _addDateController.dispose();
@@ -89,7 +89,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
           children: [
             InputField(
               textField: TextField(
-                controller: _supplierNameController,
+                controller: _employeeNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
                 },
@@ -101,11 +101,11 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               iconData: Icons.person,
             ),
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _supplierCodeController.text = '$state';
+              _employeeCodeController.text = '$state';
               return InputField(
                 textField: TextField(
                   enabled: false,
-                  controller: _supplierCodeController,
+                  controller: _employeeCodeController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Employee code',
@@ -156,9 +156,9 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               ),
             ),
             FlatButton(
-              child: Text('View existing suppliers'),
+              child: Text('View existing employees'),
               onPressed: () {
-                Navigator.pushNamed(context, kExistingEmployeeScreen);
+                // Navigator.pushNamed(context, kExistingEmployeeScreen);
               },
             ),
           ],
@@ -170,11 +170,11 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   void uploadData() {
     _addEmployeeBloc.add(
       AddEmployee(
-        sname: _supplierNameController.text,
-        saddate: _addDateController.text,
-        saddress: _addressController.text,
-        scode: _supplierCodeController.text,
-        snum: _contactController.text,
+        ename: _employeeNameController.text,
+        eaddate: _addDateController.text,
+        eaddress: _addressController.text,
+        ecode: _employeeCodeController.text,
+        enumber: _contactController.text,
       ),
     );
   }

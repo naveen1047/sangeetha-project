@@ -8,6 +8,7 @@ const String kAddSuppliersScreen = '/addSuppliers';
 const String kExistingSuppliersScreen = '/existingSuppliersScreen';
 const String kAddMaterialScreen = '/addMaterialScreen';
 const String kExistingMaterialScreen = '/existingMaterialScreen';
+const String kAddEmployeeScreen = '/addEmployeeScreen';
 
 // decoration
 Decoration kOutlineBorder = BoxDecoration(

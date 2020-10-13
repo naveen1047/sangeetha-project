@@ -38,6 +38,8 @@ class MyApp extends StatelessWidget {
         kAddMaterialScreen: (context) =>
             AddMaterialScreen(title: "Add Material"),
         kExistingMaterialScreen: (context) => ExistingMaterialsScreen(),
+        // kAddEmployeeScreen: (context) =>
+        //   AddEmployeeScreen(title: "Add Employee"),
       },
       title: title,
       theme: ThemeData(

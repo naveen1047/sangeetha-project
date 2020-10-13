@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         kExistingMaterialScreen: (context) => ExistingMaterialsScreen(),
         kAddEmployeeScreen: (context) =>
             AddEmployeeScreen(title: "Add Employee"),
+        kExistingEmployeeScreen: (context) => ExistingEmployeesScreen(),
       },
       title: title,
       theme: ThemeData(

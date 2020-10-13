@@ -33,7 +33,8 @@ class ConfigScreen extends StatelessWidget {
         title: 'Add Employee',
         subtitle: 'Existing Employee',
         primaryColor: Colors.blue,
-        onTapSecondary: () {},
+        onTapSecondary: () =>
+            Navigator.pushNamed(context, kExistingEmployeeScreen),
         onTapPrimary: () => Navigator.pushNamed(context, kAddEmployeeScreen),
       ),
       DualButton(

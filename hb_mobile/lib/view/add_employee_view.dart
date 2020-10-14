@@ -158,7 +158,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             FlatButton(
               child: Text('View existing employees'),
               onPressed: () {
-                // Navigator.pushNamed(context, kExistingEmployeeScreen);
+                Navigator.pushNamed(context, kExistingEmployeeScreen);
               },
             ),
           ],

@@ -21,3 +21,22 @@ class ResponseResult extends Equatable {
   @override
   List<Object> get props => [status, message];
 }
+
+@JsonSerializable()
+class ResponseResults extends Equatable {
+  final int totalResults;
+  final List<ResponseResult> responseResults;
+
+  ResponseResults({
+    this.totalResults,
+    this.responseResults,
+  });
+
+  factory ResponseResults.fromJson(Map<String, dynamic> json) =>
+      _$ResponseResultsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResponseResultsToJson(this);
+
+  @override
+  List<Object> get props => [totalResults, responseResults];
+}

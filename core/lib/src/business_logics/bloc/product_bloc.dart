@@ -126,12 +126,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Stream<ProductState> _mapAddProductToState(AddProduct event) async* {
     if (_isEventAttributeIsNotNull(event)) {
-      ResponseResult result =
+      // TODO: handle list of response
+      ResponseResults results =
           await _productServices.submitProduct(_product(event));
-      if (result.status == true) {
-        yield _success(result);
-      } else {
-        yield _error(result);
+      for (var result in results.responseResults) {
+        if (result.status == true) {
+          yield _success(result);
+        } else {
+          yield _error(result);
+        }
       }
     } else {
       yield _nullValueError();

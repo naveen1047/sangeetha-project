@@ -11,14 +11,14 @@ class ProductServiceFake implements ProductService {
   String _baseUrl = kBaseUrl;
 
   @override
-  Future<ResponseResult> submitProduct(Product product) async {
+  Future<ResponseResults> submitProduct(Product product) async {
     final data = product.toJson();
     final url = "$_baseUrl/add_product.php";
     var response = await http.post(url, body: json.encode(data));
-    print(response.body.toString());
+    // print(response.body.toString());
     if (response.statusCode == 200) {
       var result = json.decode(response.body);
-      return ResponseResult.fromJson(result);
+      return ResponseResults.fromJson(result);
     } else {
       throw Exception(
           ' Error Code: ${response.statusCode}\nWe were not able to successfully download the json data.');

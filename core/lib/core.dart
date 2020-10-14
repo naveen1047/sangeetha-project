@@ -7,6 +7,7 @@ export 'src/business_logics/bloc/material_bloc.dart';
 export 'src/business_logics/bloc/view_material_bloc.dart';
 export 'src/business_logics/bloc/employee_bloc.dart';
 export 'src/business_logics/bloc/view_employee_bloc.dart';
+export 'src/business_logics/bloc/product_bloc.dart';
 
 export 'src/business_logics/util/random_code_generator.dart';
 
@@ -17,3 +18,4 @@ export 'src/services/service_locator.dart';
 export 'src/business_logics/models/supplier.dart';
 export 'src/business_logics/models/material.dart';
 export 'src/business_logics/models/employee.dart';
+export 'src/business_logics/models/product.dart';

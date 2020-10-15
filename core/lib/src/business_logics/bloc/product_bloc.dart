@@ -129,13 +129,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       // TODO: handle list of response
       ResponseResults results =
           await _productServices.submitProduct(_product(event));
-      for (var result in results.responseResults) {
-        if (result.status == true) {
-          yield _success(result);
-        } else {
-          yield _error(result);
-        }
-      }
+
+      yield* _listOfResults(results);
     } else {
       yield _nullValueError();
     }
@@ -190,12 +185,30 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  ProductState _success(ResponseResult result) {
-    return ProductSuccess(result.status, result.message);
+  ProductState _success(ResponseResult result, {String size}) {
+    return size != null
+        ? ProductSuccess(result.status, size + result.message)
+        : ProductSuccess(result.status, result.message);
   }
 
-  ProductState _error(ResponseResult result) {
-    return ProductError(result.status, result.message);
+  Stream<ProductState> _listOfResults(ResponseResults results) async* {
+    for (int i = 0; i < results.totalResults; i++) {
+      final String size = "(${i + 1}/${results.totalResults}) ";
+      if (i != 0) {
+        await Future.delayed(Duration(seconds: 2));
+      }
+      if (results.responseResults[i].status == true) {
+        yield _success(results.responseResults[i], size: size);
+      } else {
+        yield _error(results.responseResults[i], size: size);
+      }
+    }
+  }
+
+  ProductState _error(ResponseResult result, {String size}) {
+    return size != null
+        ? ProductError(result.status, size + result.message)
+        : ProductError(result.status, result.message);
   }
 
   ProductState _nullValueError() {

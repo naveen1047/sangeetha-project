@@ -79,6 +79,8 @@ class AppbarDropDownMenu extends StatelessWidget {
     } else if (choice == Refresh) {
       BlocProvider.of<ViewSupplierBloc>(context).add(FetchSupplierEvent());
     } else if (choice == AddSupplier) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          kConfigScreen, (Route<dynamic> route) => false);
       Navigator.pushNamed(context, kAddSuppliersScreen);
     }
   }

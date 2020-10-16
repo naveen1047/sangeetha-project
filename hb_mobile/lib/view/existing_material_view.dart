@@ -353,7 +353,7 @@ class _BottomSheetState extends State<BottomSheet> {
             ),
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               controller: _materialNameController,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -363,7 +363,7 @@ class _BottomSheetState extends State<BottomSheet> {
             iconData: Icons.bookmark,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               enabled: false,
               controller: _materialCodeController,
               decoration: InputDecoration(
@@ -375,7 +375,7 @@ class _BottomSheetState extends State<BottomSheet> {
             isDisabled: true,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               controller: _materialUnitController,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -385,7 +385,7 @@ class _BottomSheetState extends State<BottomSheet> {
             iconData: Icons.chevron_right,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               controller: _materialPriceController,
               decoration: InputDecoration(
                 border: InputBorder.none,

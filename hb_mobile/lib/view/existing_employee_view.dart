@@ -330,7 +330,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
             ),
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               enabled: false,
               controller: _employeeCodeController,
               decoration: InputDecoration(
@@ -342,7 +342,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
             isDisabled: true,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               enabled: false,
               controller: _addDateController,
               decoration: InputDecoration(
@@ -354,7 +354,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
             isDisabled: true,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               controller: _employeeNameController,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -364,7 +364,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
             iconData: Icons.person,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               controller: _contactController,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -374,7 +374,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
             iconData: Icons.call,
           ),
           InputField(
-            textField: TextField(
+            child: TextField(
               minLines: 1,
               maxLines: 2,
               controller: _addressController,

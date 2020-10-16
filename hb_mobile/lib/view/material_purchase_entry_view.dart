@@ -47,7 +47,7 @@ class MaterialPurchaseEntry extends StatelessWidget {
               ],
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Bill Number',
@@ -57,7 +57,7 @@ class MaterialPurchaseEntry extends StatelessWidget {
             ),
             //TODO: add supliers and material dropDown
             InputField(
-              textField: TextField(
+              child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Quantity',
@@ -67,7 +67,7 @@ class MaterialPurchaseEntry extends StatelessWidget {
             ),
             //TODO: add unit dropDown
             InputField(
-              textField: TextField(
+              child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Quantity',

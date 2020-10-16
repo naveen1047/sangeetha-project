@@ -9,7 +9,7 @@ class ConfigScreen extends StatelessWidget {
       DualButton(
         title: 'Add Suppliers',
         subtitle: 'Existing suppliers',
-        primaryColor: Colors.grey,
+        primaryColor: Color(0xff343a40),
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingSuppliersScreen),
         onTapPrimary: () => Navigator.pushNamed(context, kAddSuppliersScreen),
@@ -41,7 +41,7 @@ class ConfigScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Config'),
+        title: Text('Settings'),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {

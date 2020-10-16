@@ -45,7 +45,9 @@ class MyApp extends StatelessWidget {
       title: title,
       theme: ThemeData(
         iconTheme: IconThemeData(color: kIconColor),
-        primarySwatch: Colors.blueGrey,
+        appBarTheme: AppBarTheme(
+          color: Colors.blueGrey[900],
+        ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(title: title),

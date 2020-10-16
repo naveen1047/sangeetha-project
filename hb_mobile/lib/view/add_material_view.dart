@@ -82,7 +82,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
         child: ListView(
           children: [
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _materialNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
@@ -97,7 +97,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
               _materialCodeController.text = '$state';
               return InputField(
-                textField: TextField(
+                child: TextField(
                   enabled: false,
                   controller: _materialCodeController,
                   decoration: InputDecoration(
@@ -110,7 +110,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
               );
             }),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _unitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -120,7 +120,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
               iconData: Icons.arrow_forward_ios,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _priceController,
                 decoration: InputDecoration(
                   border: InputBorder.none,

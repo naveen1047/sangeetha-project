@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
+// TODO: scroll position to desired position
+
 class ExistingSuppliersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,16 +23,68 @@ class ExistingSuppliersScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Existing Suppliers'),
           actions: [
-            SupplierAppBarAction(),
+            AppbarDropDownMenu(),
           ],
         ),
         body: ExistingSuppliersList(),
+        // body: LayoutBuilder(
+        //   builder: (BuildContext context, BoxConstraints constraints) {
+        //     if (constraints.maxHeight > constraints.maxWidth) {
+        //       return ExistingSuppliersList();
+        //     } else {
+        //       return Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 120.0),
+        //         child: ExistingSuppliersList(),
+        //       );
+        //     }
+        //   },
+        // ),
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.add),
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, kAddSuppliersScreen);
+        //   },
+        // ),
       ),
     );
   }
 }
 
-class SupplierAppBarAction extends StatelessWidget {
+class AppbarDropDownMenu extends StatelessWidget {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+  static const String AddSupplier = 'Add Supplier';
+
+  static const List<String> choices = <String>[Refresh, AddSupplier, Settings];
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (choice) {
+        choiceAction(choice, context);
+      },
+      itemBuilder: (BuildContext context) {
+        return choices.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  void choiceAction(String choice, BuildContext context) {
+    if (choice == Settings) {
+      print('Settings');
+    } else if (choice == Refresh) {
+      BlocProvider.of<ViewSupplierBloc>(context).add(FetchSupplierEvent());
+    } else if (choice == AddSupplier) {
+      Navigator.pushNamed(context, kAddSuppliersScreen);
+    }
+  }
+}
+
+class SupplierAppBarActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -68,6 +122,16 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   Widget build(BuildContext context) {
     return BlocListener<SupplierBloc, SupplierState>(
       listener: (context, state) {
+        if (state is SupplierLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  widget: CircularProgressIndicator()),
+            );
+        }
         if (state is SupplierSuccess) {
           _viewSupplierBloc.add(FetchSupplierEvent());
           Scaffold.of(context)
@@ -106,15 +170,30 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   Widget _buildCards(SupplierLoadedState state, List<Supplier> suppliers) {
     return Column(
       children: [
+        SizedBox(height: 8.0),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            onChanged: (query) => _viewSupplierBloc
-                .add(SearchAndFetchSupplierEvent(sname: query)),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Search suppliers'),
+          padding: kSearchPadding,
+          child: Container(
+            decoration: kSearchDecoration,
+            child: Padding(
+              padding: kLeftPadding,
+              child: TextField(
+                style: TextStyle(color: Colors.white),
+                onChanged: (query) => _viewSupplierBloc
+                    .add(SearchAndFetchSupplierEvent(sname: query)),
+                decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.white),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Search suppliers'),
+              ),
+            ),
           ),
         ),
+        SizedBox(height: 8.0),
         Expanded(
           child: _buildCardList(state, suppliers),
         ),
@@ -135,59 +214,156 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   }
 
   Widget _buildCard(List<Supplier> suppliers, int index, BuildContext context) {
-    return ExpansionTile(
-      title: Text('${suppliers[index].sname}'),
-      subtitle: Text('${suppliers[index].snum}'),
-      trailing: Text('${suppliers[index].saddate}'),
+    return Padding(
+      padding: kCardPadding,
+      child: Container(
+        decoration: kCardDecoration,
+        child: ExpansionTile(
+          key: Key("${suppliers[index].scode}"),
+          title: _titleCard(context, suppliers, index),
+          subtitle: _subtitleCard(suppliers, index),
+          children: [
+            _addressCard(suppliers, index),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    _idCard(suppliers, index),
+                    _dateLabel(suppliers, index),
+                  ],
+                ),
+                Row(
+                  children: [
+                    _editCard(context, suppliers, index),
+                    _deleteCard(context, suppliers, index),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconButton _deleteCard(
+      BuildContext context, List<Supplier> suppliers, int index) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text(
+              'Are you sure you want to delete "${suppliers[index].sname}"?',
+            ),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    _editSupplierBloc
+                        .add(DeleteSupplier(scode: suppliers[index].scode));
+                    Navigator.pop(context);
+                  },
+                  child: Text('Yes')),
+              FlatButton(
+                  onPressed: () => Navigator.pop(context), child: Text('No')),
+            ],
+          ),
+        );
+      },
+      icon: Icon(Icons.delete),
+    );
+  }
+
+  IconButton _editCard(
+      BuildContext context, List<Supplier> suppliers, int index) {
+    return IconButton(
+      onPressed: () {
+        _showModalBottomSheet(context, suppliers, index);
+      },
+      icon: Icon(Icons.edit),
+    );
+  }
+
+  Padding _dateLabel(List<Supplier> suppliers, int index) {
+    return Padding(
+      padding: kRightPadding,
+      child: Text(
+        '${suppliers[index].saddate}',
+        style: TextStyle(color: Colors.grey),
+      ),
+    );
+  }
+
+  Padding _idCard(List<Supplier> suppliers, int index) {
+    return Padding(
+      padding: kHorizontalPadding,
+      child: Row(
+        children: [
+          Padding(
+            padding: kRightPadding,
+            child: Icon(Icons.info),
+          ),
+          Text('${suppliers[index].scode}'),
+        ],
+      ),
+    );
+  }
+
+  Padding _addressCard(List<Supplier> suppliers, int index) {
+    return Padding(
+      padding: kHorizontalPadding,
+      child: Row(
+        children: [
+          Padding(
+            padding: kRightPadding,
+            child: Icon(Icons.home),
+          ),
+          Flexible(
+            child: Text(
+              '${suppliers[index].saddress}',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Row _subtitleCard(List<Supplier> suppliers, int index) {
+    return Row(
       children: [
         Row(
           children: [
             Padding(
-              padding: kHorizontalPadding,
-              child: Text('${suppliers[index].saddress}'),
+              padding: kRightPadding,
+              child: Icon(
+                Icons.call,
+                color: kSecondaryColor,
+              ),
             ),
-          ],
-        ),
-        Row(
-          children: [
-            Padding(
-              padding: kHorizontalPadding,
-              child: Text('${suppliers[index].scode}'),
-            ),
-            IconButton(
-              onPressed: () {
-                _showModalBottomSheet(context, suppliers, index);
-              },
-              icon: Icon(Icons.edit),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text(
-                      'Are you sure you want to delete "${suppliers[index].sname}"?',
-                    ),
-                    actions: [
-                      FlatButton(
-                          onPressed: () {
-                            _editSupplierBloc.add(
-                                DeleteSupplier(scode: suppliers[index].scode));
-                            Navigator.pop(context);
-                          },
-                          child: Text('Yes')),
-                      FlatButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('No')),
-                    ],
-                  ),
-                );
-              },
-              icon: Icon(Icons.delete),
-            ),
+            Text('${suppliers[index].snum}'),
           ],
         ),
       ],
+    );
+  }
+
+  Padding _titleCard(
+      BuildContext context, List<Supplier> suppliers, int index) {
+    return Padding(
+      padding: kBottomPadding,
+      child: Row(
+        children: [
+          Padding(
+            padding: kRightPadding,
+            child: Icon(
+              Icons.account_circle,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          Text('${suppliers[index].sname}'),
+        ],
+      ),
     );
   }
 
@@ -204,7 +380,7 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
               create: (BuildContext context) => SupplierBloc(),
               child: SupplierBottomSheet(
                 viewSupplierBloc: _viewSupplierBloc,
-                suppliercode: suppliers[index].scode,
+                supplierCode: suppliers[index].scode,
                 supplierContact: suppliers[index].snum,
                 supplierName: suppliers[index].sname,
                 supplierAddress: suppliers[index].saddress,
@@ -237,14 +413,14 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
 
 class SupplierBottomSheet extends StatefulWidget {
   final viewSupplierBloc;
-  final String suppliercode;
+  final String supplierCode;
   final String supplierName;
   final String supplierContact;
   final String supplierAddress;
 
   const SupplierBottomSheet({
     Key key,
-    @required this.suppliercode,
+    @required this.supplierCode,
     @required this.supplierName,
     @required this.supplierContact,
     @required this.supplierAddress,
@@ -276,7 +452,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   }
 
   void setValues() {
-    _supplierCodeController.text = widget.suppliercode;
+    _supplierCodeController.text = widget.supplierCode;
     _supplierNameController.text = widget.supplierName;
     _contactController.text = widget.supplierContact;
     _addressController.text = widget.supplierAddress;
@@ -310,99 +486,45 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
             },
             child: BlocBuilder<SupplierBloc, SupplierState>(
               builder: (context, state) {
+                if (state is SupplierLoading) {
+                  return _loadingTitle();
+                }
                 if (state is SupplierError) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${state.message}',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  );
+                  return _errorMessage(state);
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Edit Supplier'),
-                  );
+                  return _bottomTitle();
                 }
               },
             ),
           ),
-          InputField(
-            textField: TextField(
-              enabled: false,
-              controller: _supplierCodeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Supplier code',
-              ),
-            ),
-            iconData: Icons.info,
-            isDisabled: true,
+          _buildCodeField(),
+          _buildDateField(),
+          _buildNameField(),
+          _buildContactField(),
+          _buildAddressField(),
+          _buildActionButtons(context),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildActionButtons(BuildContext context) {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          PrimaryActionButton(
+            color: Theme.of(context).primaryColor,
+            title: 'Change',
+            onPressed: () {
+              uploadData();
+            },
           ),
-          InputField(
-            textField: TextField(
-              enabled: false,
-              controller: _addDateController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Date',
-              ),
-            ),
-            iconData: Icons.calendar_today,
-            isDisabled: true,
+          PrimaryActionButton(
+            title: 'Cancel',
+            onPressed: () => Navigator.pop(context),
           ),
-          InputField(
-            textField: TextField(
-              controller: _supplierNameController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name',
-              ),
-            ),
-            iconData: Icons.person,
-          ),
-          InputField(
-            textField: TextField(
-              controller: _contactController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Contact',
-              ),
-            ),
-            iconData: Icons.call,
-          ),
-          InputField(
-            textField: TextField(
-              minLines: 1,
-              maxLines: 2,
-              controller: _addressController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Address',
-              ),
-            ),
-            iconData: Icons.home,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PrimaryActionButton(
-                  title: 'Change',
-                  onPressed: () {
-                    uploadData();
-                  },
-                ),
-                RaisedButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
@@ -419,5 +541,118 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
           snum: _contactController.text,
         ),
       );
+  }
+
+  InputField _buildAddressField() {
+    return InputField(
+      child: TextField(
+        minLines: 1,
+        maxLines: 2,
+        controller: _addressController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Address',
+        ),
+      ),
+      iconData: Icons.home,
+    );
+  }
+
+  InputField _buildContactField() {
+    return InputField(
+      child: TextField(
+        controller: _contactController,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Contact',
+        ),
+      ),
+      iconData: Icons.call,
+    );
+  }
+
+  InputField _buildNameField() {
+    return InputField(
+      child: TextField(
+        controller: _supplierNameController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Name',
+        ),
+      ),
+      iconData: Icons.person,
+    );
+  }
+
+  InputField _buildDateField() {
+    return InputField(
+      child: TextField(
+        enabled: false,
+        controller: _addDateController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Date',
+        ),
+      ),
+      iconData: Icons.calendar_today,
+      isDisabled: true,
+    );
+  }
+
+  InputField _buildCodeField() {
+    return InputField(
+      child: TextField(
+        enabled: false,
+        controller: _supplierCodeController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Supplier code',
+        ),
+      ),
+      iconData: Icons.info,
+      isDisabled: true,
+    );
+  }
+
+  Padding _bottomTitle() {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Text(
+        'Edit Supplier',
+        style: TextStyle(
+          fontSize: 16.0,
+        ),
+      ),
+    );
+  }
+
+  Padding _loadingTitle() {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Row(
+        children: [
+          Text(
+            'Edit Supplier',
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
+          ),
+          CircularProgressIndicator(),
+        ],
+      ),
+    );
+  }
+
+  Padding _errorMessage(SupplierError state) {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Text(
+        '${state.message}',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
+    );
   }
 }

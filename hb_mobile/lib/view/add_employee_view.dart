@@ -88,7 +88,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
         child: ListView(
           children: [
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _employeeNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
@@ -103,7 +103,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
               _employeeCodeController.text = '$state';
               return InputField(
-                textField: TextField(
+                child: TextField(
                   enabled: false,
                   controller: _employeeCodeController,
                   decoration: InputDecoration(
@@ -116,7 +116,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               );
             }),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _contactController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -126,7 +126,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               iconData: Icons.call,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _addressController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -136,7 +136,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               iconData: Icons.home,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 enabled: false,
                 controller: _addDateController,
                 decoration: InputDecoration(

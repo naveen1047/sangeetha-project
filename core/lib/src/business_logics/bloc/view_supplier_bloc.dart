@@ -7,7 +7,7 @@ import 'package:core/src/services/supplier_service.dart';
 import 'package:equatable/equatable.dart';
 
 // event
-abstract class ViewSupplierEvent extends Equatable {
+abstract class ViewSupplierEvent {
   const ViewSupplierEvent();
 
   @override

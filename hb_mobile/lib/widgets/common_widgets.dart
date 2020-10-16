@@ -132,15 +132,12 @@ class MenuItem extends StatelessWidget {
 /// Should provide 'isDisabled = false'
 /// to disable the inputField
 class InputField extends StatelessWidget {
-  final TextField textField;
+  final Widget child;
   final IconData iconData;
   final bool isDisabled;
 
   const InputField(
-      {Key key,
-      @required this.textField,
-      this.iconData,
-      this.isDisabled = false})
+      {Key key, @required this.child, this.iconData, this.isDisabled = false})
       : super(key: key);
 
   @override
@@ -154,7 +151,10 @@ class InputField extends StatelessWidget {
             decoration: kOutlineBorderDisabled,
             child: Padding(
               padding: kFieldPadding,
-              child: Icon(iconData),
+              child: Icon(
+                iconData,
+                color: kPrimaryColor,
+              ),
             ),
           ),
           Flexible(
@@ -162,7 +162,7 @@ class InputField extends StatelessWidget {
               decoration: isDisabled ? kOutlineBorderDisabled : kOutlineBorder,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: textField,
+                child: child,
               ),
             ),
           ),
@@ -228,20 +228,23 @@ class DualButton extends StatelessWidget {
                 ),
               ),
             ),
+            // TODO: sliding issue
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: GestureDetector(
                 onTap: onTapSecondary,
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.folder_open),
-                      SizedBox(
-                        width: 4.0,
-                      ),
-                      Text(subtitle),
-                    ],
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.folder_open),
+                        SizedBox(
+                          width: 4.0,
+                        ),
+                        Text(subtitle),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -261,12 +264,12 @@ class PrimaryActionButton extends StatelessWidget {
   const PrimaryActionButton(
       {Key key,
       @required this.title,
-      this.color = Colors.green,
+      this.color = kSecondaryColor,
       @required this.onPressed})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return RaisedButton(
       color: color,
       onPressed: onPressed,
       child: Text(
@@ -297,9 +300,13 @@ SnackBar warningSnackBar({@required String message, Widget widget}) {
 }
 
 /// For positive result
-SnackBar progressSnackBar({@required String message, Widget widget}) {
+SnackBar progressSnackBar({
+  @required String message,
+  Widget widget,
+  int seconds = 2,
+}) {
   return SnackBar(
-    duration: Duration(seconds: 2),
+    duration: Duration(seconds: seconds),
     content: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -309,7 +316,12 @@ SnackBar progressSnackBar({@required String message, Widget widget}) {
             softWrap: true,
           ),
         ),
-        widget != null ? widget : CircularProgressIndicator(),
+        widget != null
+            ? widget
+            : Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
       ],
     ),
   );

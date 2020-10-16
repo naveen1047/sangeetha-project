@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
@@ -69,7 +70,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SupplierBloc, SupplierState>(
-      listener: (BuildContext context, state) {
+      listener: (BuildContext context, state) async {
         if (state is SupplierError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -77,10 +78,34 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               warningSnackBar(message: state.message),
             );
         }
+        if (state is SupplierLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  widget: CircularProgressIndicator()),
+            );
+        }
+        if (state is SupplierErrorAndClear) {
+          await Future.delayed(Duration(seconds: 1));
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              warningSnackBar(message: state.message),
+            );
+
+          _supplierNameController.clear();
+          _supplierCodeController.clear();
+        }
         if (state is SupplierSuccess) {
+          await Future.delayed(Duration(seconds: 1));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
+          await Future.delayed(Duration(seconds: 3));
+          Navigator.pushNamed(context, kExistingSuppliersScreen);
         }
       },
       child: Padding(
@@ -88,12 +113,14 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
         child: ListView(
           children: [
             InputField(
-              textField: TextField(
+              child: TextField(
+                maxLength: 35,
                 controller: _supplierNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
                 },
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Supplier Name',
                 ),
@@ -103,7 +130,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
               _supplierCodeController.text = '$state';
               return InputField(
-                textField: TextField(
+                child: TextField(
                   enabled: false,
                   controller: _supplierCodeController,
                   decoration: InputDecoration(
@@ -116,19 +143,24 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               );
             }),
             InputField(
-              textField: TextField(
+              child: TextField(
+                maxLength: 30,
                 controller: _contactController,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Contact',
+                  counterText: "",
                 ),
               ),
               iconData: Icons.call,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
+                maxLength: 256,
                 controller: _addressController,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Address',
                 ),
@@ -136,7 +168,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               iconData: Icons.home,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 enabled: false,
                 controller: _addDateController,
                 decoration: InputDecoration(
@@ -149,6 +181,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
+                color: Theme.of(context).primaryColor,
                 title: 'Upload',
                 onPressed: () {
                   uploadData();
@@ -158,7 +191,10 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             FlatButton(
               child: Text('View existing suppliers'),
               onPressed: () {
-                Navigator.pushNamed(context, kExistingSuppliersScreen);
+                Navigator.pushNamed(
+                  context,
+                  kExistingSuppliersScreen,
+                );
               },
             ),
           ],

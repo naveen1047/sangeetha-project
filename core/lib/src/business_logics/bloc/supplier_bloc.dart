@@ -69,6 +69,13 @@ abstract class SupplierState {
 
 class SupplierIdleState extends SupplierState {}
 
+class SupplierLoading extends SupplierState {
+  final bool status;
+  final String message;
+
+  SupplierLoading(this.status, this.message);
+}
+
 class SupplierSuccess extends SupplierState {
   final bool status;
   final String message;
@@ -81,6 +88,13 @@ class SupplierError extends SupplierState {
   final String message;
 
   SupplierError(this.status, this.message);
+}
+
+class SupplierErrorAndClear extends SupplierState {
+  final bool status;
+  final String message;
+
+  SupplierErrorAndClear(this.status, this.message);
 }
 
 // bloc
@@ -114,12 +128,13 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
 
   Stream<SupplierState> _mapAddSupplierToState(AddSupplier event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _supplierServices.submitSupplier(_supplier(event));
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -133,7 +148,7 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -146,15 +161,16 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     if (result.status == true) {
       yield _success(result);
     } else {
-      yield _error(result);
+      yield _errorAndClear(result);
     }
   }
 
   bool _isEventAttributeIsNotNull(var event) {
     if (event.sname != '' && event.snum != '' && event.saddress != '') {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   Supplier _supplier(var event) {
@@ -167,12 +183,20 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     );
   }
 
-  SupplierState _success(ResponseResult result) {
-    return SupplierSuccess(result.status, result.message);
+  SupplierState _loading() {
+    return SupplierLoading(true, "Uploading..");
   }
 
   SupplierState _error(ResponseResult result) {
     return SupplierError(result.status, result.message);
+  }
+
+  SupplierState _success(ResponseResult result) {
+    return SupplierSuccess(result.status, result.message);
+  }
+
+  SupplierState _errorAndClear(ResponseResult result) {
+    return SupplierErrorAndClear(result.status, result.message);
   }
 
   SupplierState _nullValueError() {

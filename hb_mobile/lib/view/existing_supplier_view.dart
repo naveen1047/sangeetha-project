@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/search_widget.dart';
 
 // TODO: scroll position to desired position
 
@@ -173,26 +174,12 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     return Column(
       children: [
         SizedBox(height: 8.0),
-        Padding(
-          padding: kSearchPadding,
-          child: Container(
-            decoration: kSearchDecoration,
-            child: Padding(
-              padding: kLeftPadding,
-              child: TextField(
-                style: TextStyle(color: Colors.white),
-                onChanged: (query) => _viewSupplierBloc
-                    .add(SearchAndFetchSupplierEvent(sname: query)),
-                decoration: InputDecoration(
-                    hintStyle: TextStyle(color: Colors.white),
-                    icon: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ),
-                    border: InputBorder.none,
-                    hintText: 'Search suppliers'),
-              ),
-            ),
+        SearchWidget(
+          child: TextField(
+            style: TextStyle(color: Colors.white),
+            onChanged: (query) => _viewSupplierBloc
+                .add(SearchAndFetchSupplierEvent(sname: query)),
+            decoration: kSearchTextFieldDecoration,
           ),
         ),
         SizedBox(height: 8.0),
@@ -530,7 +517,6 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           PrimaryActionButton(
-            color: Theme.of(context).primaryColor,
             title: 'Change',
             onPressed: () {
               uploadData();
@@ -539,6 +525,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
           PrimaryActionButton(
             title: 'Cancel',
             onPressed: () => Navigator.pop(context),
+            color: kSecondaryColor,
           ),
         ],
       ),

@@ -20,6 +20,15 @@ Decoration kOutlineBorder = BoxDecoration(
   borderRadius: BorderRadius.circular(4.0),
 );
 
+InputDecoration kSearchTextFieldDecoration = InputDecoration(
+    hintStyle: TextStyle(color: Colors.white),
+    icon: Icon(
+      Icons.search,
+      color: Colors.white,
+    ),
+    border: InputBorder.none,
+    hintText: 'Search');
+
 Decoration kSearchDecoration = BoxDecoration(
   color: Colors.blueGrey.shade800,
   borderRadius: BorderRadius.circular(4.0),
@@ -59,8 +68,8 @@ Decoration kOutlineBorderDisabled = BoxDecoration(
 
 // data table label style
 TextStyle kDatatableLabelStyle = TextStyle(
-  fontStyle: FontStyle.italic,
   fontWeight: FontWeight.bold,
+  color: kPrimaryColor,
 );
 
 //color
@@ -70,6 +79,7 @@ const Color kIconColor = Color(0x80000000);
 const Color kTextColor = Color(0x80000000);
 const Color kWhiteColor = Color(0xFFFFFFFF);
 const Color kPrimaryColor = Color(0xFF263238);
+const Color kPrimaryAccentColor = Color(0xFF0091EA);
 const Color kSecondaryColor = Color(0xFF37474F);
 
 //padding

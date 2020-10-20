@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/search_widget.dart';
 
 class ExistingMaterialsScreen extends StatelessWidget {
   @override
@@ -104,18 +105,22 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            autofocus: false,
-            onChanged: (query) => _viewMaterialBloc
-                .add(SearchAndFetchMaterialEvent(mname: query)),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Search materials'),
+          padding: kTopPadding,
+          child: SearchWidget(
+            child: TextField(
+              autofocus: false,
+              onChanged: (query) => _viewMaterialBloc
+                  .add(SearchAndFetchMaterialEvent(mname: query)),
+              decoration: kSearchTextFieldDecoration,
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Text('total results: ${materials.length}'),
+          padding: kFieldPadding,
+          child: Text(
+            'Total results: ${materials.length}',
+            style: kDatatableLabelStyle,
+          ),
         ),
         Expanded(
           child: _buildDataTable(state, materials),
@@ -134,7 +139,8 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          columnSpacing: 1.0,
+          columnSpacing: 0.5,
+          dividerThickness: 0.5,
           columns: [
             DataColumn(
                 label: datatableLabel("Material", isSortable: true),

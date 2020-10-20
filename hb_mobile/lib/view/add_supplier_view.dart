@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
@@ -156,8 +155,10 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               iconData: Icons.call,
             ),
             InputField(
-              child: TextField(
+              child: TextFormField(
                 maxLength: 256,
+                minLines: 1,
+                maxLines: 2,
                 controller: _addressController,
                 decoration: InputDecoration(
                   counterText: "",
@@ -181,7 +182,6 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
-                color: Theme.of(context).primaryColor,
                 title: 'Upload',
                 onPressed: () {
                   uploadData();

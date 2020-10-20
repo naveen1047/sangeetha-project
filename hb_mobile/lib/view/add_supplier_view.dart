@@ -85,7 +85,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               progressSnackBar(
                   message: state.message,
                   seconds: 1,
-                  widget: CircularProgressIndicator()),
+                  child: CircularProgressIndicator()),
             );
         }
         if (state is SupplierErrorAndClear) {

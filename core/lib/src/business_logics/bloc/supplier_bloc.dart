@@ -143,8 +143,10 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
 
   Stream<SupplierState> _mapEditSupplierToState(EditSupplier event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _supplierServices.editSupplierByCode(_supplier(event));
+      await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
       } else {

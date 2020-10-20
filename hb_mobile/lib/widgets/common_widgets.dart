@@ -190,66 +190,63 @@ class DualButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: kMutedColor,
-            width: 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: onTapPrimary,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: kWhiteColor,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        color: kWhiteColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // TODO: sliding issue
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: GestureDetector(
-                onTap: onTapSecondary,
+    return Container(
+      child: Padding(
+        padding: kPrimaryPadding,
+        child: Container(
+          decoration: kDualButtonDecoration,
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: onTapPrimary,
                 child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(4.0)),
+                    color: primaryColor,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.folder_open),
-                        SizedBox(
-                          width: 4.0,
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              color: kWhiteColor,
+                              fontSize: 20.0,
+                            ),
+                          ),
                         ),
-                        Text(subtitle),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: kWhiteColor,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              // TODO: sliding issue
+              GestureDetector(
+                onTap: onTapSecondary,
+                child: Container(
+                  // color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.folder_open),
+                        SizedBox(width: 4.0),
+                        Expanded(child: Text(subtitle)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -302,7 +299,7 @@ SnackBar warningSnackBar({@required String message, Widget widget}) {
 /// For positive result
 SnackBar progressSnackBar({
   @required String message,
-  Widget widget,
+  Widget child,
   int seconds = 2,
 }) {
   return SnackBar(
@@ -316,14 +313,41 @@ SnackBar progressSnackBar({
             softWrap: true,
           ),
         ),
-        widget != null
-            ? widget
+        child != null
+            ? child
             : Icon(
                 Icons.check_circle,
                 color: Colors.green,
               ),
       ],
     ),
+  );
+}
+
+Widget message(String message, {Widget child}) {
+  return Padding(
+    padding: kPrimaryPadding,
+    child: _label(message, child: child),
+  );
+}
+
+Row _label(String message, {Widget child}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Flexible(
+        child: Text(
+          '${message}',
+          softWrap: true,
+        ),
+      ),
+      child != null
+          ? child
+          : Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            ),
+    ],
   );
 }
 

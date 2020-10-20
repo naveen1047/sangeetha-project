@@ -45,24 +45,24 @@ abstract class ViewSupplierState {
   const ViewSupplierState();
 }
 
-class SupplierLoadingState extends ViewSupplierState {
+class ViewSupplierLoading extends ViewSupplierState {
   @override
   List<Object> get props => [];
 }
 
-class SupplierLoadedState extends ViewSupplierState {
+class ViewSupplierLoaded extends ViewSupplierState {
   final List<Supplier> suppliers;
 
-  SupplierLoadedState(this.suppliers);
+  ViewSupplierLoaded(this.suppliers);
 
   @override
   List<Object> get props => [];
 }
 
-class SupplierErrorState extends ViewSupplierState {
+class ViewSupplierError extends ViewSupplierState {
   final String message;
 
-  SupplierErrorState(this.message);
+  ViewSupplierError(this.message);
 
   @override
   List<Object> get props => [message];
@@ -70,7 +70,7 @@ class SupplierErrorState extends ViewSupplierState {
 
 // bloc
 class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
-  ViewSupplierBloc() : super(SupplierLoadingState());
+  ViewSupplierBloc() : super(ViewSupplierLoading());
 
   final SupplierService _viewSupplierService =
       serviceLocator<SupplierService>();
@@ -100,19 +100,18 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
             .toList();
         print(_filteredSupplier.toString());
 
-        yield SupplierLoadedState(_filteredSupplier);
+        yield ViewSupplierLoaded(_filteredSupplier);
       }
     } catch (e) {
-      yield SupplierErrorState(e.toString());
+      yield ViewSupplierError(e.toString());
     }
   }
 
   Stream<ViewSupplierState> _mapFetchSupplierToState(
       ViewSupplierEvent event, String sname) async* {
     try {
+      yield ViewSupplierLoading();
       _suppliers = await _viewSupplierService.getAllSuppliers();
-
-      yield SupplierLoadingState();
 
       _filteredSupplier = _suppliers.suppliers.toList();
       _filteredSupplier.sort(
@@ -120,15 +119,15 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
 
       yield _eventResult();
     } catch (e) {
-      yield SupplierErrorState(e.toString());
+      yield ViewSupplierError(e.toString());
     }
   }
 
   ViewSupplierState _eventResult() {
     if (_filteredSupplier.length > 0) {
-      return SupplierLoadedState(_filteredSupplier);
+      return ViewSupplierLoaded(_filteredSupplier);
     } else {
-      return SupplierErrorState("no data found");
+      return ViewSupplierError("no data found");
     }
   }
 }

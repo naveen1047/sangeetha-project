@@ -23,7 +23,7 @@ void main() {
     });
 
     test('initial state is loading', () {
-      expect(viewSupplierBloc.state, SupplierLoadingState());
+      expect(viewSupplierBloc.state, ViewSupplierLoading());
     });
 
     blocTest(
@@ -31,8 +31,8 @@ void main() {
       build: () => viewSupplierBloc,
       act: (bloc) => bloc.add(FetchSupplierEvent()),
       expect: [
-        SupplierLoadingState(),
-        SupplierLoadedState(suppliers),
+        ViewSupplierLoading(),
+        ViewSupplierLoaded(suppliers),
       ],
     );
   });

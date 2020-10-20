@@ -51,11 +51,6 @@ class ExistingSuppliersScreen extends StatelessWidget {
 }
 
 class AppbarDropDownMenu extends StatelessWidget {
-  static const String Refresh = 'Refresh';
-  static const String Settings = 'Settings';
-  static const String AddSupplier = 'Add Supplier';
-
-  static const List<String> choices = <String>[Refresh, AddSupplier, Settings];
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -63,7 +58,7 @@ class AppbarDropDownMenu extends StatelessWidget {
         choiceAction(choice, context);
       },
       itemBuilder: (BuildContext context) {
-        return choices.map((String choice) {
+        return SupplierConstants.choices.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
             child: Text(choice),
@@ -74,26 +69,14 @@ class AppbarDropDownMenu extends StatelessWidget {
   }
 
   void choiceAction(String choice, BuildContext context) {
-    if (choice == Settings) {
+    if (choice == SupplierConstants.Settings) {
       print('Settings');
-    } else if (choice == Refresh) {
+    } else if (choice == SupplierConstants.Refresh) {
       BlocProvider.of<ViewSupplierBloc>(context).add(FetchSupplierEvent());
-    } else if (choice == AddSupplier) {
+    } else if (choice == SupplierConstants.AddSupplier) {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          kConfigScreen, (Route<dynamic> route) => false);
-      Navigator.pushNamed(context, kAddSuppliersScreen);
+          kAddSuppliersScreen, ModalRoute.withName(kConfigScreen));
     }
-  }
-}
-
-class SupplierAppBarActions extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.refresh),
-      onPressed: () =>
-          BlocProvider.of<ViewSupplierBloc>(context).add(FetchSupplierEvent()),
-    );
   }
 }
 
@@ -122,44 +105,61 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SupplierBloc, SupplierState>(
-      listener: (context, state) {
-        if (state is SupplierLoading) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              progressSnackBar(
-                  message: state.message,
-                  seconds: 1,
-                  widget: CircularProgressIndicator()),
-            );
-        }
-        if (state is SupplierSuccess) {
-          _viewSupplierBloc.add(FetchSupplierEvent());
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  '${state.message}',
-                  softWrap: true,
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-        }
-      },
+    final arguments = ModalRoute.of(context).settings.arguments;
+    print('......');
+    print(arguments.toString());
+    print('......');
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SupplierBloc, SupplierState>(
+          listener: (context, state) {
+            if (state is SupplierLoading) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  progressSnackBar(
+                      message: state.message,
+                      seconds: 1,
+                      child: CircularProgressIndicator()),
+                );
+            }
+            if (state is SupplierSuccess) {
+              _viewSupplierBloc.add(FetchSupplierEvent());
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '${state.message}',
+                      softWrap: true,
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+            }
+          },
+        ),
+        // BlocListener<ViewSupplierBloc, ViewSupplierState>(
+        //   listener: (context, state) {
+        //     if (state is ViewSupplierLoaded) {
+        //       Scaffold.of(context)
+        //         ..hideCurrentSnackBar()
+        //         ..showSnackBar(progressSnackBar(message: "Loaded"));
+        //     }
+        //   },
+        // ),
+      ],
       child: BlocBuilder<ViewSupplierBloc, ViewSupplierState>(
         builder: (context, state) {
-          if (state is SupplierLoadingState) {
+          if (state is ViewSupplierLoading) {
             return LinearProgressIndicator();
           }
-          if (state is SupplierLoadedState) {
+          if (state is ViewSupplierLoaded) {
             final suppliers = state.suppliers;
 
             return _buildCards(state, suppliers);
           }
-          if (state is SupplierErrorState) {
+          if (state is ViewSupplierError) {
             return _errorMessage(state, context);
           } else {
             return Text('unknown state error please report to developer');
@@ -169,7 +169,7 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     );
   }
 
-  Widget _buildCards(SupplierLoadedState state, List<Supplier> suppliers) {
+  Widget _buildCards(ViewSupplierLoaded state, List<Supplier> suppliers) {
     return Column(
       children: [
         SizedBox(height: 8.0),
@@ -197,13 +197,19 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
         ),
         SizedBox(height: 8.0),
         Expanded(
-          child: _buildCardList(state, suppliers),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await Future.delayed(Duration(seconds: 1));
+              _viewSupplierBloc.add(FetchSupplierEvent());
+            },
+            child: _buildCardList(state, suppliers),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildCardList(SupplierLoadedState state, List<Supplier> suppliers) {
+  Widget _buildCardList(ViewSupplierLoaded state, List<Supplier> suppliers) {
     if (suppliers.length == 0) {
       return Center(child: Text("no results found"));
     }
@@ -395,7 +401,7 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     );
   }
 
-  Widget _errorMessage(SupplierErrorState state, BuildContext context) {
+  Widget _errorMessage(ViewSupplierError state, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -480,16 +486,23 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           BlocListener<SupplierBloc, SupplierState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is SupplierSuccess) {
+                await Future.delayed(Duration(seconds: 1));
                 widget.viewSupplierBloc.add(FetchSupplierEvent());
                 Navigator.pop(context);
               }
             },
             child: BlocBuilder<SupplierBloc, SupplierState>(
               builder: (context, state) {
+                if (state is SupplierSuccess) {
+                  return message("Value changed successfully");
+                }
                 if (state is SupplierLoading) {
-                  return _loadingTitle();
+                  return message(
+                    "Updating...",
+                    child: CircularProgressIndicator(),
+                  );
                 }
                 if (state is SupplierError) {
                   return _errorMessage(state);
@@ -625,23 +638,6 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         style: TextStyle(
           fontSize: 16.0,
         ),
-      ),
-    );
-  }
-
-  Padding _loadingTitle() {
-    return Padding(
-      padding: kPrimaryPadding,
-      child: Row(
-        children: [
-          Text(
-            'Edit Supplier',
-            style: TextStyle(
-              fontSize: 16.0,
-            ),
-          ),
-          CircularProgressIndicator(),
-        ],
       ),
     );
   }

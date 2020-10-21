@@ -365,7 +365,7 @@ Widget datatableLabel(String message, {bool isSortable = false}) {
         ),
         Icon(
           Icons.swap_vert,
-          color: kPrimaryColor,
+          color: kPrimaryAccentColor,
         ),
       ],
     );

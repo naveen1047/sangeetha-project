@@ -45,27 +45,18 @@ abstract class ViewEmployeeState {
   const ViewEmployeeState();
 }
 
-class EmployeeLoadingState extends ViewEmployeeState {
-  @override
-  List<Object> get props => [];
-}
+class EmployeeLoadingState extends ViewEmployeeState {}
 
 class EmployeeLoadedState extends ViewEmployeeState {
   final List<Employee> employees;
 
   EmployeeLoadedState(this.employees);
-
-  @override
-  List<Object> get props => [];
 }
 
 class EmployeeErrorState extends ViewEmployeeState {
   final String message;
 
   EmployeeErrorState(this.message);
-
-  @override
-  List<Object> get props => [message];
 }
 
 // bloc

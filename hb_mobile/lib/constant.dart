@@ -80,6 +80,7 @@ const Color kTextColor = Color(0x80000000);
 const Color kWhiteColor = Color(0xFFFFFFFF);
 const Color kPrimaryColor = Color(0xFF263238);
 const Color kPrimaryAccentColor = Color(0xFF0091EA);
+const Color kErrorColor = Color(0xFFF44336);
 const Color kSecondaryColor = Color(0xFF37474F);
 
 //padding

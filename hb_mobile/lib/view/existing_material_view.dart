@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
-import 'package:hb_mobile/widgets/material_bottom_sheet_widget.dart';
+import 'package:hb_mobile/widgets/material_data_table_widget.dart';
 import 'package:hb_mobile/widgets/search_widget.dart';
 
 class ExistingMaterialsScreen extends StatelessWidget {
@@ -116,138 +116,55 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
             ),
           ),
         ),
-        Padding(
-          padding: kFieldPadding,
-          child: Text(
-            'Total results: ${materials.length}',
-            style: kDatatableLabelStyle,
-          ),
-        ),
+        // Padding(
+        //   padding: kFieldPadding,
+        //   child: Text(
+        //     'Total results: ${materials.length}',
+        //     style: kDatatableLabelStyle,
+        //   ),
+        // ),
         Expanded(
-          child: _buildDataTable(state, materials),
+          child: _buildPaginatedDataTable(state, materials),
         ),
       ],
     );
   }
 
-  Widget _buildDataTable(
+  Widget _buildPaginatedDataTable(
       MaterialLoadedState state, List<material.Material> materials) {
-    if (materials.length == 0) {
-      return Center(child: Text("no results found"));
-    }
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing: 0.5,
-          dividerThickness: 0.5,
-          columns: [
-            DataColumn(
-                label: datatableLabel("Material", isSortable: true),
-                onSort: (columnIndex, ascending) {
-                  _viewMaterialBloc.add(SortMaterialByName());
-                }),
-            DataColumn(
-                label: datatableLabel("Unit", isSortable: true),
-                numeric: true,
-                onSort: (columnIndex, ascending) {
-                  _viewMaterialBloc.add(SortMaterialByUnit());
-                }),
-            DataColumn(
-                label: datatableLabel("Price per unit", isSortable: true),
-                numeric: true,
-                onSort: (columnIndex, ascending) {
-                  _viewMaterialBloc.add(SortMaterialByPrice());
-                }),
-            DataColumn(
-              label: datatableLabel("Code"),
-            ),
-            DataColumn(
-                label: datatableLabel(
-              "Modify / delete",
-            )),
-          ],
-          rows: materials
-              .map(
-                (data) => DataRow(
-                  cells: [
-                    DataCell(Text(data.mname)),
-                    DataCell(Text(data.munit)),
-                    DataCell(Text(data.mpriceperunit)),
-                    DataCell(Text(data.mcode), placeholder: true),
-                    _modifyDataCell(data),
-                  ],
-                ),
-              )
-              .toList(),
+    // if (materials.length == 0) {
+    //   return Center(child: Text("no results found"));
+    // }
+    return MaterialDataTable(
+      dataColumn: [
+        DataColumn(
+            label: datatableLabel("Material", isSortable: true),
+            onSort: (columnIndex, ascending) {
+              _viewMaterialBloc.add(SortMaterialByName());
+            }),
+        DataColumn(
+            label: datatableLabel("Unit", isSortable: true),
+            numeric: true,
+            onSort: (columnIndex, ascending) {
+              _viewMaterialBloc.add(SortMaterialByUnit());
+            }),
+        DataColumn(
+            label: datatableLabel("Price per unit", isSortable: true),
+            numeric: true,
+            onSort: (columnIndex, ascending) {
+              _viewMaterialBloc.add(SortMaterialByPrice());
+            }),
+        DataColumn(
+          label: datatableLabel("Code"),
         ),
-      ),
-    );
-  }
-
-  DataCell _modifyDataCell(material.Material data) {
-    return DataCell(
-      Row(
-        children: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              _showModalBottomSheet(context, data);
-            },
-          ),
-          IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text(
-                      'Are you sure you want to delete "${data.mname}"?',
-                    ),
-                    actions: [
-                      FlatButton(
-                          onPressed: () {
-                            _editMaterialBloc
-                                .add(DeleteMaterial(mcode: data.mcode));
-                            Navigator.pop(context);
-                          },
-                          child: Text('Yes')),
-                      FlatButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('No')),
-                    ],
-                  ),
-                );
-              }),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _showModalBottomSheet(
-      BuildContext context, material.Material data) {
-    return showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: BlocProvider(
-              create: (BuildContext context) => MaterialBloc(),
-              child: MaterialBottomSheet(
-                viewMaterialBloc: _viewMaterialBloc,
-                materialName: data.mname,
-                materialcode: data.mcode,
-                materialUnit: data.munit,
-                materialPrice: data.mpriceperunit,
-              ),
-            ),
-          ),
-        );
-      },
-      isScrollControlled: true,
+        DataColumn(
+            label: datatableLabel(
+          "Modify / delete",
+        )),
+      ],
+      materials: materials,
+      viewMaterialBloc: _viewMaterialBloc,
+      editMaterialBloc: _editMaterialBloc,
     );
   }
 

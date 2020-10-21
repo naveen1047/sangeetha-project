@@ -88,7 +88,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             );
         }
         if (state is SupplierErrorAndClear) {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(Duration(milliseconds: 500));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -103,7 +103,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
-          await Future.delayed(Duration(seconds: 3));
+          await Future.delayed(Duration(milliseconds: 2500));
           Navigator.pushNamed(context, kExistingSuppliersScreen);
         }
       },
@@ -143,7 +143,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             }),
             InputField(
               child: TextField(
-                maxLength: 30,
+                maxLength: 15,
                 controller: _contactController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -156,7 +156,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             ),
             InputField(
               child: TextFormField(
-                maxLength: 256,
+                maxLength: 250,
                 minLines: 1,
                 maxLines: 2,
                 controller: _addressController,
@@ -183,7 +183,9 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               padding: kTopPadding,
               child: PrimaryActionButton(
                 title: 'Upload',
-                onPressed: () {
+                onPressed: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await Future.delayed(Duration(milliseconds: 500));
                   uploadData();
                 },
               ),

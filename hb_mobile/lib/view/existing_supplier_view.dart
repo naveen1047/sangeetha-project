@@ -28,24 +28,6 @@ class ExistingSuppliersScreen extends StatelessWidget {
           ],
         ),
         body: ExistingSuppliersList(),
-        // body: LayoutBuilder(
-        //   builder: (BuildContext context, BoxConstraints constraints) {
-        //     if (constraints.maxHeight > constraints.maxWidth) {
-        //       return ExistingSuppliersList();
-        //     } else {
-        //       return Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 120.0),
-        //         child: ExistingSuppliersList(),
-        //       );
-        //     }
-        //   },
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: () {
-        //     Navigator.pushNamed(context, kAddSuppliersScreen);
-        //   },
-        // ),
       ),
     );
   }
@@ -106,10 +88,6 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context).settings.arguments;
-    print('......');
-    print(arguments.toString());
-    print('......');
     return MultiBlocListener(
       listeners: [
         BlocListener<SupplierBloc, SupplierState>(
@@ -140,15 +118,6 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
             }
           },
         ),
-        // BlocListener<ViewSupplierBloc, ViewSupplierState>(
-        //   listener: (context, state) {
-        //     if (state is ViewSupplierLoaded) {
-        //       Scaffold.of(context)
-        //         ..hideCurrentSnackBar()
-        //         ..showSnackBar(progressSnackBar(message: "Loaded"));
-        //     }
-        //   },
-        // ),
       ],
       child: BlocBuilder<ViewSupplierBloc, ViewSupplierState>(
         builder: (context, state) {

@@ -88,6 +88,13 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
   var sortByPrice = sorting.ascending;
 
   @override
+  Future<void> close() {
+    _materials = null;
+    _filteredMaterial.clear();
+    return super.close();
+  }
+
+  @override
   Stream<ViewMaterialState> mapEventToState(ViewMaterialEvent event) async* {
     if (event is FetchMaterialEvent) {
       yield* _mapFetchMaterialToState(event, event.mname);

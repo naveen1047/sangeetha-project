@@ -63,7 +63,7 @@ class _DataSource extends DataTableSource {
       this._editMaterialBloc) {
     _rows = materials
         .map((data) =>
-            _Row(data.mname, data.mpriceperunit, data.munit, data.mcode, data))
+            _Row(data.mname, data.munit, data.mpriceperunit, data.mcode, data))
         .toList();
   }
 

@@ -79,6 +79,13 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
   List<Supplier> _filteredSupplier;
 
   @override
+  Future<void> close() {
+    _suppliers = null;
+    _filteredSupplier.clear();
+    return super.close();
+  }
+
+  @override
   Stream<ViewSupplierState> mapEventToState(ViewSupplierEvent event) async* {
     if (event is FetchSupplierEvent) {
       yield* _mapFetchSupplierToState(event, event.sname);
@@ -89,6 +96,7 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
   }
 
   // TODO: ugly state do sink and stream
+
   Stream<ViewSupplierState> _mapSearchAndFetchSupplierToState(
       String sname) async* {
     try {

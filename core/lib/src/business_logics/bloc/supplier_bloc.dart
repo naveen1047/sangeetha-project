@@ -116,6 +116,11 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
   }
 
   @override
+  Future<void> close() {
+    return super.close();
+  }
+
+  @override
   Stream<SupplierState> mapEventToState(SupplierEvent event) async* {
     if (event is AddSupplier) {
       yield* _mapAddSupplierToState(event);

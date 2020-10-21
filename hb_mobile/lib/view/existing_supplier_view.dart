@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:hb_mobile/widgets/delete_card.dart';
+import 'package:hb_mobile/widgets/profile_card.dart';
 import 'package:hb_mobile/widgets/search_bar_widget.dart';
 
 // TODO: scroll position to desired position
@@ -175,36 +176,15 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
   }
 
   Widget _buildCard(List<Supplier> suppliers, int index, BuildContext context) {
-    return Padding(
-      padding: kCardPadding,
-      child: Container(
-        decoration: kCardDecoration,
-        child: ExpansionTile(
-          key: Key("${suppliers[index].scode}"),
-          title: _titleCard(context, suppliers, index),
-          subtitle: _subtitleCard(suppliers, index),
-          children: [
-            _addressCard(suppliers, index),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    _idCard(suppliers, index),
-                    _dateLabel(suppliers, index),
-                  ],
-                ),
-                Row(
-                  children: [
-                    _editCard(context, suppliers, index),
-                    _deleteCard(context, suppliers, index),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+    return ProfileCard(
+      cardKey: "${suppliers[index].scode}",
+      title: "${suppliers[index].sname}",
+      subtitle: "${suppliers[index].snum}",
+      date: "${suppliers[index].saddate}",
+      id: "${suppliers[index].scode}",
+      detail: "${suppliers[index].saddress}",
+      editCard: _editCard(context, suppliers, index),
+      deleteCard: _deleteCard(context, suppliers, index),
     );
   }
 
@@ -232,88 +212,6 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
         _showModalBottomSheet(context, suppliers, index);
       },
       icon: Icon(Icons.edit),
-    );
-  }
-
-  Padding _dateLabel(List<Supplier> suppliers, int index) {
-    return Padding(
-      padding: kRightPadding,
-      child: Text(
-        '${suppliers[index].saddate}',
-        style: TextStyle(color: Colors.grey),
-      ),
-    );
-  }
-
-  Padding _idCard(List<Supplier> suppliers, int index) {
-    return Padding(
-      padding: kHorizontalPadding,
-      child: Row(
-        children: [
-          Padding(
-            padding: kRightPadding,
-            child: Icon(Icons.info),
-          ),
-          Text('${suppliers[index].scode}'),
-        ],
-      ),
-    );
-  }
-
-  Padding _addressCard(List<Supplier> suppliers, int index) {
-    return Padding(
-      padding: kHorizontalPadding,
-      child: Row(
-        children: [
-          Padding(
-            padding: kRightPadding,
-            child: Icon(Icons.home),
-          ),
-          Flexible(
-            child: Text(
-              '${suppliers[index].saddress}',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Row _subtitleCard(List<Supplier> suppliers, int index) {
-    return Row(
-      children: [
-        Row(
-          children: [
-            Padding(
-              padding: kRightPadding,
-              child: Icon(
-                Icons.call,
-                color: kSecondaryColor,
-              ),
-            ),
-            Text('${suppliers[index].snum}'),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Padding _titleCard(
-      BuildContext context, List<Supplier> suppliers, int index) {
-    return Padding(
-      padding: kBottomPadding,
-      child: Row(
-        children: [
-          Padding(
-            padding: kRightPadding,
-            child: Icon(
-              Icons.account_circle,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          Text('${suppliers[index].sname}'),
-        ],
-      ),
     );
   }
 

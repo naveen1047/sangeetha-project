@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/delete_card.dart';
+import 'package:hb_mobile/widgets/search_bar_widget.dart';
 
 // TODO: scroll position to desired position
 
@@ -27,24 +29,6 @@ class ExistingSuppliersScreen extends StatelessWidget {
           ],
         ),
         body: ExistingSuppliersList(),
-        // body: LayoutBuilder(
-        //   builder: (BuildContext context, BoxConstraints constraints) {
-        //     if (constraints.maxHeight > constraints.maxWidth) {
-        //       return ExistingSuppliersList();
-        //     } else {
-        //       return Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 120.0),
-        //         child: ExistingSuppliersList(),
-        //       );
-        //     }
-        //   },
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: () {
-        //     Navigator.pushNamed(context, kAddSuppliersScreen);
-        //   },
-        // ),
       ),
     );
   }
@@ -105,10 +89,6 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context).settings.arguments;
-    print('......');
-    print(arguments.toString());
-    print('......');
     return MultiBlocListener(
       listeners: [
         BlocListener<SupplierBloc, SupplierState>(
@@ -139,15 +119,6 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
             }
           },
         ),
-        // BlocListener<ViewSupplierBloc, ViewSupplierState>(
-        //   listener: (context, state) {
-        //     if (state is ViewSupplierLoaded) {
-        //       Scaffold.of(context)
-        //         ..hideCurrentSnackBar()
-        //         ..showSnackBar(progressSnackBar(message: "Loaded"));
-        //     }
-        //   },
-        // ),
       ],
       child: BlocBuilder<ViewSupplierBloc, ViewSupplierState>(
         builder: (context, state) {
@@ -173,27 +144,9 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     return Column(
       children: [
         SizedBox(height: 8.0),
-        Padding(
-          padding: kSearchPadding,
-          child: Container(
-            decoration: kSearchDecoration,
-            child: Padding(
-              padding: kLeftPadding,
-              child: TextField(
-                style: TextStyle(color: Colors.white),
-                onChanged: (query) => _viewSupplierBloc
-                    .add(SearchAndFetchSupplierEvent(sname: query)),
-                decoration: InputDecoration(
-                    hintStyle: TextStyle(color: Colors.white),
-                    icon: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ),
-                    border: InputBorder.none,
-                    hintText: 'Search suppliers'),
-              ),
-            ),
-          ),
+        SearchBar(
+          onChanged: (query) =>
+              _viewSupplierBloc.add(SearchAndFetchSupplierEvent(sname: query)),
         ),
         SizedBox(height: 8.0),
         Expanded(
@@ -255,31 +208,20 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
     );
   }
 
-  IconButton _deleteCard(
+  Widget _deleteCard(
       BuildContext context, List<Supplier> suppliers, int index) {
-    return IconButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text(
-              'Are you sure you want to delete "${suppliers[index].sname}"?',
-            ),
-            actions: [
-              FlatButton(
-                  onPressed: () {
-                    _editSupplierBloc
-                        .add(DeleteSupplier(scode: suppliers[index].scode));
-                    Navigator.pop(context);
-                  },
-                  child: Text('Yes')),
-              FlatButton(
-                  onPressed: () => Navigator.pop(context), child: Text('No')),
-            ],
-          ),
-        );
-      },
-      icon: Icon(Icons.delete),
+    return DeleteCard(
+      title: 'Are you sure you want to delete "${suppliers[index].sname}"?',
+      actions: [
+        FlatButton(
+            onPressed: () {
+              _editSupplierBloc
+                  .add(DeleteSupplier(scode: suppliers[index].scode));
+              Navigator.pop(context);
+            },
+            child: Text('Yes')),
+        FlatButton(onPressed: () => Navigator.pop(context), child: Text('No')),
+      ],
     );
   }
 

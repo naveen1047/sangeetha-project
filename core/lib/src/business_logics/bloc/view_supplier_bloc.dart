@@ -81,7 +81,7 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
   @override
   Future<void> close() {
     _suppliers = null;
-    _filteredSupplier.clear();
+    _filteredSupplier?.clear();
     return super.close();
   }
 

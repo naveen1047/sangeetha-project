@@ -132,8 +132,10 @@ class MaterialBloc extends Bloc<MaterialEvent, MaterialState> {
 
   Stream<MaterialState> _mapEditMaterialToState(EditMaterial event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _materialServices.editMaterialByCode(_material(event));
+      await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
       } else {

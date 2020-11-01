@@ -138,9 +138,9 @@ class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {
   Stream<ViewMaterialState> _mapFetchMaterialToState(
       ViewMaterialEvent event, String mname) async* {
     try {
-      _materials = await _viewMaterialService.getAllMaterials();
-
       yield MaterialLoadingState();
+
+      _materials = await _viewMaterialService.getAllMaterials();
 
       _filteredMaterial = _materials.materials.toList();
       _sortAscendingByMName();

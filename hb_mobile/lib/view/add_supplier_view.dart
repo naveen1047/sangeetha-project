@@ -192,7 +192,8 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             ),
             FlatButton(
               child: Text('View existing suppliers'),
-              onPressed: () {
+              onPressed: () async {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(
                   context,
                   kExistingSuppliersScreen,

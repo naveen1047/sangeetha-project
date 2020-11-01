@@ -69,14 +69,24 @@ class _MaterialBottomSheetState extends State<MaterialBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           BlocListener<MaterialBloc, materialBloc.MaterialState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is MaterialSuccess) {
+                await Future.delayed(Duration(seconds: 1));
                 widget.viewMaterialBloc.add(FetchMaterialEvent());
                 Navigator.pop(context);
               }
             },
             child: BlocBuilder<MaterialBloc, materialBloc.MaterialState>(
               builder: (context, state) {
+                if (state is MaterialSuccess) {
+                  return message("Value changed successfully");
+                }
+                if (state is MaterialLoading) {
+                  return message(
+                    "Updating...",
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 if (state is MaterialError) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -150,7 +160,7 @@ class _MaterialBottomSheetState extends State<MaterialBottomSheet> {
                   },
                 ),
                 RaisedButton(
-                  child: const Text('Cancel'),
+                  child: Text('Cancel'),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],

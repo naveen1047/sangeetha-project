@@ -81,8 +81,8 @@ class _ExistingSuppliersListState extends State<ExistingSuppliersList> {
 
   @override
   void dispose() {
-    _viewSupplierBloc.close();
-    _editSupplierBloc.close();
+    _viewSupplierBloc?.close();
+    _editSupplierBloc?.close();
     super.dispose();
   }
 
@@ -424,7 +424,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _supplierNameController.dispose();
     _supplierCodeController.dispose();
     _contactController.dispose();

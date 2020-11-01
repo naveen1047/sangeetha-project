@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
 class AddMaterialScreen extends StatelessWidget {
   final String title;
@@ -13,7 +14,10 @@ class AddMaterialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(title),
+        leading: NavigateBackButton(),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -174,6 +178,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
             FlatButton(
               child: Text('View existing materials'),
               onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(context, kExistingMaterialScreen);
               },
             ),

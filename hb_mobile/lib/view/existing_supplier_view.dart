@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 import 'package:hb_mobile/widgets/search_widget.dart';
 
 // TODO: scroll position to desired position
@@ -23,6 +24,7 @@ class ExistingSuppliersScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Existing Suppliers'),
+          leading: NavigateBackButton(),
           actions: [
             AppbarDropDownMenu(),
           ],

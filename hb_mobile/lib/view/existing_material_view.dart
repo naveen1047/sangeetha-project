@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:hb_mobile/widgets/material_data_table_widget.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 import 'package:hb_mobile/widgets/search_widget.dart';
 
 class ExistingMaterialsScreen extends StatelessWidget {
@@ -55,11 +56,9 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Existing Materials'),
+        leading: NavigateBackButton(),
         actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => _viewMaterialBloc.add(FetchMaterialEvent()),
-          )
+          AppbarDropDownMenu(),
         ],
       ),
       body: BlocListener<MaterialBloc, materialBloc.MaterialState>(
@@ -109,6 +108,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
           padding: kTopPadding,
           child: SearchWidget(
             child: TextField(
+              style: TextStyle(color: Colors.white),
               autofocus: false,
               onChanged: (query) => _viewMaterialBloc
                   .add(SearchAndFetchMaterialEvent(mname: query)),
@@ -116,13 +116,6 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
             ),
           ),
         ),
-        // Padding(
-        //   padding: kFieldPadding,
-        //   child: Text(
-        //     'Total results: ${materials.length}',
-        //     style: kDatatableLabelStyle,
-        //   ),
-        // ),
         Expanded(
           child: _buildPaginatedDataTable(state, materials),
         ),
@@ -132,9 +125,6 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
 
   Widget _buildPaginatedDataTable(
       MaterialLoadedState state, List<material.Material> materials) {
-    // if (materials.length == 0) {
-    //   return Center(child: Text("no results found"));
-    // }
     return MaterialDataTable(
       dataColumn: [
         DataColumn(
@@ -183,5 +173,35 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
         ],
       ),
     );
+  }
+}
+
+class AppbarDropDownMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (choice) {
+        choiceAction(choice, context);
+      },
+      itemBuilder: (BuildContext context) {
+        return MaterialConstants.choices.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  void choiceAction(String choice, BuildContext context) {
+    if (choice == MaterialConstants.Settings) {
+      print('Settings');
+    } else if (choice == MaterialConstants.Refresh) {
+      BlocProvider.of<ViewMaterialBloc>(context).add(FetchMaterialEvent());
+    } else if (choice == MaterialConstants.AddMaterial) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          kAddMaterialScreen, ModalRoute.withName(kConfigScreen));
+    }
   }
 }

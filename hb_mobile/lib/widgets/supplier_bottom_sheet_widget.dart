@@ -122,8 +122,8 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
               uploadData();
             },
           ),
-          PrimaryActionButton(
-            title: 'Cancel',
+          RaisedButton(
+            child: Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),
         ],

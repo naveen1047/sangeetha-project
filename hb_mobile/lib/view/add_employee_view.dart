@@ -70,7 +70,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<EmployeeBloc, EmployeeState>(
-      listener: (BuildContext context, state) {
+      listener: (BuildContext context, state) async {
         if (state is EmployeeError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -78,10 +78,34 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               warningSnackBar(message: state.message),
             );
         }
+        if (state is EmployeeLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  child: CircularProgressIndicator()),
+            );
+        }
+        if (state is EmployeeErrorAndClear) {
+          await Future.delayed(Duration(milliseconds: 500));
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              warningSnackBar(message: state.message),
+            );
+
+          _employeeNameController.clear();
+          _employeeCodeController.clear();
+        }
         if (state is EmployeeSuccess) {
+          await Future.delayed(Duration(seconds: 1));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
+          await Future.delayed(Duration(milliseconds: 2500));
+          Navigator.pushNamed(context, kExistingEmployeeScreen);
         }
       },
       child: Padding(

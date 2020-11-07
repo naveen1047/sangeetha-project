@@ -17,7 +17,7 @@ Decoration kOutlineBorder = BoxDecoration(
     color: kMutedColor,
     width: 1,
   ),
-  borderRadius: BorderRadius.circular(4.0),
+  borderRadius: kDefaultBorderRadius,
 );
 
 InputDecoration kSearchTextFieldDecoration = InputDecoration(
@@ -31,19 +31,19 @@ InputDecoration kSearchTextFieldDecoration = InputDecoration(
 
 Decoration kSearchDecoration = BoxDecoration(
   color: Colors.blueGrey.shade800,
-  borderRadius: BorderRadius.circular(4.0),
+  borderRadius: kDefaultBorderRadius,
   boxShadow: kBoxShadow,
 );
 
 Decoration kCardDecoration = BoxDecoration(
   color: Colors.white,
-  borderRadius: BorderRadius.circular(4.0),
+  borderRadius: kDefaultBorderRadius,
   boxShadow: kBoxShadow,
 );
 
 Decoration kDualButtonDecoration = BoxDecoration(
   color: Colors.white,
-  borderRadius: BorderRadius.circular(4.0),
+  borderRadius: kDefaultBorderRadius,
   boxShadow: kBoxShadow,
 );
 
@@ -63,7 +63,7 @@ Decoration kOutlineBorderDisabled = BoxDecoration(
     color: kMutedColor,
     width: 1,
   ),
-  borderRadius: BorderRadius.circular(4.0),
+  borderRadius: kDefaultBorderRadius,
 );
 
 // data table label style
@@ -71,6 +71,9 @@ TextStyle kDatatableLabelStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: kPrimaryColor,
 );
+
+// border radius
+BorderRadiusGeometry kDefaultBorderRadius = BorderRadius.circular(4.0);
 
 //color
 const Color kMutedColorLite = Color(0x10000000);

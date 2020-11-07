@@ -128,12 +128,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   Stream<EmployeeState> _mapAddEmployeeToState(AddEmployee event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _employeeServices.submitEmployee(_employee(event));
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -142,12 +143,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   Stream<EmployeeState> _mapEditEmployeeToState(EditEmployee event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _employeeServices.editEmployeeByCode(_employee(event));
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -160,7 +162,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (result.status == true) {
       yield _success(result);
     } else {
-      yield _error(result);
+      yield _errorAndClear(result);
     }
   }
 

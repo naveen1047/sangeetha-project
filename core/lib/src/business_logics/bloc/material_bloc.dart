@@ -70,6 +70,13 @@ abstract class MaterialState {
 
 class MaterialIdleState extends MaterialState {}
 
+class MaterialLoading extends MaterialState {
+  final bool status;
+  final String message;
+
+  MaterialLoading(this.status, this.message);
+}
+
 class MaterialSuccess extends MaterialState {
   final bool status;
   final String message;
@@ -82,6 +89,13 @@ class MaterialError extends MaterialState {
   final String message;
 
   MaterialError(this.status, this.message);
+}
+
+class MaterialErrorAndClear extends MaterialState {
+  final bool status;
+  final String message;
+
+  MaterialErrorAndClear(this.status, this.message);
 }
 
 // bloc
@@ -103,6 +117,7 @@ class MaterialBloc extends Bloc<MaterialEvent, MaterialState> {
 
   Stream<MaterialState> _mapAddMaterialToState(AddMaterial event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _materialServices.submitMaterial(_material(event));
       if (result.status == true) {
@@ -117,8 +132,10 @@ class MaterialBloc extends Bloc<MaterialEvent, MaterialState> {
 
   Stream<MaterialState> _mapEditMaterialToState(EditMaterial event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _materialServices.editMaterialByCode(_material(event));
+      await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
       } else {
@@ -160,6 +177,14 @@ class MaterialBloc extends Bloc<MaterialEvent, MaterialState> {
 
   MaterialState _success(ResponseResult result) {
     return MaterialSuccess(result.status, result.message);
+  }
+
+  MaterialState _loading() {
+    return MaterialLoading(true, "Uploading...");
+  }
+
+  MaterialState _errorAndClear(ResponseResult result) {
+    return MaterialErrorAndClear(result.status, result.message);
   }
 
   MaterialState _error(ResponseResult result) {

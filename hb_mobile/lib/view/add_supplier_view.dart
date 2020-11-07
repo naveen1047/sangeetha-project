@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
 class AddSuppliersScreen extends StatelessWidget {
   final String title;
@@ -11,7 +12,10 @@ class AddSuppliersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(title),
+        leading: NavigateBackButton(),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -88,7 +92,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             );
         }
         if (state is SupplierErrorAndClear) {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(Duration(milliseconds: 500));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -103,7 +107,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
-          await Future.delayed(Duration(seconds: 3));
+          await Future.delayed(Duration(milliseconds: 2500));
           Navigator.pushNamed(context, kExistingSuppliersScreen);
         }
       },
@@ -143,7 +147,7 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             }),
             InputField(
               child: TextField(
-                maxLength: 30,
+                maxLength: 15,
                 controller: _contactController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -155,8 +159,10 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
               iconData: Icons.call,
             ),
             InputField(
-              child: TextField(
-                maxLength: 256,
+              child: TextFormField(
+                maxLength: 250,
+                minLines: 1,
+                maxLines: 2,
                 controller: _addressController,
                 decoration: InputDecoration(
                   counterText: "",
@@ -180,16 +186,18 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
-                color: Theme.of(context).primaryColor,
                 title: 'Upload',
-                onPressed: () {
+                onPressed: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await Future.delayed(Duration(milliseconds: 500));
                   uploadData();
                 },
               ),
             ),
             FlatButton(
               child: Text('View existing suppliers'),
-              onPressed: () {
+              onPressed: () async {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(
                   context,
                   kExistingSuppliersScreen,

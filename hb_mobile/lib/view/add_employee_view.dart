@@ -22,6 +22,7 @@ class AddEmployeeScreen extends StatelessWidget {
           ),
         ],
         child: AddEmployeeForm(),
+
       ),
     );
   }

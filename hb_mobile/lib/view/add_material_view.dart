@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
 class AddMaterialScreen extends StatelessWidget {
   final String title;
@@ -13,7 +14,10 @@ class AddMaterialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(title),
+        leading: NavigateBackButton(),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -63,7 +67,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<MaterialBloc, materialBloc.MaterialState>(
-      listener: (BuildContext context, state) {
+      listener: (BuildContext context, state) async {
         if (state is MaterialError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -71,10 +75,34 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
               warningSnackBar(message: state.message),
             );
         }
+        if (state is MaterialLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  child: CircularProgressIndicator()),
+            );
+        }
+        if (state is MaterialErrorAndClear) {
+          await Future.delayed(Duration(milliseconds: 500));
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              warningSnackBar(message: state.message),
+            );
+
+          _materialNameController.clear();
+          _materialCodeController.clear();
+        }
         if (state is MaterialSuccess) {
+          await Future.delayed(Duration(seconds: 1));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
+          await Future.delayed(Duration(seconds: 3));
+          Navigator.pushNamed(context, kExistingMaterialScreen);
         }
       },
       child: Padding(
@@ -83,11 +111,13 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
           children: [
             InputField(
               child: TextField(
+                maxLength: 28,
                 controller: _materialNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
                 },
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Material Name',
                 ),
@@ -101,6 +131,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
                   enabled: false,
                   controller: _materialCodeController,
                   decoration: InputDecoration(
+                    counterText: "",
                     border: InputBorder.none,
                     hintText: 'Material code',
                   ),
@@ -111,8 +142,10 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
             }),
             InputField(
               child: TextField(
+                maxLength: 13,
                 controller: _unitController,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Unit (kg, load etc..,)',
                 ),
@@ -121,8 +154,11 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
             ),
             InputField(
               child: TextField(
+                keyboardType: TextInputType.number,
+                maxLength: 6,
                 controller: _priceController,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Price per unit',
                 ),
@@ -134,6 +170,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
               child: PrimaryActionButton(
                 title: 'Upload',
                 onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   uploadData();
                 },
               ),
@@ -141,6 +178,7 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
             FlatButton(
               child: Text('View existing materials'),
               onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(context, kExistingMaterialScreen);
               },
             ),

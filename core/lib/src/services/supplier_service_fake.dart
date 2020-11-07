@@ -59,6 +59,7 @@ class SupplierServiceFake implements SupplierService {
   Future<Suppliers> getAllSuppliers() async {
     final url = "$_baseUrl/fetch_supplier.php";
     var response = await http.get(url);
+    print(response.request.url.toString());
     print(response.body.toString());
     if (response.statusCode == 200) {
       return compute(parseSuppliers, response.body);

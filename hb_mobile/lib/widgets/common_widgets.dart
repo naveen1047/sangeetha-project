@@ -136,15 +136,19 @@ class InputField extends StatelessWidget {
   final IconData iconData;
   final bool isDisabled;
 
-  const InputField(
-      {Key key, @required this.child, this.iconData, this.isDisabled = false})
-      : super(key: key);
+  const InputField({
+    Key key,
+    @required this.child,
+    this.iconData,
+    this.isDisabled = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: kTopPadding,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -261,7 +265,7 @@ class PrimaryActionButton extends StatelessWidget {
   const PrimaryActionButton(
       {Key key,
       @required this.title,
-      this.color = kSecondaryColor,
+      this.color = kPrimaryAccentColor,
       @required this.onPressed})
       : super(key: key);
   @override
@@ -359,7 +363,10 @@ Widget datatableLabel(String message, {bool isSortable = false}) {
           message,
           style: kDatatableLabelStyle,
         ),
-        Icon(Icons.swap_vert),
+        Icon(
+          Icons.swap_vert,
+          color: kPrimaryAccentColor,
+        ),
       ],
     );
   }

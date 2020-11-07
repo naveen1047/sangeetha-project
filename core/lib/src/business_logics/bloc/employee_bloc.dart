@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/employee.dart';
+import 'package:core/src/business_logics/util/util.dart';
 import 'package:core/src/services/employee_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
@@ -90,16 +91,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   final EmployeeService _employeeServices = serviceLocator<EmployeeService>();
 
   // get date
-  String get getDateInFormat {
-    String day = DateTime.now().day < 10
-        ? '0${DateTime.now().day}'
-        : '${DateTime.now().day}';
-    String month = DateTime.now().month < 10
-        ? '0${DateTime.now().month}'
-        : '${DateTime.now().month}';
-    int year = DateTime.now().year;
-    return '$day-$month-$year';
-  }
+  String get getDateInFormat => generateDate();
 
   @override
   Stream<EmployeeState> mapEventToState(EmployeeEvent event) async* {

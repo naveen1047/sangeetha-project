@@ -83,6 +83,20 @@ class EmployeeError extends EmployeeState {
   EmployeeError(this.status, this.message);
 }
 
+class EmployeeErrorAndClear extends EmployeeState {
+  final bool status;
+  final String message;
+
+  EmployeeErrorAndClear(this.status, this.message);
+}
+
+class EmployeeLoading extends EmployeeState {
+  final bool status;
+  final String message;
+
+  EmployeeLoading(this.status, this.message);
+}
+
 // bloc
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeBloc() : super(EmployeeIdleState());
@@ -178,4 +192,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeState _nullValueError() {
     return EmployeeError(false, 'please fill required fields');
   }
+
+  EmployeeState _loading() {
+    return EmployeeLoading(true, "Uploading..");
+  }
+
+  EmployeeState _errorAndClear(ResponseResult result) {
+    return EmployeeErrorAndClear(result.status, result.message);
+  }
+
 }

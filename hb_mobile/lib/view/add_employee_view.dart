@@ -119,6 +119,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             InputField(
               child: TextField(
                 controller: _contactController,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Contact',
@@ -127,9 +128,13 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               iconData: Icons.call,
             ),
             InputField(
-              child: TextField(
+              child: TextFormField(
+                maxLength: 250,
+                minLines: 1,
+                maxLines: 2,
                 controller: _addressController,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Address',
                 ),
@@ -151,14 +156,17 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               padding: kTopPadding,
               child: PrimaryActionButton(
                 title: 'Upload',
-                onPressed: () {
+                onPressed: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await Future.delayed(Duration(milliseconds: 500));
                   uploadData();
                 },
               ),
             ),
             FlatButton(
               child: Text('View existing employees'),
-              onPressed: () {
+              onPressed: () async {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(context, kExistingEmployeeScreen);
               },
             ),

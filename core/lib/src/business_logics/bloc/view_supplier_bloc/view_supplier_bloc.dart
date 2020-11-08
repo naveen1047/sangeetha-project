@@ -6,69 +6,9 @@ import 'package:core/src/services/service_locator.dart';
 import 'package:core/src/services/supplier_service.dart';
 import 'package:equatable/equatable.dart';
 
-// event
-abstract class ViewSupplierEvent {
-  const ViewSupplierEvent();
+part 'view_supplier_event.dart';
+part 'view_supplier_state.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class FetchSupplierEvent extends ViewSupplierEvent {
-  final String sname;
-  final String scode;
-
-  FetchSupplierEvent({
-    this.sname,
-    this.scode,
-  });
-
-  @override
-  List<Object> get props => [sname];
-}
-
-class SearchAndFetchSupplierEvent extends ViewSupplierEvent {
-  final String sname;
-  final String scode;
-
-  SearchAndFetchSupplierEvent({
-    this.sname,
-    this.scode,
-  });
-
-  @override
-  List<Object> get props => [sname];
-}
-
-// state
-abstract class ViewSupplierState {
-  const ViewSupplierState();
-}
-
-class ViewSupplierLoading extends ViewSupplierState {
-  @override
-  List<Object> get props => [];
-}
-
-class ViewSupplierLoaded extends ViewSupplierState {
-  final List<Supplier> suppliers;
-
-  ViewSupplierLoaded(this.suppliers);
-
-  @override
-  List<Object> get props => [];
-}
-
-class ViewSupplierError extends ViewSupplierState {
-  final String message;
-
-  ViewSupplierError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-// bloc
 class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
   ViewSupplierBloc() : super(ViewSupplierLoading());
 

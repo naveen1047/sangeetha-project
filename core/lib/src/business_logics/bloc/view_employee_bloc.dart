@@ -101,10 +101,9 @@ class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {
   Stream<ViewEmployeeState> _mapFetchEmployeeToState(
       ViewEmployeeEvent event, String ename) async* {
     try {
-      _employees = await _viewEmployeeService.getAllEmployees();
-
       yield ViewEmployeeLoading();
 
+      _employees = await _viewEmployeeService.getAllEmployees();
       _filteredEmployee = _employees.employees.toList();
       _filteredEmployee.sort(
           (a, b) => a.ename.toLowerCase().compareTo(b.ename.toLowerCase()));

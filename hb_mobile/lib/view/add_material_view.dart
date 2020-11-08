@@ -1,5 +1,5 @@
 import 'package:core/core.dart';
-import 'package:core/src/business_logics/bloc/material_bloc.dart'
+import 'package:core/src/business_logics/bloc/material_bloc/material_bloc.dart'
     as materialBloc;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

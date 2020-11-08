@@ -6,58 +6,8 @@ import 'package:core/src/services/service_locator.dart';
 import 'package:core/src/services/employee_service.dart';
 import 'package:equatable/equatable.dart';
 
-// event
-abstract class ViewEmployeeEvent extends Equatable {
-  const ViewEmployeeEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
-class FetchEmployeeEvent extends ViewEmployeeEvent {
-  final String ename;
-  final String ecode;
-
-  FetchEmployeeEvent({
-    this.ename,
-    this.ecode,
-  });
-
-  @override
-  List<Object> get props => [ename];
-}
-
-class SearchAndFetchEmployeeEvent extends ViewEmployeeEvent {
-  final String ename;
-  final String ecode;
-
-  SearchAndFetchEmployeeEvent({
-    this.ename,
-    this.ecode,
-  });
-
-  @override
-  List<Object> get props => [ename];
-}
-
-// state
-abstract class ViewEmployeeState {
-  const ViewEmployeeState();
-}
-
-class ViewEmployeeLoading extends ViewEmployeeState {}
-
-class ViewEmployeeLoaded extends ViewEmployeeState {
-  final List<Employee> employees;
-
-  ViewEmployeeLoaded(this.employees);
-}
-
-class ViewEmployeeError extends ViewEmployeeState {
-  final String message;
-
-  ViewEmployeeError(this.message);
-}
+part 'view_employee_event.dart';
+part 'view_employee_state.dart';
 
 // bloc
 class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {

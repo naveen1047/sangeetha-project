@@ -84,8 +84,8 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
 
   @override
   void dispose() {
-    _viewEmployeeBloc.close();
-    _editEmployeeBloc.close();
+    _viewEmployeeBloc?.close();
+    _editEmployeeBloc?.close();
     super.dispose();
   }
 

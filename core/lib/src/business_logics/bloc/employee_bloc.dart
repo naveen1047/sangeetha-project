@@ -84,6 +84,20 @@ class EmployeeError extends EmployeeState {
   EmployeeError(this.status, this.message);
 }
 
+class EmployeeErrorAndClear extends EmployeeState {
+  final bool status;
+  final String message;
+
+  EmployeeErrorAndClear(this.status, this.message);
+}
+
+class EmployeeLoading extends EmployeeState {
+  final bool status;
+  final String message;
+
+  EmployeeLoading(this.status, this.message);
+}
+
 // bloc
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeBloc() : super(EmployeeIdleState());
@@ -106,12 +120,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   Stream<EmployeeState> _mapAddEmployeeToState(AddEmployee event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _employeeServices.submitEmployee(_employee(event));
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -120,12 +135,14 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   Stream<EmployeeState> _mapEditEmployeeToState(EditEmployee event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _employeeServices.editEmployeeByCode(_employee(event));
+      await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
       } else {
-        yield _error(result);
+        yield _errorAndClear(result);
       }
     } else {
       yield _nullValueError();
@@ -138,7 +155,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (result.status == true) {
       yield _success(result);
     } else {
-      yield _error(result);
+      yield _errorAndClear(result);
     }
   }
 
@@ -169,5 +186,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   EmployeeState _nullValueError() {
     return EmployeeError(false, 'please fill required fields');
+  }
+
+  EmployeeState _loading() {
+    return EmployeeLoading(true, "Uploading..");
+  }
+
+  EmployeeState _errorAndClear(ResponseResult result) {
+    return EmployeeErrorAndClear(result.status, result.message);
   }
 }

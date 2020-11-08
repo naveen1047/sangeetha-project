@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/delete_card.dart';
+import 'package:hb_mobile/widgets/employee_bottom_sheet_widget.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
+import 'package:hb_mobile/widgets/profile_card.dart';
+import 'package:hb_mobile/widgets/search_widget.dart';
 
 class ExistingEmployeesScreen extends StatelessWidget {
   @override
@@ -20,8 +25,9 @@ class ExistingEmployeesScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Existing Employees'),
+          leading: NavigateBackButton(),
           actions: [
-            EmployeeAppBarAction(),
+            EmployeeAppbarDropDownMenu(),
           ],
         ),
         body: ExistingEmployeesList(),
@@ -30,14 +36,33 @@ class ExistingEmployeesScreen extends StatelessWidget {
   }
 }
 
-class EmployeeAppBarAction extends StatelessWidget {
+class EmployeeAppbarDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.refresh),
-      onPressed: () =>
-          BlocProvider.of<ViewEmployeeBloc>(context).add(FetchEmployeeEvent()),
+    return PopupMenuButton(
+      onSelected: (choice) {
+        choiceAction(choice, context);
+      },
+      itemBuilder: (BuildContext context) {
+        return EmployeeConstants.choices.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
     );
+  }
+
+  void choiceAction(String choice, BuildContext context) {
+    if (choice == EmployeeConstants.Settings) {
+      print('Settings');
+    } else if (choice == EmployeeConstants.Refresh) {
+      BlocProvider.of<ViewEmployeeBloc>(context).add(FetchEmployeeEvent());
+    } else if (choice == EmployeeConstants.AddEmployee) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          kAddEmployeeScreen, ModalRoute.withName(kConfigScreen));
+    }
   }
 }
 
@@ -59,8 +84,8 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
 
   @override
   void dispose() {
-    _viewEmployeeBloc.close();
-    _editEmployeeBloc.close();
+    _viewEmployeeBloc?.close();
+    _editEmployeeBloc?.close();
     super.dispose();
   }
 
@@ -68,6 +93,16 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
   Widget build(BuildContext context) {
     return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
+        if (state is EmployeeLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  child: CircularProgressIndicator()),
+            );
+        }
         if (state is EmployeeSuccess) {
           _viewEmployeeBloc.add(FetchEmployeeEvent());
           Scaffold.of(context)
@@ -85,15 +120,15 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
       },
       child: BlocBuilder<ViewEmployeeBloc, ViewEmployeeState>(
         builder: (context, state) {
-          if (state is EmployeeLoadingState) {
+          if (state is ViewEmployeeLoading) {
             return LinearProgressIndicator();
           }
-          if (state is EmployeeLoadedState) {
+          if (state is ViewEmployeeLoaded) {
             final employees = state.employees;
 
             return _buildCards(state, employees);
           }
-          if (state is EmployeeErrorState) {
+          if (state is ViewEmployeeError) {
             return _errorMessage(state, context);
           } else {
             return Text('unknown state error please report to developer');
@@ -103,26 +138,33 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
     );
   }
 
-  Widget _buildCards(EmployeeLoadedState state, List<Employee> employees) {
+  Widget _buildCards(ViewEmployeeLoaded state, List<Employee> employees) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        SizedBox(height: 8.0),
+        SearchWidget(
           child: TextField(
+            style: TextStyle(color: Colors.white),
             onChanged: (query) => _viewEmployeeBloc
                 .add(SearchAndFetchEmployeeEvent(ename: query)),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Search employees'),
+            decoration: kSearchTextFieldDecoration,
           ),
         ),
+        SizedBox(height: 8.0),
         Expanded(
-          child: _buildCardList(state, employees),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await Future.delayed(Duration(seconds: 1));
+              _viewEmployeeBloc.add(FetchEmployeeEvent());
+            },
+            child: _buildCardList(state, employees),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildCardList(EmployeeLoadedState state, List<Employee> employees) {
+  Widget _buildCardList(ViewEmployeeLoaded state, List<Employee> employees) {
     if (employees.length == 0) {
       return Center(child: Text("no results found"));
     }
@@ -135,59 +177,96 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
   }
 
   Widget _buildCard(List<Employee> employees, int index, BuildContext context) {
-    return ExpansionTile(
-      title: Text('${employees[index].ename}'),
-      subtitle: Text('${employees[index].enumber}'),
-      trailing: Text('${employees[index].eaddate}'),
-      children: [
-        Row(
-          children: [
-            Padding(
-              padding: kHorizontalPadding,
-              child: Text('${employees[index].eaddress}'),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Padding(
-              padding: kHorizontalPadding,
-              child: Text('${employees[index].ecode}'),
-            ),
-            IconButton(
-              onPressed: () {
-                _showModalBottomSheet(context, employees, index);
-              },
-              icon: Icon(Icons.edit),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text(
-                      'Are you sure you want to delete "${employees[index].ename}"?',
-                    ),
-                    actions: [
-                      FlatButton(
-                          onPressed: () {
-                            _editEmployeeBloc.add(
-                                DeleteEmployee(ecode: employees[index].ecode));
-                            Navigator.pop(context);
-                          },
-                          child: Text('Yes')),
-                      FlatButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('No')),
-                    ],
-                  ),
-                );
-              },
-              icon: Icon(Icons.delete),
-            ),
-          ],
-        ),
+    return ProfileCard(
+      cardKey: "${employees[index].ecode}",
+      title: "${employees[index].ename}",
+      subtitle: "${employees[index].enumber}",
+      date: "${employees[index].eaddate}",
+      id: "${employees[index].ecode}",
+      detail: "${employees[index].eaddress}",
+      editCard: _editCard(context, employees, index),
+      deleteCard: _deleteCard(context, employees, index),
+    );
+    // return ExpansionTile(
+    //   title: Text('${employees[index].ename}'),
+    //   subtitle: Text('${employees[index].enumber}'),
+    //   trailing: Text('${employees[index].eaddate}'),
+    //   children: [
+    //     Row(
+    //       children: [
+    //         Padding(
+    //           padding: kHorizontalPadding,
+    //           child: Text('${employees[index].eaddress}'),
+    //         ),
+    //       ],
+    //     ),
+    //     Row(
+    //       children: [
+    //         Padding(
+    //           padding: kHorizontalPadding,
+    //           child: Text('${employees[index].ecode}'),
+    //         ),
+    //         IconButton(
+    //           onPressed: () {
+    //             _showModalBottomSheet(context, employees, index);
+    //           },
+    //           icon: Icon(Icons.edit),
+    //         ),
+    //         IconButton(
+    //           onPressed: () {
+    //             showDialog(
+    //               context: context,
+    //               builder: (_) => AlertDialog(
+    //                 title: Text(
+    //                   'Are you sure you want to delete "${employees[index].ename}"?',
+    //                 ),
+    //                 actions: [
+    //                   FlatButton(
+    //                       onPressed: () {
+    //                         _editEmployeeBloc.add(
+    //                             DeleteEmployee(ecode: employees[index].ecode));
+    //                         Navigator.pop(context);
+    //                       },
+    //                       child: Text('Yes')),
+    //                   FlatButton(
+    //                       onPressed: () => Navigator.pop(context),
+    //                       child: Text('No')),
+    //                 ],
+    //               ),
+    //             );
+    //           },
+    //           icon: Icon(Icons.delete),
+    //         ),
+    //       ],
+    //     ),
+    //   ],
+    // );
+  }
+
+  Widget _deleteCard(
+      BuildContext context, List<Employee> employees, int index) {
+    return DeleteCard(
+      title: 'Are you sure you want to delete "${employees[index].ename}"?',
+      actions: [
+        FlatButton(
+            onPressed: () {
+              _editEmployeeBloc
+                  .add(DeleteEmployee(ecode: employees[index].ecode));
+              Navigator.pop(context);
+            },
+            child: Text('Yes')),
+        FlatButton(onPressed: () => Navigator.pop(context), child: Text('No')),
       ],
+    );
+  }
+
+  IconButton _editCard(
+      BuildContext context, List<Employee> employees, int index) {
+    return IconButton(
+      onPressed: () {
+        _showModalBottomSheet(context, employees, index);
+      },
+      icon: Icon(Icons.edit),
     );
   }
 
@@ -217,7 +296,7 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
     );
   }
 
-  Widget _errorMessage(EmployeeErrorState state, BuildContext context) {
+  Widget _errorMessage(ViewEmployeeError state, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -232,192 +311,5 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
         ],
       ),
     );
-  }
-}
-
-class EmployeeBottomSheet extends StatefulWidget {
-  final viewEmployeeBloc;
-  final String employeecode;
-  final String employeeName;
-  final String employeeContact;
-  final String employeeAddress;
-
-  const EmployeeBottomSheet({
-    Key key,
-    @required this.employeecode,
-    @required this.employeeName,
-    @required this.employeeContact,
-    @required this.employeeAddress,
-    this.viewEmployeeBloc,
-  }) : super(key: key);
-
-  @override
-  _BottomSheetState createState() => _BottomSheetState();
-}
-
-class _BottomSheetState extends State<EmployeeBottomSheet> {
-  EmployeeBloc _addEmployeeBloc;
-  TextEditingController _employeeNameController;
-  TextEditingController _employeeCodeController;
-  TextEditingController _contactController;
-  TextEditingController _addressController;
-  TextEditingController _addDateController;
-
-  @override
-  void initState() {
-    _addEmployeeBloc = BlocProvider.of<EmployeeBloc>(context);
-    _employeeNameController = TextEditingController();
-    _employeeCodeController = TextEditingController();
-    _contactController = TextEditingController();
-    _addressController = TextEditingController();
-    _addDateController = TextEditingController();
-    setValues();
-    super.initState();
-  }
-
-  void setValues() {
-    _employeeCodeController.text = widget.employeecode;
-    _employeeNameController.text = widget.employeeName;
-    _contactController.text = widget.employeeContact;
-    _addressController.text = widget.employeeAddress;
-    _addDateController.text = _addEmployeeBloc.getDateInFormat;
-  }
-
-  @override
-  void dispose() {
-    _employeeNameController.dispose();
-    _employeeCodeController.dispose();
-    _contactController.dispose();
-    _addressController.dispose();
-    _addDateController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: kPrimaryPadding,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          BlocListener<EmployeeBloc, EmployeeState>(
-            listener: (context, state) {
-              if (state is EmployeeSuccess) {
-                widget.viewEmployeeBloc.add(FetchEmployeeEvent());
-                Navigator.pop(context);
-              }
-            },
-            child: BlocBuilder<EmployeeBloc, EmployeeState>(
-              builder: (context, state) {
-                if (state is EmployeeError) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${state.message}',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Edit Employee'),
-                  );
-                }
-              },
-            ),
-          ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _employeeCodeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Employee code',
-              ),
-            ),
-            iconData: Icons.info,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _addDateController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Date',
-              ),
-            ),
-            iconData: Icons.calendar_today,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              controller: _employeeNameController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name',
-              ),
-            ),
-            iconData: Icons.person,
-          ),
-          InputField(
-            child: TextField(
-              controller: _contactController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Contact',
-              ),
-            ),
-            iconData: Icons.call,
-          ),
-          InputField(
-            child: TextField(
-              minLines: 1,
-              maxLines: 2,
-              controller: _addressController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Address',
-              ),
-            ),
-            iconData: Icons.home,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PrimaryActionButton(
-                  title: 'Change',
-                  onPressed: () {
-                    uploadData();
-                  },
-                ),
-                RaisedButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  void uploadData() {
-    _addEmployeeBloc
-      ..add(
-        EditEmployee(
-          ename: _employeeNameController.text,
-          eaddate: _addDateController.text,
-          eaddress: _addressController.text,
-          ecode: _employeeCodeController.text,
-          enumber: _contactController.text,
-        ),
-      );
   }
 }

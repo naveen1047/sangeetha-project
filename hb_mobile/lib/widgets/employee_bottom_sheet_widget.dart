@@ -5,39 +5,39 @@ import 'package:hb_mobile/constant.dart';
 
 import 'common_widgets.dart';
 
-class SupplierBottomSheet extends StatefulWidget {
-  final viewSupplierBloc;
-  final String supplierCode;
-  final String supplierName;
-  final String supplierContact;
-  final String supplierAddress;
+class EmployeeBottomSheet extends StatefulWidget {
+  final viewEmployeeBloc;
+  final String employeecode;
+  final String employeeName;
+  final String employeeContact;
+  final String employeeAddress;
 
-  const SupplierBottomSheet({
+  const EmployeeBottomSheet({
     Key key,
-    @required this.supplierCode,
-    @required this.supplierName,
-    @required this.supplierContact,
-    @required this.supplierAddress,
-    this.viewSupplierBloc,
+    @required this.employeecode,
+    @required this.employeeName,
+    @required this.employeeContact,
+    @required this.employeeAddress,
+    this.viewEmployeeBloc,
   }) : super(key: key);
 
   @override
   _BottomSheetState createState() => _BottomSheetState();
 }
 
-class _BottomSheetState extends State<SupplierBottomSheet> {
-  SupplierBloc _addSupplierBloc;
-  TextEditingController _supplierNameController;
-  TextEditingController _supplierCodeController;
+class _BottomSheetState extends State<EmployeeBottomSheet> {
+  EmployeeBloc _addEmployeeBloc;
+  TextEditingController _employeeNameController;
+  TextEditingController _employeeCodeController;
   TextEditingController _contactController;
   TextEditingController _addressController;
   TextEditingController _addDateController;
 
   @override
   void initState() {
-    _addSupplierBloc = BlocProvider.of<SupplierBloc>(context);
-    _supplierNameController = TextEditingController();
-    _supplierCodeController = TextEditingController();
+    _addEmployeeBloc = BlocProvider.of<EmployeeBloc>(context);
+    _employeeNameController = TextEditingController();
+    _employeeCodeController = TextEditingController();
     _contactController = TextEditingController();
     _addressController = TextEditingController();
     _addDateController = TextEditingController();
@@ -46,17 +46,17 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   }
 
   void setValues() {
-    _supplierCodeController.text = widget.supplierCode;
-    _supplierNameController.text = widget.supplierName;
-    _contactController.text = widget.supplierContact;
-    _addressController.text = widget.supplierAddress;
-    _addDateController.text = _addSupplierBloc.getDateInFormat;
+    _employeeCodeController.text = widget.employeecode;
+    _employeeNameController.text = widget.employeeName;
+    _contactController.text = widget.employeeContact;
+    _addressController.text = widget.employeeAddress;
+    _addDateController.text = _addEmployeeBloc.getDateInFormat;
   }
 
   @override
   void dispose() {
-    _supplierNameController.dispose();
-    _supplierCodeController.dispose();
+    _employeeNameController.dispose();
+    _employeeCodeController.dispose();
     _contactController.dispose();
     _addressController.dispose();
     _addDateController.dispose();
@@ -71,26 +71,26 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          BlocListener<SupplierBloc, SupplierState>(
+          BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) async {
-              if (state is SupplierSuccess) {
+              if (state is EmployeeSuccess) {
                 await Future.delayed(Duration(seconds: 1));
-                widget.viewSupplierBloc.add(FetchSupplierEvent());
+                widget.viewEmployeeBloc.add(FetchEmployeeEvent());
                 Navigator.pop(context);
               }
             },
-            child: BlocBuilder<SupplierBloc, SupplierState>(
+            child: BlocBuilder<EmployeeBloc, EmployeeState>(
               builder: (context, state) {
-                if (state is SupplierSuccess) {
+                if (state is EmployeeSuccess) {
                   return message("Value changed successfully");
                 }
-                if (state is SupplierLoading) {
+                if (state is EmployeeLoading) {
                   return message(
                     "Updating...",
                     child: CircularProgressIndicator(),
                   );
                 }
-                if (state is SupplierError) {
+                if (state is EmployeeError) {
                   return _errorMessage(state);
                 } else {
                   return _title();
@@ -99,49 +99,42 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
             ),
           ),
           _buildCodeField(),
-          _buildDateField(),
+          _buildCalender(),
           _buildNameField(),
           _buildContactField(),
           _buildAddressField(),
-          _buildActionButtons(context),
+          _buildActionButton(context)
         ],
       ),
     );
   }
 
-  Padding _buildActionButtons(BuildContext context) {
+  Padding _title() {
     return Padding(
-      padding: kPrimaryPadding,
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Edit Employee'),
+    );
+  }
+
+  Padding _buildActionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           PrimaryActionButton(
-            color: Theme.of(context).primaryColor,
             title: 'Change',
             onPressed: () {
               uploadData();
             },
           ),
           RaisedButton(
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
     );
-  }
-
-  void uploadData() {
-    _addSupplierBloc
-      ..add(
-        EditSupplier(
-          sname: _supplierNameController.text,
-          saddate: _addDateController.text,
-          saddress: _addressController.text,
-          scode: _supplierCodeController.text,
-          snum: _contactController.text,
-        ),
-      );
   }
 
   InputField _buildAddressField() {
@@ -162,8 +155,8 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   InputField _buildContactField() {
     return InputField(
       child: TextField(
+        keyboardType: TextInputType.phone,
         controller: _contactController,
-        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Contact',
@@ -176,7 +169,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
   InputField _buildNameField() {
     return InputField(
       child: TextField(
-        controller: _supplierNameController,
+        controller: _employeeNameController,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Name',
@@ -186,7 +179,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
     );
   }
 
-  InputField _buildDateField() {
+  InputField _buildCalender() {
     return InputField(
       child: TextField(
         enabled: false,
@@ -205,10 +198,10 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
     return InputField(
       child: TextField(
         enabled: false,
-        controller: _supplierCodeController,
+        controller: _employeeCodeController,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: 'Supplier code',
+          hintText: 'Employee code',
         ),
       ),
       iconData: Icons.info,
@@ -216,19 +209,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
     );
   }
 
-  Padding _title() {
-    return Padding(
-      padding: kPrimaryPadding,
-      child: Text(
-        'Edit Supplier',
-        style: TextStyle(
-          fontSize: 16.0,
-        ),
-      ),
-    );
-  }
-
-  Padding _errorMessage(SupplierError state) {
+  Padding _errorMessage(EmployeeError state) {
     return Padding(
       padding: kPrimaryPadding,
       child: Text(
@@ -238,5 +219,18 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
         ),
       ),
     );
+  }
+
+  void uploadData() {
+    _addEmployeeBloc
+      ..add(
+        EditEmployee(
+          ename: _employeeNameController.text,
+          eaddate: _addDateController.text,
+          eaddress: _addressController.text,
+          ecode: _employeeCodeController.text,
+          enumber: _contactController.text,
+        ),
+      );
   }
 }

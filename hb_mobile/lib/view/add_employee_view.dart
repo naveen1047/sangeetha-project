@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
 class AddEmployeeScreen extends StatelessWidget {
   final String title;
@@ -11,7 +12,7 @@ class AddEmployeeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title), leading: NavigateBackButton(),),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -70,7 +71,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<EmployeeBloc, EmployeeState>(
-      listener: (BuildContext context, state) {
+      listener: (BuildContext context, state) async {
         if (state is EmployeeError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -78,10 +79,34 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               warningSnackBar(message: state.message),
             );
         }
+        if (state is EmployeeLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  child: CircularProgressIndicator()),
+            );
+        }
+        if (state is EmployeeErrorAndClear) {
+          await Future.delayed(Duration(milliseconds: 500));
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              warningSnackBar(message: state.message),
+            );
+
+          _employeeNameController.clear();
+          _employeeCodeController.clear();
+        }
         if (state is EmployeeSuccess) {
+          await Future.delayed(Duration(seconds: 1));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
+          await Future.delayed(Duration(milliseconds: 2500));
+          Navigator.pushNamed(context, kExistingEmployeeScreen);
         }
       },
       child: Padding(
@@ -119,6 +144,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             InputField(
               child: TextField(
                 controller: _contactController,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Contact',
@@ -127,9 +153,13 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               iconData: Icons.call,
             ),
             InputField(
-              child: TextField(
+              child: TextFormField(
+                maxLength: 250,
+                minLines: 1,
+                maxLines: 2,
                 controller: _addressController,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: InputBorder.none,
                   hintText: 'Address',
                 ),
@@ -151,14 +181,17 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               padding: kTopPadding,
               child: PrimaryActionButton(
                 title: 'Upload',
-                onPressed: () {
+                onPressed: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await Future.delayed(Duration(milliseconds: 500));
                   uploadData();
                 },
               ),
             ),
             FlatButton(
               child: Text('View existing employees'),
-              onPressed: () {
+              onPressed: () async {
+                FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(context, kExistingEmployeeScreen);
               },
             ),

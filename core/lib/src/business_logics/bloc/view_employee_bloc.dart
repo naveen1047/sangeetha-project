@@ -45,23 +45,23 @@ abstract class ViewEmployeeState {
   const ViewEmployeeState();
 }
 
-class EmployeeLoadingState extends ViewEmployeeState {}
+class ViewEmployeeLoading extends ViewEmployeeState {}
 
-class EmployeeLoadedState extends ViewEmployeeState {
+class ViewEmployeeLoaded extends ViewEmployeeState {
   final List<Employee> employees;
 
-  EmployeeLoadedState(this.employees);
+  ViewEmployeeLoaded(this.employees);
 }
 
-class EmployeeErrorState extends ViewEmployeeState {
+class ViewEmployeeError extends ViewEmployeeState {
   final String message;
 
-  EmployeeErrorState(this.message);
+  ViewEmployeeError(this.message);
 }
 
 // bloc
 class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {
-  ViewEmployeeBloc() : super(EmployeeLoadingState());
+  ViewEmployeeBloc() : super(ViewEmployeeLoading());
 
   final EmployeeService _viewEmployeeService =
       serviceLocator<EmployeeService>();
@@ -91,35 +91,34 @@ class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {
             .toList();
         print(_filteredEmployee.toString());
 
-        yield EmployeeLoadedState(_filteredEmployee);
+        yield ViewEmployeeLoaded(_filteredEmployee);
       }
     } catch (e) {
-      yield EmployeeErrorState(e.toString());
+      yield ViewEmployeeError(e.toString());
     }
   }
 
   Stream<ViewEmployeeState> _mapFetchEmployeeToState(
       ViewEmployeeEvent event, String ename) async* {
     try {
+      yield ViewEmployeeLoading();
+
       _employees = await _viewEmployeeService.getAllEmployees();
-
-      yield EmployeeLoadingState();
-
       _filteredEmployee = _employees.employees.toList();
       _filteredEmployee.sort(
           (a, b) => a.ename.toLowerCase().compareTo(b.ename.toLowerCase()));
 
       yield _eventResult();
     } catch (e) {
-      yield EmployeeErrorState(e.toString());
+      yield ViewEmployeeError(e.toString());
     }
   }
 
   ViewEmployeeState _eventResult() {
     if (_filteredEmployee.length > 0) {
-      return EmployeeLoadedState(_filteredEmployee);
+      return ViewEmployeeLoaded(_filteredEmployee);
     } else {
-      return EmployeeErrorState("no data found");
+      return ViewEmployeeError("no data found");
     }
   }
 }

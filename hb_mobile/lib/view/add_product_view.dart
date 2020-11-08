@@ -90,7 +90,7 @@ class _AddProductFormState extends State<AddProductForm> {
         child: ListView(
           children: [
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _productNameController,
                 onChanged: (text) {
                   context.bloc<RandomCodeCubit>().generate(text);
@@ -105,7 +105,7 @@ class _AddProductFormState extends State<AddProductForm> {
             BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
               _productCodeController.text = '$state';
               return InputField(
-                textField: TextField(
+                child: TextField(
                   enabled: false,
                   controller: _productCodeController,
                   decoration: InputDecoration(
@@ -118,7 +118,7 @@ class _AddProductFormState extends State<AddProductForm> {
               );
             }),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _salaryPerStrokeController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -128,7 +128,7 @@ class _AddProductFormState extends State<AddProductForm> {
               iconData: Icons.attach_money,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _unitPerStrokeController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -138,7 +138,7 @@ class _AddProductFormState extends State<AddProductForm> {
               iconData: Icons.arrow_forward_ios,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _sellingUnitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -148,7 +148,7 @@ class _AddProductFormState extends State<AddProductForm> {
               iconData: Icons.bookmark,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _pricePerSellingUnitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -158,7 +158,7 @@ class _AddProductFormState extends State<AddProductForm> {
               iconData: Icons.attach_money,
             ),
             InputField(
-              textField: TextField(
+              child: TextField(
                 controller: _unitsPerSellingUnitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,

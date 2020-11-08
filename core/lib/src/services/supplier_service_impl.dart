@@ -7,7 +7,7 @@ import 'package:core/src/services/supplier_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class SupplierServiceFake implements SupplierService {
+class SupplierServiceImpl implements SupplierService {
   String _baseUrl = kBaseUrl;
 
   @override

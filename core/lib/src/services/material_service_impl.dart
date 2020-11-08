@@ -7,7 +7,7 @@ import 'package:core/src/services/material_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class MaterialServiceFake implements MaterialService {
+class MaterialServiceImpl implements MaterialService {
   String _baseUrl = kBaseUrl;
 
   @override

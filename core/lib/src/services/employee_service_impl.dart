@@ -7,7 +7,7 @@ import 'package:core/src/services/employee_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class EmployeeServiceFake implements EmployeeService {
+class EmployeeServiceImpl implements EmployeeService {
   String _baseUrl = kBaseUrl;
 
   @override

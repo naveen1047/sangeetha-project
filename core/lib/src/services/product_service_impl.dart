@@ -7,7 +7,7 @@ import 'package:core/src/services/product_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-class ProductServiceFake implements ProductService {
+class ProductServiceImpl implements ProductService {
   String _baseUrl = kBaseUrl;
 
   @override

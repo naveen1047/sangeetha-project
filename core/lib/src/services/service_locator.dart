@@ -16,14 +16,14 @@ void setupServiceLocator() {
   // serviceLocator.registerLazySingleton<MaterialPurchaseServices>(
   //     () => FakeMaterialPurchase());
   serviceLocator
-      .registerLazySingleton<ProductService>(() => ProductServiceFake());
+      .registerLazySingleton<ProductService>(() => ProductServiceImpl());
 
   serviceLocator
-      .registerLazySingleton<EmployeeService>(() => EmployeeServiceFake());
+      .registerLazySingleton<EmployeeService>(() => EmployeeServiceImpl());
 
   serviceLocator
-      .registerLazySingleton<MaterialService>(() => MaterialServiceFake());
+      .registerLazySingleton<MaterialService>(() => MaterialServiceImpl());
 
   serviceLocator
-      .registerLazySingleton<SupplierService>(() => SupplierServiceFake());
+      .registerLazySingleton<SupplierService>(() => SupplierServiceImpl());
 }

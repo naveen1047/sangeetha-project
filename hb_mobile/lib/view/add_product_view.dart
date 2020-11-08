@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
-import 'package:core/src/business_logics/bloc/product_bloc.dart' as productBloc;
+import 'package:core/src/business_logics/bloc/product_bloc/product_bloc.dart'
+    as productBloc;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';

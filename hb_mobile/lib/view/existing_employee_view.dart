@@ -36,7 +36,6 @@ class ExistingEmployeesScreen extends StatelessWidget {
   }
 }
 
-
 class EmployeeAppbarDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -67,17 +66,6 @@ class EmployeeAppbarDropDownMenu extends StatelessWidget {
   }
 }
 
-class EmployeeAppBarAction extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.refresh),
-      onPressed: () =>
-          BlocProvider.of<ViewEmployeeBloc>(context).add(FetchEmployeeEvent()),
-    );
-  }
-}
-
 class ExistingEmployeesList extends StatefulWidget {
   @override
   _ExistingEmployeesListState createState() => _ExistingEmployeesListState();
@@ -105,6 +93,16 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
   Widget build(BuildContext context) {
     return BlocListener<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
+        if (state is EmployeeLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                  message: state.message,
+                  seconds: 1,
+                  child: CircularProgressIndicator()),
+            );
+        }
         if (state is EmployeeSuccess) {
           _viewEmployeeBloc.add(FetchEmployeeEvent());
           Scaffold.of(context)
@@ -122,15 +120,15 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
       },
       child: BlocBuilder<ViewEmployeeBloc, ViewEmployeeState>(
         builder: (context, state) {
-          if (state is EmployeeLoadingState) {
+          if (state is ViewEmployeeLoading) {
             return LinearProgressIndicator();
           }
-          if (state is EmployeeLoadedState) {
+          if (state is ViewEmployeeLoaded) {
             final employees = state.employees;
 
             return _buildCards(state, employees);
           }
-          if (state is EmployeeErrorState) {
+          if (state is ViewEmployeeError) {
             return _errorMessage(state, context);
           } else {
             return Text('unknown state error please report to developer');
@@ -140,7 +138,7 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
     );
   }
 
-  Widget _buildCards(EmployeeLoadedState state, List<Employee> employees) {
+  Widget _buildCards(ViewEmployeeLoaded state, List<Employee> employees) {
     return Column(
       children: [
         SizedBox(height: 8.0),
@@ -166,7 +164,7 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
     );
   }
 
-  Widget _buildCardList(EmployeeLoadedState state, List<Employee> employees) {
+  Widget _buildCardList(ViewEmployeeLoaded state, List<Employee> employees) {
     if (employees.length == 0) {
       return Center(child: Text("no results found"));
     }
@@ -298,7 +296,7 @@ class _ExistingEmployeesListState extends State<ExistingEmployeesList> {
     );
   }
 
-  Widget _errorMessage(EmployeeErrorState state, BuildContext context) {
+  Widget _errorMessage(ViewEmployeeError state, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

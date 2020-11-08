@@ -7,3 +7,4 @@ export 'material_purchase_report_view.dart';
 export 'add_material_view.dart';
 export 'add_employee_view.dart';
 export 'existing_employee_view.dart';
+export 'add_product_view.dart';

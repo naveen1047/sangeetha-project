@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/simple_bloc_observer.dart';
+import 'package:hb_mobile/view/add_product_view.dart';
 import 'package:hb_mobile/view/existing_material_view.dart';
 import 'package:hb_mobile/view/view.dart';
 
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         kAddEmployeeScreen: (context) =>
             AddEmployeeScreen(title: "Add Employee"),
         kExistingEmployeeScreen: (context) => ExistingEmployeesScreen(),
+        kAddProductScreen: (context) => AddProductScreen(
+              title: "Add Product",
+            ),
       },
       title: title,
       theme: ThemeData(

@@ -1,4 +1,3 @@
-
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,108 +72,150 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           BlocListener<EmployeeBloc, EmployeeState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is EmployeeSuccess) {
+                await Future.delayed(Duration(seconds: 1));
                 widget.viewEmployeeBloc.add(FetchEmployeeEvent());
                 Navigator.pop(context);
               }
             },
             child: BlocBuilder<EmployeeBloc, EmployeeState>(
               builder: (context, state) {
+                if (state is EmployeeSuccess) {
+                  return message("Value changed successfully");
+                }
+                if (state is EmployeeLoading) {
+                  return message(
+                    "Updating...",
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 if (state is EmployeeError) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '${state.message}',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  );
+                  return _errorMessage(state);
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Edit Employee'),
-                  );
+                  return _title();
                 }
               },
             ),
           ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _employeeCodeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Employee code',
-              ),
-            ),
-            iconData: Icons.info,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _addDateController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Date',
-              ),
-            ),
-            iconData: Icons.calendar_today,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              controller: _employeeNameController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name',
-              ),
-            ),
-            iconData: Icons.person,
-          ),
-          InputField(
-            child: TextField(
-              controller: _contactController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Contact',
-              ),
-            ),
-            iconData: Icons.call,
-          ),
-          InputField(
-            child: TextField(
-              minLines: 1,
-              maxLines: 2,
-              controller: _addressController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Address',
-              ),
-            ),
-            iconData: Icons.home,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PrimaryActionButton(
-                  title: 'Change',
-                  onPressed: () {
-                    uploadData();
-                  },
-                ),
-                RaisedButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          )
+          _buildCodeField(),
+          _buildCalender(),
+          _buildNameField(),
+          _buildContactField(),
+          _buildAddressField(),
+          _buildActionButton(context)
         ],
+      ),
+    );
+  }
+
+  Padding _title() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Edit Employee'),
+    );
+  }
+
+  Padding _buildActionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          PrimaryActionButton(
+            title: 'Change',
+            onPressed: () {
+              uploadData();
+            },
+          ),
+          RaisedButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  InputField _buildAddressField() {
+    return InputField(
+      child: TextField(
+        minLines: 1,
+        maxLines: 2,
+        controller: _addressController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Address',
+        ),
+      ),
+      iconData: Icons.home,
+    );
+  }
+
+  InputField _buildContactField() {
+    return InputField(
+      child: TextField(
+        controller: _contactController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Contact',
+        ),
+      ),
+      iconData: Icons.call,
+    );
+  }
+
+  InputField _buildNameField() {
+    return InputField(
+      child: TextField(
+        controller: _employeeNameController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Name',
+        ),
+      ),
+      iconData: Icons.person,
+    );
+  }
+
+  InputField _buildCalender() {
+    return InputField(
+      child: TextField(
+        enabled: false,
+        controller: _addDateController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Date',
+        ),
+      ),
+      iconData: Icons.calendar_today,
+      isDisabled: true,
+    );
+  }
+
+  InputField _buildCodeField() {
+    return InputField(
+      child: TextField(
+        enabled: false,
+        controller: _employeeCodeController,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Employee code',
+        ),
+      ),
+      iconData: Icons.info,
+      isDisabled: true,
+    );
+  }
+
+  Padding _errorMessage(EmployeeError state) {
+    return Padding(
+      padding: kPrimaryPadding,
+      child: Text(
+        '${state.message}',
+        style: TextStyle(
+          color: Colors.red,
+        ),
       ),
     );
   }

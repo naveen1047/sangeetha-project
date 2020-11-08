@@ -93,7 +93,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
                 if (state is SupplierError) {
                   return _errorMessage(state);
                 } else {
-                  return _bottomTitle();
+                  return _title();
                 }
               },
             ),
@@ -216,7 +216,7 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
     );
   }
 
-  Padding _bottomTitle() {
+  Padding _title() {
     return Padding(
       padding: kPrimaryPadding,
       child: Text(

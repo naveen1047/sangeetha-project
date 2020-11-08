@@ -146,6 +146,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       yield _loading();
       ResponseResult result =
           await _employeeServices.editEmployeeByCode(_employee(event));
+      await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
       } else {
@@ -202,5 +203,4 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeState _errorAndClear(ResponseResult result) {
     return EmployeeErrorAndClear(result.status, result.message);
   }
-
 }

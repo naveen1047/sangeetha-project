@@ -155,6 +155,7 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
   InputField _buildContactField() {
     return InputField(
       child: TextField(
+        keyboardType: TextInputType.phone,
         controller: _contactController,
         decoration: InputDecoration(
           border: InputBorder.none,

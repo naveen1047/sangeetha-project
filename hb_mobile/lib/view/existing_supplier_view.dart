@@ -36,7 +36,7 @@ class ExistingSuppliersScreen extends StatelessWidget {
           title: Text('Existing Suppliers'),
           leading: NavigateBackButton(),
           actions: [
-            AppbarDropDownMenu(),
+            SupplierAppbarDropDownMenu(),
           ],
         ),
         body: ExistingSuppliersList(),
@@ -45,7 +45,7 @@ class ExistingSuppliersScreen extends StatelessWidget {
   }
 }
 
-class AppbarDropDownMenu extends StatelessWidget {
+class SupplierAppbarDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(

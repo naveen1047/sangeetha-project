@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:hb_mobile/widgets/delete_card.dart';
+import 'package:hb_mobile/widgets/employee_bottom_sheet_widget.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 import 'package:hb_mobile/widgets/profile_card.dart';
 import 'package:hb_mobile/widgets/search_widget.dart';
 
@@ -23,13 +25,45 @@ class ExistingEmployeesScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Existing Employees'),
+          leading: NavigateBackButton(),
           actions: [
-            EmployeeAppBarAction(),
+            EmployeeAppbarDropDownMenu(),
           ],
         ),
         body: ExistingEmployeesList(),
       ),
     );
+  }
+}
+
+
+class EmployeeAppbarDropDownMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (choice) {
+        choiceAction(choice, context);
+      },
+      itemBuilder: (BuildContext context) {
+        return EmployeeConstants.choices.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+          );
+        }).toList();
+      },
+    );
+  }
+
+  void choiceAction(String choice, BuildContext context) {
+    if (choice == EmployeeConstants.Settings) {
+      print('Settings');
+    } else if (choice == EmployeeConstants.Refresh) {
+      BlocProvider.of<ViewEmployeeBloc>(context).add(FetchEmployeeEvent());
+    } else if (choice == EmployeeConstants.AddEmployee) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          kAddEmployeeScreen, ModalRoute.withName(kConfigScreen));
+    }
   }
 }
 

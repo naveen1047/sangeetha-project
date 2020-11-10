@@ -26,6 +26,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Stream<ProductState> _mapAddProductToState(AddProduct event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
+      await Future.delayed(Duration(seconds: 2));
       // TODO: handle list of response
       ResponseResults results =
           await _productServices.submitProduct(_product(event));
@@ -113,5 +115,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   ProductState _nullValueError() {
     return ProductError(false, 'please fill required fields');
+  }
+
+  ProductState _loading() {
+    return ProductUploading(true, 'Uploading..');
   }
 }

@@ -80,6 +80,16 @@ class _AddProductFormState extends State<AddProductForm> {
               warningSnackBar(message: state.message),
             );
         }
+        if (state is ProductUploading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              progressSnackBar(
+                message: state.message,
+                child: CircularProgressIndicator(),
+              ),
+            );
+        }
         if (state is ProductSuccess) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()

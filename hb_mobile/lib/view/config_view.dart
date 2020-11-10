@@ -34,7 +34,8 @@ class ConfigScreen extends StatelessWidget {
         title: 'Add Product',
         subtitle: 'Existing products',
         primaryColor: Colors.teal,
-        onTapSecondary: () {},
+        onTapSecondary: () =>
+            Navigator.pushNamed(context, kExistingProductScreen),
         onTapPrimary: () => Navigator.pushNamed(context, kAddProductScreen),
       ),
     ];

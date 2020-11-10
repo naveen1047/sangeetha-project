@@ -11,6 +11,7 @@ const String kExistingMaterialScreen = '/existingMaterialScreen';
 const String kAddEmployeeScreen = '/addEmployeeScreen';
 const String kExistingEmployeeScreen = '/existingEmployeeScreen';
 const String kAddProductScreen = '/addProductScreen';
+const String kExistingProductScreen = '/existingProductScreen';
 
 // decoration
 Decoration kOutlineBorder = BoxDecoration(
@@ -124,4 +125,13 @@ class MaterialConstants {
   static const String AddMaterial = 'Add Material';
 
   static const List<String> choices = <String>[Refresh, AddMaterial, Settings];
+}
+
+// Product constants
+class ProductConstants {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+  static const String AddProduct = 'Add Product';
+
+  static const List<String> choices = <String>[Refresh, AddProduct, Settings];
 }

@@ -5,14 +5,13 @@ import 'package:core/src/business_logics/models/material.dart';
 import 'package:core/src/services/material_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
+import 'package:core/src/business_logics/util/util.dart';
 
 part 'view_material_event.dart';
 part 'view_material_state.dart';
 
-enum sorting { ascending, descending }
-
 // TODO: return state with value (sortBy, sorting)
-enum sortBy { name, unit, price }
+enum sortMaterialBy { name, unit, price }
 
 // bloc
 class ViewMaterialBloc extends Bloc<ViewMaterialEvent, ViewMaterialState> {

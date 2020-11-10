@@ -104,6 +104,22 @@ class CategoryLabel extends StatelessWidget {
   }
 }
 
+class MenuTitle extends StatelessWidget {
+  final String title;
+
+  const MenuTitle({Key key, this.title}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text(
+        title,
+        style: TextStyle(color: kIconColor),
+      ),
+    );
+  }
+}
+
 class MenuItem extends StatelessWidget {
   final IconData iconData;
   final String title;
@@ -117,10 +133,18 @@ class MenuItem extends StatelessWidget {
     return ListTile(
       title: Row(
         children: [
-          iconData != null ? Icon(iconData) : Container(),
+          iconData != null
+              ? Icon(
+                  iconData,
+                  color: Colors.black54,
+                )
+              : Container(),
           Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(title),
+            padding: const EdgeInsets.only(left: 24.0),
+            child: Text(
+              title,
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
           ),
         ],
       ),
@@ -176,86 +200,86 @@ class InputField extends StatelessWidget {
   }
 }
 
-class DualButton extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Function onTapPrimary;
-  final Function onTapSecondary;
-  final Color primaryColor;
-
-  const DualButton({
-    Key key,
-    @required this.title,
-    @required this.subtitle,
-    @required this.onTapPrimary,
-    @required this.onTapSecondary,
-    @required this.primaryColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: kPrimaryPadding,
-        child: Container(
-          decoration: kDualButtonDecoration,
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: onTapPrimary,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(4.0)),
-                    color: primaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              color: kWhiteColor,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: kWhiteColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // TODO: sliding issue
-              GestureDetector(
-                onTap: onTapSecondary,
-                child: Container(
-                  // color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.folder_open),
-                        SizedBox(width: 4.0),
-                        Expanded(child: Text(subtitle)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class DualButton extends StatelessWidget {
+//   final String title;
+//   final String subtitle;
+//   final Function onTapPrimary;
+//   final Function onTapSecondary;
+//   final Color primaryColor;
+//
+//   const DualButton({
+//     Key key,
+//     @required this.title,
+//     @required this.subtitle,
+//     @required this.onTapPrimary,
+//     @required this.onTapSecondary,
+//     @required this.primaryColor,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: Padding(
+//         padding: kPrimaryPadding,
+//         child: Container(
+//           decoration: kDualButtonDecoration,
+//           child: Column(
+//             children: [
+//               GestureDetector(
+//                 onTap: onTapPrimary,
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     borderRadius:
+//                         BorderRadius.vertical(top: Radius.circular(4.0)),
+//                     color: primaryColor,
+//                   ),
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(24.0),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Expanded(
+//                           child: Text(
+//                             title,
+//                             style: TextStyle(
+//                               color: kWhiteColor,
+//                               fontSize: 20.0,
+//                             ),
+//                           ),
+//                         ),
+//                         Icon(
+//                           Icons.keyboard_arrow_right,
+//                           color: kWhiteColor,
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               // TODO: sliding issue
+//               GestureDetector(
+//                 onTap: onTapSecondary,
+//                 child: Container(
+//                   // color: Colors.blue,
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(24.0),
+//                     child: Row(
+//                       children: [
+//                         Icon(Icons.folder_open),
+//                         SizedBox(width: 4.0),
+//                         Expanded(child: Text(subtitle)),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class PrimaryActionButton extends StatelessWidget {
   final String title;
@@ -374,4 +398,42 @@ Widget datatableLabel(String message, {bool isSortable = false}) {
     message,
     style: kDatatableLabelStyle,
   );
+}
+
+class DualButton extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Function onTapPrimary;
+  final Function onTapSecondary;
+  final Color primaryColor;
+
+  const DualButton({
+    Key key,
+    @required this.title,
+    @required this.subtitle,
+    @required this.onTapPrimary,
+    @required this.onTapSecondary,
+    @required this.primaryColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: kCardDecoration,
+        child: ListTile(
+          title: Text(subtitle),
+          onTap: onTapSecondary,
+          trailing: IconButton(
+            icon: Icon(Icons.add_circle_rounded),
+            color: kPrimaryAccentColor,
+            onPressed: onTapPrimary,
+            tooltip: title,
+          ),
+          tileColor: kMutedColorLight,
+        ),
+      ),
+    );
+  }
 }

@@ -12,7 +12,10 @@ class AddEmployeeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title), leading: NavigateBackButton(),),
+      appBar: AppBar(
+        title: Text(title),
+        leading: NavigateBackButton(),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -23,7 +26,6 @@ class AddEmployeeScreen extends StatelessWidget {
           ),
         ],
         child: AddEmployeeForm(),
-
       ),
     );
   }
@@ -189,7 +191,10 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               ),
             ),
             FlatButton(
-              child: Text('View existing employees'),
+              child: Text(
+                'View existing employees',
+                // style: TextStyle(color: kTextColor),
+              ),
               onPressed: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
                 Navigator.pushNamed(context, kExistingEmployeeScreen);

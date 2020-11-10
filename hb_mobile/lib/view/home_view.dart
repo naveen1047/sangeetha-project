@@ -26,8 +26,10 @@ class HomeScreen extends StatelessWidget {
               onTap: null,
               iconData: Icons.dashboard,
             ),
-            Text('HOLLOW BLOCK'),
-            Divider(),
+            Divider(thickness: 1.0),
+            MenuTitle(
+              title: 'Hollow block',
+            ),
             MenuItem(
               title: 'Material Purchase',
               onTap: null,
@@ -58,8 +60,8 @@ class HomeScreen extends StatelessWidget {
               onTap: null,
               iconData: Icons.note,
             ),
-            Text('MENU'),
-            Divider(),
+            Divider(thickness: 1.0),
+            MenuTitle(title: 'Menu'),
             MenuItem(
               title: 'Settings',
               onTap: () {},

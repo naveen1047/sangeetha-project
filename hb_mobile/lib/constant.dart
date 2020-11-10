@@ -59,7 +59,7 @@ List<BoxShadow> kBoxShadow = [
 
 // enabled input field
 Decoration kOutlineBorderDisabled = BoxDecoration(
-  color: kMutedColorLite,
+  color: kMutedColorLight,
   border: Border.all(
     color: kMutedColor,
     width: 1,
@@ -77,7 +77,7 @@ TextStyle kDatatableLabelStyle = TextStyle(
 BorderRadiusGeometry kDefaultBorderRadius = BorderRadius.circular(4.0);
 
 //color
-const Color kMutedColorLite = Color(0x10000000);
+const Color kMutedColorLight = Color(0x10000000);
 const Color kMutedColor = Color(0x15000000);
 const Color kIconColor = Color(0x80000000);
 const Color kTextColor = Color(0x80000000);

@@ -50,10 +50,16 @@ class ConfigScreen extends StatelessWidget {
               children: configWidgets,
             );
           } else {
-            return GridView.count(
-              crossAxisCount: 3,
-              children: configWidgets,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 100.0),
+              child: ListView(
+                children: configWidgets,
+              ),
             );
+            // return GridView.count(
+            //   crossAxisCount: 2,
+            //   children: configWidgets,
+            // );
           }
         },
       ),

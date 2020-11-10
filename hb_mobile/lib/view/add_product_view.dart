@@ -120,6 +120,7 @@ class _AddProductFormState extends State<AddProductForm> {
             }),
             InputField(
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: _salaryPerStrokeController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -130,6 +131,7 @@ class _AddProductFormState extends State<AddProductForm> {
             ),
             InputField(
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: _unitPerStrokeController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -160,6 +162,7 @@ class _AddProductFormState extends State<AddProductForm> {
             ),
             InputField(
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: _unitsPerSellingUnitController,
                 decoration: InputDecoration(
                   border: InputBorder.none,

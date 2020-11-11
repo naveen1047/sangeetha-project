@@ -87,15 +87,6 @@ class _DataSource extends DataTableSource {
     final row = _rows[index];
     return DataRow.byIndex(
       index: index,
-      // selected: row.selected,
-      // onSelectChanged: (value) {
-      //   if (row.selected != value) {
-      //     _selectedCount += value ? 1 : -1;
-      //     assert(_selectedCount >= 0);
-      //     row.selected = value;
-      //     notifyListeners();
-      //   }
-      // },
       cells: [
         DataCell(Text(row.valueA)),
         DataCell(Text(row.valueB)),

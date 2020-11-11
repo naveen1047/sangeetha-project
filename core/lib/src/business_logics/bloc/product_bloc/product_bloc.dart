@@ -40,8 +40,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Stream<ProductState> _mapEditProductToState(EditProduct event) async* {
     if (_isEventAttributeIsNotNull(event)) {
+      yield _loading();
       ResponseResult result =
           await _productServices.editProductByCode(_product(event));
+      await Future.delayed(Duration(seconds: 2));
+
       if (result.status == true) {
         yield _success(result);
       } else {

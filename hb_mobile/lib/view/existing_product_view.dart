@@ -1,7 +1,4 @@
 import 'package:core/core.dart';
-// import 'package:core/src/business_logics/bloc/product_bloc/product_bloc.dart'
-// as productBloc;
-import 'package:core/src/business_logics/models/product.dart' as product;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
@@ -84,7 +81,7 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
               return LinearProgressIndicator();
             }
             if (state is ProductLoadedState) {
-              final List<product.Product> products = state.products;
+              final List<Product> products = state.products;
 
               return _buildTable(state, products);
             }
@@ -99,7 +96,7 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
     );
   }
 
-  Widget _buildTable(ProductLoadedState state, List<product.Product> products) {
+  Widget _buildTable(ProductLoadedState state, List<Product> products) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -123,7 +120,7 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
   }
 
   Widget _buildPaginatedDataTable(
-      ProductLoadedState state, List<product.Product> products) {
+      ProductLoadedState state, List<Product> products) {
     return ProductDataTable(
       dataColumn: [
         DataColumn(

@@ -437,3 +437,24 @@ class DualButton extends StatelessWidget {
     );
   }
 }
+
+class SecondaryActionButton extends StatelessWidget {
+  final String title;
+  final Function onPressed;
+
+  const SecondaryActionButton({Key key, this.title, this.onPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        title,
+        style: TextStyle(color: kTextColor),
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, kExistingProductScreen);
+      },
+    );
+  }
+}

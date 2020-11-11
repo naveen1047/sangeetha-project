@@ -190,11 +190,10 @@ class _AddProductFormState extends State<AddProductForm> {
                 },
               ),
             ),
-            FlatButton(
-              child: Text('View existing products'),
-              onPressed: () {
-                // Navigator.pushNamed(context, kExistingProductScreen);
-              },
+            SecondaryActionButton(
+              title: 'View existing products',
+              onPressed: () =>
+                  Navigator.pushNamed(context, kExistingProductScreen),
             ),
           ],
         ),

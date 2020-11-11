@@ -80,7 +80,7 @@ class _AddProductFormState extends State<AddProductForm> {
               warningSnackBar(message: state.message),
             );
         }
-        if (state is ProductUploading) {
+        if (state is ProductLoading) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(

@@ -1,9 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-// import 'package:core/src/business_logics/models/dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
-// import 'package:hb_mobile/widgets/product_bottom_sheet_widget.dart';
+import 'package:hb_mobile/widgets/product_bottom_sheet_widget.dart';
 
 class ProductDataTable extends StatelessWidget {
   final List<DataColumn> dataColumn;
@@ -174,13 +173,16 @@ class _DataSource extends DataTableSource {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: BlocProvider(
               create: (BuildContext context) => ProductBloc(),
-              // child: ProductBottomSheet(
-              //   viewProductBloc: _viewProductBloc,
-              //   productName: data.mname,
-              //   productcode: data.mcode,
-              //   productUnit: data.munit,
-              //   productPrice: data.mpriceperunit,
-              // ),
+              child: ProductBottomSheet(
+                viewProductBloc: _viewProductBloc,
+                productName: data.pname,
+                productCode: data.pcode,
+                pricePerSellingUnit: data.pricepersunit,
+                salaryPerStroke: data.salaryps,
+                unitPerStroke: data.nospsunit,
+                unitsPerSellingUnit: data.nosps,
+                sellingUnit: data.sunit,
+              ),
             ),
           ),
         );

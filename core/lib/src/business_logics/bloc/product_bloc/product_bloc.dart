@@ -118,6 +118,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   ProductState _loading() {
-    return ProductUploading(true, 'Uploading..');
+    return ProductLoading(true, 'Uploading..');
   }
 }

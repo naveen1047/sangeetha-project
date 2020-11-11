@@ -20,9 +20,9 @@ class ProductError extends ProductState {
   ProductError(this.status, this.message);
 }
 
-class ProductUploading extends ProductState {
+class ProductLoading extends ProductState {
   final bool status;
   final String message;
 
-  ProductUploading(this.status, this.message);
+  ProductLoading(this.status, this.message);
 }

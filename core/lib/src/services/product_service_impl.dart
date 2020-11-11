@@ -41,9 +41,9 @@ class ProductServiceImpl implements ProductService {
   }
 
   @override
-  Future<ResponseResult> deleteProduct(Map<String, dynamic> scode) async {
+  Future<ResponseResult> deleteProduct(Map<String, dynamic> pcode) async {
     final url = "$_baseUrl/delete_product.php";
-    var response = await http.post(url, body: json.encode(scode));
+    var response = await http.post(url, body: json.encode(pcode));
     print('here');
     print(response.body.toString());
     if (response.statusCode == 200) {

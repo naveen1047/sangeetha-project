@@ -106,8 +106,8 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
             child: TextField(
               style: TextStyle(color: Colors.white),
               autofocus: false,
-              // onChanged: (query) => _viewProductBloc
-              //     .add(SearchAndFetchProductEvent(mname: query)),
+              onChanged: (query) => _viewProductBloc
+                  .add(SearchAndFetchProductEvent(pname: query)),
               decoration: kSearchTextFieldDecoration,
             ),
           ),

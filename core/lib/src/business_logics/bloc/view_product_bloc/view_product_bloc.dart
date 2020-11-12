@@ -42,9 +42,9 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
     if (event is FetchProductEvent) {
       yield* _mapFetchProductToState(event, event.pname);
     }
-    // if (event is SearchAndFetchProductEvent) {
-    //   yield* _mapSearchAndFetchProductToState(event.pname);
-    // }
+    if (event is SearchAndFetchProductEvent) {
+      yield* _mapSearchAndFetchProductToState(event.pname);
+    }
     // if (event is SortProductByName) {
     //   yield* _mapSortProductByNameToState();
     // }
@@ -57,26 +57,26 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
   }
 
   // TODO: ugly state do sink and stream
-  // Stream<ViewProductState> _mapSearchAndFetchProductToState(
-  //     String pname) async* {
-  //   try {
-  //     _query = pname;
-  //     if (_query != null) {
-  //       print(_query);
-  //       _extractResult();
-  //       if (sortByName == sorting.ascending) {
-  //         _sortAscendingByPName();
-  //       } else {
-  //         _sortDescendingByPName();
-  //       }
-  //       print(_filteredProduct.toString());
-  //
-  //       yield ProductLoadedState(_filteredProduct);
-  //     }
-  //   } catch (e) {
-  //     yield ProductErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewProductState> _mapSearchAndFetchProductToState(
+      String pname) async* {
+    try {
+      _query = pname;
+      if (_query != null) {
+        print(_query);
+        _extractResult();
+        if (sortByName == sorting.ascending) {
+          _sortAscendingByPName();
+        } else {
+          _sortDescendingByPName();
+        }
+        print(_filteredProduct.toString());
+
+        yield ProductLoadedState(_filteredProduct);
+      }
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
 
   Stream<ViewProductState> _mapFetchProductToState(
       ViewProductEvent event, String pname) async* {
@@ -185,12 +185,11 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
   // void _sortDescendingByMPrice() {
   //   _filteredProduct.sort((a, b) =>
   //       double.parse(b.mpriceperunit).compareTo(double.parse(a.mpriceperunit)));
+  void _extractResult() {
+    _filteredProduct = _products.products
+        .where((element) =>
+            element.pname.toLowerCase().contains(_query.toLowerCase()))
+        .toList();
+  }
 }
-
-// void _extractResult() {
-//   _filteredProduct = _products.products
-//       .where((element) =>
-//           element.pname.toLowerCase().contains(_query.toLowerCase()))
-//       .toList();
-// }
 // }

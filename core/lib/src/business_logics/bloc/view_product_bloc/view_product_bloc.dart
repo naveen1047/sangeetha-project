@@ -10,10 +10,6 @@ import 'package:core/src/business_logics/util/util.dart';
 part 'view_product_event.dart';
 part 'view_product_state.dart';
 
-// TODO: return state with value (sortBy, sorting)
-enum sortProductBy { name, unit, price }
-
-// bloc
 class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
   ViewProductBloc() : super(ProductLoadingState());
 
@@ -26,9 +22,12 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
   String _query = '';
 
   // sorting
-  var sortByName = sorting.ascending;
-  var sortByUnit = sorting.ascending;
-  var sortByPrice = sorting.ascending;
+  var sortByPName = sorting.ascending;
+  var sortBySalaryPerStroke = sorting.ascending;
+  var sortByNosProducedPerStroke = sorting.ascending;
+  var sortBySellingUnit = sorting.ascending;
+  var sortByPricePerSellingUnit = sorting.ascending;
+  var sortByNosPerSellingUnit = sorting.ascending;
 
   @override
   Future<void> close() {
@@ -45,15 +44,24 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
     if (event is SearchAndFetchProductEvent) {
       yield* _mapSearchAndFetchProductToState(event.pname);
     }
-    // if (event is SortProductByName) {
-    //   yield* _mapSortProductByNameToState();
-    // }
-    // if (event is SortProductByUnit) {
-    //   yield* _mapSortProductByUnitToState();
-    // }
-    // if (event is SortProductByPrice) {
-    //   yield* _mapSortProductByPriceToState();
-    // }
+    if (event is SortProductByName) {
+      yield* _mapSortProductByNameToState();
+    }
+    if (event is SortProductBySalaryPerStroke) {
+      yield* _mapSortProductBySalaryPerStrokeToState();
+    }
+    if (event is SortProductByNosProducedPerStroke) {
+      yield* _mapSortProductByNosProducedPerStrokeToState();
+    }
+    if (event is SortProductBySellingUnit) {
+      yield* _mapSortProductBySellingUnit();
+    }
+    if (event is SortProductByPricePerSellingUnit) {
+      yield* _mapSortProductByPricePerSellingUnit();
+    }
+    if (event is SortProductByNosPerSellingUnit) {
+      yield* _mapSortProductByNosPerSellingUnit();
+    }
   }
 
   // TODO: ugly state do sink and stream
@@ -64,7 +72,7 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
       if (_query != null) {
         print(_query);
         _extractResult();
-        if (sortByName == sorting.ascending) {
+        if (sortByPName == sorting.ascending) {
           _sortAscendingByPName();
         } else {
           _sortDescendingByPName();
@@ -94,60 +102,114 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
     }
   }
 
-  /// TODO: sort products by ( price) and yield result
-  // Stream<ViewProductState> _mapSortProductByNameToState() async* {
-  //   try {
-  //     _filteredProduct = _products.products.toList();
-  //     if (sortByName != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByPName();
-  //       sortByName = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByPName();
-  //       sortByName = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield ProductErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewProductState> _mapSortProductByNameToState() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortByPName != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByPName();
+        sortByPName = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByPName();
+        sortByPName = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
 
-  // Stream<ViewProductState> _mapSortProductByUnitToState() async* {
-  //   try {
-  //     _filteredProduct = _products.products.toList();
-  //     if (sortByUnit != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByMUnit();
-  //       sortByUnit = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByMUnit();
-  //       sortByUnit = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield ProductErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewProductState> _mapSortProductBySalaryPerStrokeToState() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortBySalaryPerStroke != sorting.ascending) {
+        _extractResult();
+        _sortAscendingBySalaryPerStroke();
+        sortBySalaryPerStroke = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingBySalaryPerStroke();
+        sortBySalaryPerStroke = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
 
-  // Stream<ViewProductState> _mapSortProductByPriceToState() async* {
-  //   try {
-  //     _filteredProduct = _products.products.toList();
-  //     if (sortByPrice != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByMPrice();
-  //       sortByPrice = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByMPrice();
-  //       sortByPrice = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield ProductErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewProductState>
+      _mapSortProductByNosProducedPerStrokeToState() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortByNosProducedPerStroke != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByNosProducedPerStroke();
+        sortByNosProducedPerStroke = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByNosProducedPerStroke();
+        sortByNosProducedPerStroke = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewProductState> _mapSortProductBySellingUnit() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortBySellingUnit != sorting.ascending) {
+        _extractResult();
+        _sortAscendingBySellingUnit();
+        sortBySellingUnit = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingBySellingUnit();
+        sortBySellingUnit = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewProductState> _mapSortProductByPricePerSellingUnit() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortByPricePerSellingUnit != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByPricePerSellingUnit();
+        sortByPricePerSellingUnit = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByPricePerSellingUnit();
+        sortByPricePerSellingUnit = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewProductState> _mapSortProductByNosPerSellingUnit() async* {
+    try {
+      _filteredProduct = _products.products.toList();
+      if (sortByNosPerSellingUnit != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByNosPerSellingUnit();
+        sortByNosPerSellingUnit = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByNosPerSellingUnit();
+        sortByNosPerSellingUnit = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ProductErrorState(e.toString());
+    }
+  }
 
   ViewProductState _eventResult() {
     if (_filteredProduct.length > 0) {
@@ -167,24 +229,56 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
         .sort((a, b) => b.pname.toLowerCase().compareTo(a.pname.toLowerCase()));
   }
 
-  // void _sortAscendingByMUnit() {
-  //   _filteredProduct
-  //       .sort((a, b) => double.parse(a.munit).compareTo(double.parse(b.munit)));
-  // }
-  //
-  // void _sortDescendingByMUnit() {
-  //   _filteredProduct
-  //       .sort((a, b) => double.parse(b.munit).compareTo(double.parse(a.munit)));
-  // }
-  //
-  // void _sortAscendingByMPrice() {
-  //   _filteredProduct.sort((a, b) =>
-  //       double.parse(a.mpriceperunit).compareTo(double.parse(b.ppriceperunit)));
-  // }
-  //
-  // void _sortDescendingByMPrice() {
-  //   _filteredProduct.sort((a, b) =>
-  //       double.parse(b.mpriceperunit).compareTo(double.parse(a.mpriceperunit)));
+  void _sortAscendingBySalaryPerStroke() {
+    _filteredProduct.sort(
+        (a, b) => double.parse(a.salaryps).compareTo(double.parse(b.salaryps)));
+  }
+
+  void _sortDescendingBySalaryPerStroke() {
+    _filteredProduct.sort(
+        (a, b) => double.parse(b.salaryps).compareTo(double.parse(a.salaryps)));
+  }
+
+  void _sortAscendingByNosProducedPerStroke() {
+    _filteredProduct
+        .sort((a, b) => double.parse(a.nosps).compareTo(double.parse(b.nosps)));
+  }
+
+  void _sortDescendingByNosProducedPerStroke() {
+    _filteredProduct
+        .sort((a, b) => double.parse(b.nosps).compareTo(double.parse(a.nosps)));
+  }
+
+  void _sortAscendingBySellingUnit() {
+    _filteredProduct
+        .sort((a, b) => a.sunit.toLowerCase().compareTo(b.sunit.toLowerCase()));
+  }
+
+  void _sortDescendingBySellingUnit() {
+    _filteredProduct
+        .sort((a, b) => double.parse(b.nosps).compareTo(double.parse(a.nosps)));
+  }
+
+  void _sortAscendingByPricePerSellingUnit() {
+    _filteredProduct.sort((a, b) =>
+        double.parse(a.pricepersunit).compareTo(double.parse(b.pricepersunit)));
+  }
+
+  void _sortDescendingByPricePerSellingUnit() {
+    _filteredProduct.sort((a, b) =>
+        double.parse(b.pricepersunit).compareTo(double.parse(a.pricepersunit)));
+  }
+
+  void _sortAscendingByNosPerSellingUnit() {
+    _filteredProduct.sort((a, b) =>
+        double.parse(a.nospsunit).compareTo(double.parse(b.nospsunit)));
+  }
+
+  void _sortDescendingByNosPerSellingUnit() {
+    _filteredProduct.sort((a, b) =>
+        double.parse(b.nospsunit).compareTo(double.parse(a.nospsunit)));
+  }
+
   void _extractResult() {
     _filteredProduct = _products.products
         .where((element) =>
@@ -192,4 +286,3 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
         .toList();
   }
 }
-// }

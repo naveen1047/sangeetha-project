@@ -30,6 +30,12 @@ class SearchAndFetchProductEvent extends ViewProductEvent {
 // sorting
 class SortProductByName extends ViewProductEvent {}
 
-class SortProductByPrice extends ViewProductEvent {}
+class SortProductByNosProducedPerStroke extends ViewProductEvent {}
 
-class SortProductByUnit extends ViewProductEvent {}
+class SortProductBySalaryPerStroke extends ViewProductEvent {}
+
+class SortProductBySellingUnit extends ViewProductEvent {}
+
+class SortProductByPricePerSellingUnit extends ViewProductEvent {}
+
+class SortProductByNosPerSellingUnit extends ViewProductEvent {}

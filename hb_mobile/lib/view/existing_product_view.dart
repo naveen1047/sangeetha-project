@@ -129,40 +129,40 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
               _viewProductBloc.add(SortProductByName());
             }),
         DataColumn(
-            label: datatableLabel("Code", isSortable: false),
-            numeric: true,
-            onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByUnit());
-            }),
+          label: datatableLabel("Code", isSortable: false),
+          numeric: true,
+          // onSort: (columnIndex, ascending) {
+          //   _viewProductBloc.add(SortProductBySalaryPerStroke());
+          // }
+        ),
         DataColumn(
             label: datatableLabel("Salary per Stroke", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByPrice());
+              _viewProductBloc.add(SortProductBySalaryPerStroke());
             }),
         DataColumn(
             label: datatableLabel("Nos produced per stroke", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByPrice());
+              _viewProductBloc.add(SortProductByNosProducedPerStroke());
             }),
         DataColumn(
             label: datatableLabel("Selling unit", isSortable: true),
-            numeric: true,
             onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByPrice());
+              _viewProductBloc.add(SortProductBySellingUnit());
             }),
         DataColumn(
             label: datatableLabel("price per selling unit", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByPrice());
+              _viewProductBloc.add(SortProductByPricePerSellingUnit());
             }),
         DataColumn(
             label: datatableLabel("Nos per selling unit", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
-              _viewProductBloc.add(SortProductByPrice());
+              _viewProductBloc.add(SortProductByNosPerSellingUnit());
             }),
         DataColumn(
             label: datatableLabel(

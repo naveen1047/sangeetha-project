@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/simple_bloc_observer.dart';
 import 'package:hb_mobile/view/add_customer_view.dart';
 import 'package:hb_mobile/view/add_product_view.dart';
+import 'package:hb_mobile/view/existing_customer_view.dart';
 import 'package:hb_mobile/view/existing_material_view.dart';
 import 'package:hb_mobile/view/existing_product_view.dart';
 import 'package:hb_mobile/view/view.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         kAddCustomerScreen: (context) => AddCustomersScreen(
               title: "Add Customer",
             ),
+        kExistingCustomerScreen: (context) => ExistingCustomersScreen(),
       },
       title: title,
       theme: ThemeData(

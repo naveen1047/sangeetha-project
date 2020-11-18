@@ -108,7 +108,7 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
           await Future.delayed(Duration(milliseconds: 2500));
-          // Navigator.pushNamed(context, kExistingCustomersScreen);
+          Navigator.pushNamed(context, kExistingCustomerScreen);
         }
       },
       child: Padding(
@@ -198,10 +198,10 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
               child: Text('View existing customers'),
               onPressed: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
-                // Navigator.pushNamed(
-                //   context,
-                //   kExistingCustomersScreen,
-                // );
+                Navigator.pushNamed(
+                  context,
+                  kExistingCustomerScreen,
+                );
               },
             ),
           ],

@@ -111,6 +111,15 @@ class SupplierConstants {
   static const List<String> choices = <String>[Refresh, AddSupplier, Settings];
 }
 
+// Customer constants
+class CustomerConstants {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+  static const String AddCustomer = 'Add Customer';
+
+  static const List<String> choices = <String>[Refresh, AddCustomer, Settings];
+}
+
 // Employee constants
 class EmployeeConstants {
   static const String Refresh = 'Refresh';

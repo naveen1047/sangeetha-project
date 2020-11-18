@@ -156,8 +156,10 @@ class HomeScreen extends StatelessWidget {
         // subTitleIcon: Icons.edit,
         backgroundColor: Colors.green,
         onTap: () {
-          Navigator.pushNamed(context, kMaterialPurchase);
+          Navigator.pushNamed(context, kExistingMaterialPurchase);
         },
+        onPressedSecondary: () =>
+            Navigator.pushNamed(context, kAddMaterialPurchase),
       ),
       CategoryCard(
         title: 'Production',

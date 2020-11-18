@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         kHome: (context) => HomeScreen(title: title),
         // kMaterialPurchase: (context) => MaterialPurchase(),
-        kMaterialPurchaseEntry: (context) => MaterialPurchaseEntry(),
+        kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
         kConfigScreen: (context) => ConfigScreen(),
         kAddSuppliersScreen: (context) =>
             AddSuppliersScreen(title: "Add Suppliers"),

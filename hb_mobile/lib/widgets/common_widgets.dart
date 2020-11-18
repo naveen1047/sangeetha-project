@@ -87,6 +87,7 @@ class CategoryCard extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Function onTap;
+  final Function onPressedSecondary;
 
   const CategoryCard({
     Key key,
@@ -97,6 +98,7 @@ class CategoryCard extends StatelessWidget {
     // this.subTitleIcon,
     @required this.backgroundColor,
     this.textColor,
+    this.onPressedSecondary,
     // this.textColor = const Color(0xFFFFFFFF),
   }) : super(key: key);
 
@@ -144,7 +146,7 @@ class CategoryCard extends StatelessWidget {
             height: 0.0,
           ),
           FlatButton(
-            onPressed: () {},
+            onPressed: onPressedSecondary,
             child: Text(
               '+ ADD',
               style:

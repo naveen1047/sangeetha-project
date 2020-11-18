@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 const String kHome = '/dash_board';
-const String kMaterialPurchase = '/material_purchase';
-const String kMaterialPurchaseEntry = '/material_purchase_entry';
+const String kExistingMaterialPurchase = '/existing_material_purchase';
+const String kAddMaterialPurchase = '/add_material_purchase';
 const String kConfigScreen = '/configScreen';
 const String kAddSuppliersScreen = '/addSuppliers';
 const String kExistingSuppliersScreen = '/existingSuppliersScreen';

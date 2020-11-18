@@ -146,7 +146,7 @@ class CategoryCard extends StatelessWidget {
           FlatButton(
             onPressed: () {},
             child: Text(
-              '+  ADD',
+              '+ ADD',
               style:
                   TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
             ),

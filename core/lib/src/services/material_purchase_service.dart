@@ -1,7 +1,15 @@
-// import 'package:core/src/business_logics/models/material.dart';
-//
-// abstract class MaterialPurchaseServices {
-//   Future<MaterialPurchase> getMaterialPurchaseEntryDetail();
-//
-//   Future<bool> setMaterialPurchaseDetail(MaterialPurchase materialPurchase);
-// }
+import 'package:core/src/business_logics/models/material_purchase.dart';
+import 'package:core/src/business_logics/models/response_result.dart';
+
+abstract class MaterialPurchaseService {
+  Future<ResponseResult> submitMaterialPurchase(MaterialPurchase material);
+
+  Future<ResponseResult> editMaterialPurchaseByCode(MaterialPurchase material);
+
+  Future<ResponseResult> deleteMaterialPurchase(Map<String, dynamic> mcode);
+
+  Future<MaterialPurchases> getAllMaterialPurchases();
+
+  Future<MaterialPurchases> getMaterialPurchaseByName(
+      String materialPurchaseName);
+}

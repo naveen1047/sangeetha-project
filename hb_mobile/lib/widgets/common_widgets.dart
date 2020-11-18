@@ -2,6 +2,83 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/constant.dart';
 
+// class CategoryCard extends StatelessWidget {
+//   final String title;
+//   final IconData titleIcon;
+//   final String subTitle;
+//   // final IconData subTitleIcon;
+//   final Color backgroundColor;
+//   final Color textColor;
+//   final Function onTap;
+//
+//   const CategoryCard({
+//     Key key,
+//     this.onTap,
+//     @required this.title,
+//     this.titleIcon,
+//     @required this.subTitle,
+//     // this.subTitleIcon,
+//     @required this.backgroundColor,
+//     this.textColor = const Color(0xFFFFFFFF),
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(8.0),
+//       child: GestureDetector(
+//         onTap: onTap,
+//         child: Container(
+//           decoration: BoxDecoration(
+//               color: backgroundColor,
+//               borderRadius: BorderRadius.all(Radius.circular(8.0))),
+//           child: Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Row(
+//                     children: [
+//                       Icon(
+//                         titleIcon,
+//                         color: textColor,
+//                       ),
+//                       Padding(
+//                         padding: const EdgeInsets.only(left: 8.0),
+//                         child: Text(
+//                           title,
+//                           style: TextStyle(color: textColor),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   Row(
+//                     children: [
+//                       // Icon(
+//                       //   subTitleIcon,
+//                       //   color: textColor,
+//                       // ),
+//                       Padding(
+//                         padding: const EdgeInsets.only(left: 8.0),
+//                         child: Text(
+//                           subTitle,
+//                           style: TextStyle(color: textColor, fontSize: 12.0),
+//                         ),
+//                       )
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class CategoryCard extends StatelessWidget {
   final String title;
   final IconData titleIcon;
@@ -19,61 +96,62 @@ class CategoryCard extends StatelessWidget {
     @required this.subTitle,
     // this.subTitleIcon,
     @required this.backgroundColor,
-    this.textColor = const Color(0xFFFFFFFF),
+    this.textColor,
+    // this.textColor = const Color(0xFFFFFFFF),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.all(Radius.circular(8.0))),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: kMutedColor),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Icon(
+                      titleIcon,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        titleIcon,
-                        color: textColor,
+                      Text(
+                        title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          title,
-                          style: TextStyle(color: textColor),
-                        ),
+                      Text(
+                        subTitle,
+                        style: TextStyle(color: kTextColor),
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      // Icon(
-                      //   subTitleIcon,
-                      //   color: textColor,
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          subTitle,
-                          style: TextStyle(color: textColor, fontSize: 12.0),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ),
+          Divider(
+            height: 0.0,
+          ),
+          FlatButton(
+            onPressed: () {},
+            child: Text(
+              '+ ADD',
+              style:
+                  TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -140,7 +218,7 @@ class MenuItem extends StatelessWidget {
                 )
               : Container(),
           Padding(
-            padding: const EdgeInsets.only(left: 24.0),
+            padding: kIconLeftPadding,
             child: Text(
               title,
               style: TextStyle(fontWeight: FontWeight.w500),

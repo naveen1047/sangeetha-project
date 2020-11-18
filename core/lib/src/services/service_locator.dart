@@ -1,4 +1,6 @@
 import 'package:core/src/business_logics/models/product.dart';
+import 'package:core/src/services/customer_service.dart';
+import 'package:core/src/services/customer_service_impl.dart';
 import 'package:core/src/services/employee_service.dart';
 import 'package:core/src/services/employee_service_impl.dart';
 import 'package:core/src/services/material_service.dart';
@@ -17,6 +19,9 @@ void setupServiceLocator() {
   //     () => FakeMaterialPurchase());
   serviceLocator
       .registerLazySingleton<ProductService>(() => ProductServiceImpl());
+
+  serviceLocator
+      .registerLazySingleton<CustomerService>(() => CustomerServiceImpl());
 
   serviceLocator
       .registerLazySingleton<EmployeeService>(() => EmployeeServiceImpl());

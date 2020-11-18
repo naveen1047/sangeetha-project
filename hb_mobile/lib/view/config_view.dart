@@ -38,6 +38,14 @@ class ConfigScreen extends StatelessWidget {
             Navigator.pushNamed(context, kExistingProductScreen),
         onTapPrimary: () => Navigator.pushNamed(context, kAddProductScreen),
       ),
+      DualButton(
+        title: 'Add Customer',
+        subtitle: 'Existing Customer',
+        primaryColor: Colors.teal,
+        onTapSecondary: () =>
+            Navigator.pushNamed(context, kExistingCustomerScreen),
+        onTapPrimary: () => Navigator.pushNamed(context, kAddCustomerScreen),
+      ),
     ];
 
     return Scaffold(

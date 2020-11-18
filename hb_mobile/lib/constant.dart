@@ -12,6 +12,8 @@ const String kAddEmployeeScreen = '/addEmployeeScreen';
 const String kExistingEmployeeScreen = '/existingEmployeeScreen';
 const String kAddProductScreen = '/addProductScreen';
 const String kExistingProductScreen = '/existingProductScreen';
+const String kAddCustomerScreen = '/addCustomerScreen';
+const String kExistingCustomerScreen = '/existingCustomerScreen';
 
 // decoration
 Decoration kOutlineBorder = BoxDecoration(

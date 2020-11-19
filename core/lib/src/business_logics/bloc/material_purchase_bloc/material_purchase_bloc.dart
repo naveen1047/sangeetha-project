@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
@@ -27,8 +29,9 @@ class MaterialPurchaseBloc
   final MaterialService _viewMaterialService =
       serviceLocator<MaterialService>();
 
-  // get date
-  String get getDateInFormat => generateDate();
+  final _dateController = StreamController<String>();
+
+  Stream<String> get getDateInFormat => _dateController.stream;
 
   Suppliers _suppliers;
   List<Supplier> _filteredSupplier;
@@ -38,6 +41,7 @@ class MaterialPurchaseBloc
 
   @override
   Future<void> close() {
+    _dateController.close();
     return super.close();
   }
 
@@ -46,13 +50,24 @@ class MaterialPurchaseBloc
       MaterialPurchaseEvent event) async* {
     if (event is FetchPrerequisite) {
       yield* _mapFetchPrerequisite();
-    }
-    if (event is AddMaterialPurchase) {
+    } else if (event is AddMaterialPurchase) {
       yield* _mapAddMaterialPurchaseToState(event);
     } else if (event is EditMaterialPurchase) {
       yield* _mapEditMaterialPurchaseToState(event);
     } else if (event is DeleteMaterialPurchase) {
       yield* _mapDeleteMaterialPurchaseToState(event);
+    } else if (event is SetDate) {
+      yield* _mapSetDateToState(event);
+    }
+  }
+
+  Stream<MaterialPurchaseState> _mapSetDateToState(SetDate event) async* {
+    try {
+      String date = generateDate(selectedDate: event.dateTime);
+
+      _dateController.sink.add(date);
+    } catch (e) {
+      yield PrerequisiteError(e.toString());
     }
   }
 

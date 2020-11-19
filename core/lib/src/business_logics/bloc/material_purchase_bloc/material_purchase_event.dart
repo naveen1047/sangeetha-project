@@ -9,6 +9,12 @@ abstract class MaterialPurchaseEvent extends Equatable {
 
 class FetchPrerequisite extends MaterialPurchaseEvent {}
 
+class SetDate extends MaterialPurchaseEvent {
+  final DateTime dateTime;
+
+  SetDate(this.dateTime);
+}
+
 class AddMaterialPurchase extends MaterialPurchaseEvent {
   final String mpcode;
   final String scode;

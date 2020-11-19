@@ -11,6 +11,7 @@ export 'src/business_logics/bloc/product_bloc/product_bloc.dart';
 export 'src/business_logics/bloc/view_product_bloc/view_product_bloc.dart';
 export 'src/business_logics/bloc/customer_bloc/customer_bloc.dart';
 export 'src/business_logics/bloc/view_customer_bloc/view_customer_bloc.dart';
+export 'src/business_logics/bloc/material_purchase_bloc/material_purchase_bloc.dart';
 
 export 'src/business_logics/util/random_code_generator.dart';
 
@@ -23,3 +24,4 @@ export 'src/business_logics/models/material.dart';
 export 'src/business_logics/models/employee.dart';
 export 'src/business_logics/models/product.dart';
 export 'src/business_logics/models/customer.dart';
+export 'src/business_logics/models/material_purchase.dart';

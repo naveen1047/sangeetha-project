@@ -12,7 +12,7 @@ class FetchPrerequisite extends MaterialPurchaseEvent {}
 class SetDate extends MaterialPurchaseEvent {
   final DateTime dateTime;
 
-  SetDate(this.dateTime);
+  SetDate({this.dateTime});
 }
 
 class AddMaterialPurchase extends MaterialPurchaseEvent {

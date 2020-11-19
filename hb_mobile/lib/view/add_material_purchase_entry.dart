@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:core/core.dart';
 
-class AddMaterialPurchaseScreen extends StatefulWidget {
+class AddMaterialPurchaseScreen extends StatelessWidget {
   static const String _title = 'Material Purchase Entry';
 
   @override
-  _AddMaterialPurchaseScreenState createState() =>
-      _AddMaterialPurchaseScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(AddMaterialPurchaseScreen._title)),
+      body: MultiBlocProvider(
+        child: AddMaterialPurchaseForm(),
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => MaterialPurchaseBloc(),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _AddMaterialPurchaseScreenState extends State<AddMaterialPurchaseScreen> {
+class AddMaterialPurchaseForm extends StatefulWidget {
+  @override
+  _AddMaterialPurchaseFormState createState() =>
+      _AddMaterialPurchaseFormState();
+}
+
+class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
+  MaterialPurchaseBloc _materialPurchaseBloc;
   TextEditingController _dateController;
 
   @override
   void initState() {
+    _materialPurchaseBloc = BlocProvider.of<MaterialPurchaseBloc>(context)
+      ..add(SetDate());
     _dateController = TextEditingController();
     _dateController.text = selectedDate.toString();
     super.initState();
@@ -21,11 +43,13 @@ class _AddMaterialPurchaseScreenState extends State<AddMaterialPurchaseScreen> {
 
   @override
   void dispose() {
+    _materialPurchaseBloc.close();
     _dateController.dispose();
     super.dispose();
   }
 
   DateTime selectedDate = DateTime.now();
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -35,6 +59,9 @@ class _AddMaterialPurchaseScreenState extends State<AddMaterialPurchaseScreen> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        context
+            .bloc<MaterialPurchaseBloc>()
+            .add(SetDate(dateTime: selectedDate));
       });
   }
 
@@ -50,20 +77,27 @@ class _AddMaterialPurchaseScreenState extends State<AddMaterialPurchaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(AddMaterialPurchaseScreen._title)),
-      body: ListView(
-        children: [
-          InputField(
-            child: FlatButton(
-              minWidth: double.maxFinite,
-              onPressed: () => _selectDate(context),
-              child: Text(generateDate()),
+    return ListView(
+      children: [
+        InputField(
+          child: FlatButton(
+            minWidth: double.maxFinite,
+            onPressed: () {
+              _selectDate(context);
+            },
+            child: BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
+              builder: (BuildContext context, state) {
+                if (state is GetDate) {
+                  return Text(state.date);
+                } else {
+                  return Text("asdf");
+                }
+              },
             ),
-            iconData: Icons.date_range,
           ),
-        ],
-      ),
+          iconData: Icons.date_range,
+        ),
+      ],
     );
   }
 }

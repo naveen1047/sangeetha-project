@@ -6,6 +6,12 @@ abstract class MaterialPurchaseState {
 
 class MaterialPurchaseIdleState extends MaterialPurchaseState {}
 
+class GetDate extends MaterialPurchaseState {
+  final String date;
+
+  GetDate(this.date);
+}
+
 class PrerequisiteLoading extends MaterialPurchaseState {}
 
 class PrerequisiteError extends MaterialPurchaseState {

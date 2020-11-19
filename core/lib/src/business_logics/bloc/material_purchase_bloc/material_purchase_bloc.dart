@@ -39,6 +39,8 @@ class MaterialPurchaseBloc
   Materials _materials;
   List<Material> _filteredMaterial;
 
+  String date;
+
   @override
   Future<void> close() {
     _dateController.close();
@@ -63,9 +65,12 @@ class MaterialPurchaseBloc
 
   Stream<MaterialPurchaseState> _mapSetDateToState(SetDate event) async* {
     try {
-      String date = generateDate(selectedDate: event.dateTime);
-
-      _dateController.sink.add(date);
+      if (event.dateTime == null) {
+        date = generateDate();
+      } else {
+        date = generateDate(selectedDate: event.dateTime);
+      }
+      yield GetDate(date);
     } catch (e) {
       yield PrerequisiteError(e.toString());
     }

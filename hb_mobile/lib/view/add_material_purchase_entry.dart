@@ -4,6 +4,8 @@ import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/material.dart' as m;
 
+import '../constant.dart';
+
 class AddMaterialPurchaseScreen extends StatelessWidget {
   static const String _title = 'Material Purchase Entry';
 
@@ -131,6 +133,11 @@ class BuildEntryFields extends StatefulWidget {
 class _BuildEntryFieldsState extends State<BuildEntryFields> {
   List<SupplierNameCode> suppliers;
   List<m.Material> materials;
+  TextEditingController _billNoController;
+  TextEditingController _quantityController;
+  TextEditingController _unitPriceController;
+  TextEditingController _totalPriceController;
+  TextEditingController _remarksController;
 
   _BuildEntryFieldsState(
       List<SupplierNameCode> suppliers, List<m.Material> materials) {
@@ -140,13 +147,30 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
 
   String selectedSupplier;
   String selectedMaterial;
+  bool isDisabled = true;
 
   @override
   void initState() {
     selectedSupplier = suppliers[0].scode;
     selectedMaterial = materials[0].mcode;
 
+    _billNoController = TextEditingController();
+    _quantityController = TextEditingController();
+    _unitPriceController = TextEditingController();
+    _totalPriceController = TextEditingController();
+    _remarksController = TextEditingController();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _billNoController.dispose();
+    _quantityController.dispose();
+    _unitPriceController.dispose();
+    _totalPriceController.dispose();
+    _remarksController.dispose();
+    super.dispose();
   }
 
   @override
@@ -171,6 +195,18 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
             }).toList(),
           ),
         ),
+        InputField(
+          child: TextField(
+            maxLength: 28,
+            controller: _billNoController,
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: 'Bill No',
+            ),
+          ),
+          iconData: Icons.notes,
+        ),
         DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             hint: Text("Select Material"),
@@ -178,6 +214,10 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
             onChanged: (String newValue) {
               setState(() {
                 selectedMaterial = newValue;
+                var material = materials
+                    .where((element) => element.mcode == selectedMaterial);
+                _unitPriceController.text =
+                    material.first.mpriceperunit.toString();
               });
               print(selectedMaterial);
             },
@@ -189,7 +229,89 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
             }).toList(),
           ),
         ),
+        InputField(
+          isDisabled: isDisabled,
+          child: TextField(
+            keyboardType: TextInputType.number,
+            controller: _unitPriceController,
+            enabled: !isDisabled,
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: 'Unit Price',
+            ),
+          ),
+          iconData: Icons.attach_money_sharp,
+          trailing: Container(
+            decoration: kOutlineBorderDisabled,
+            child: IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: kPrimaryColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  isDisabled = !isDisabled;
+                });
+              },
+            ),
+          ),
+        ),
+        InputField(
+          child: TextField(
+            keyboardType: TextInputType.number,
+            controller: _quantityController,
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: 'Quantity',
+            ),
+          ),
+          iconData: Icons.chevron_right,
+        ),
+        InputField(
+          child: TextField(
+            keyboardType: TextInputType.number,
+            controller: _totalPriceController,
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: 'Total Price',
+            ),
+          ),
+          iconData: Icons.attach_money_sharp,
+        ),
+        InputField(
+          child: TextField(
+            controller: _remarksController,
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: 'Remarks',
+            ),
+          ),
+          iconData: Icons.report,
+        ),
+        Padding(
+          padding: kTopPadding,
+          child: PrimaryActionButton(
+            title: 'Upload',
+            onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              uploadData();
+            },
+          ),
+        ),
+        FlatButton(
+          child: Text('View Materials purchase'),
+          onPressed: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+            // Navigator.pushNamed(context, kExistingMaterialScreen);
+          },
+        ),
       ],
     );
   }
+
+  void uploadData() {}
 }

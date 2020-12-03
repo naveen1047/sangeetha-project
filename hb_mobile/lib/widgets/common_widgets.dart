@@ -83,6 +83,7 @@ class CategoryCard extends StatelessWidget {
   final String title;
   final IconData titleIcon;
   final String subTitle;
+
   // final IconData subTitleIcon;
   final Color backgroundColor;
   final Color textColor;
@@ -166,6 +167,7 @@ class CategoryLabel extends StatelessWidget {
 
   const CategoryLabel({Key key, this.title, this.subTitle, this.fontSize})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -188,6 +190,7 @@ class MenuTitle extends StatelessWidget {
   final String title;
 
   const MenuTitle({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -208,6 +211,7 @@ class MenuItem extends StatelessWidget {
   const MenuItem(
       {Key key, this.iconData, @required this.title, @required this.onTap})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -239,12 +243,14 @@ class InputField extends StatelessWidget {
   final Widget child;
   final IconData iconData;
   final bool isDisabled;
+  final Widget trailing;
 
   const InputField({
     Key key,
     @required this.child,
     this.iconData,
     this.isDisabled = false,
+    this.trailing,
   }) : super(key: key);
 
   @override
@@ -274,6 +280,7 @@ class InputField extends StatelessWidget {
               ),
             ),
           ),
+          trailing != null ? trailing : Container(),
         ],
       ),
     );
@@ -372,6 +379,7 @@ class PrimaryActionButton extends StatelessWidget {
       this.color = kPrimaryAccentColor,
       @required this.onPressed})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RaisedButton(

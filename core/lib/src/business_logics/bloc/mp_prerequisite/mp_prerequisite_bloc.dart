@@ -35,9 +35,9 @@ class MPPrerequisiteBloc
 
   Stream<MPPrerequisiteState> _mapGetMPPrerequisite() async* {
     try {
-      if (_suppliers == null || _materials == null) {
-        yield MPPrerequisiteLoading();
+      yield MPPrerequisiteLoading();
 
+      if (_suppliers == null || _materials == null) {
         _suppliers = await _viewSupplierService.getSupplierNameAndCode();
         _filteredSupplier = _suppliers.supplierNameCodes;
         _filteredSupplier.sort(
@@ -51,7 +51,7 @@ class MPPrerequisiteBloc
       if (_materials.totalResults < 1 ||
           _suppliers.supplierNameCodes.length < 1) {
         yield MPPrerequisiteError(
-            "supplers or material is empty you can't add material purchase");
+            "suppler or material is empty, You can't add material purchase");
       } else {
         yield MPPrerequisiteLoaded(
             _suppliers.supplierNameCodes, _materials.materials);

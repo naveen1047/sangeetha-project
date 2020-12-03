@@ -12,6 +12,7 @@ export 'src/business_logics/bloc/view_product_bloc/view_product_bloc.dart';
 export 'src/business_logics/bloc/customer_bloc/customer_bloc.dart';
 export 'src/business_logics/bloc/view_customer_bloc/view_customer_bloc.dart';
 export 'src/business_logics/bloc/material_purchase_bloc/material_purchase_bloc.dart';
+export 'src/business_logics/bloc/mp_prerequisite/mp_prerequisite_bloc.dart';
 
 export 'src/business_logics/util/random_code_generator.dart';
 

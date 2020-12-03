@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:core/core.dart';
+import 'package:core/src/business_logics/models/material.dart' as m;
 
 class AddMaterialPurchaseScreen extends StatelessWidget {
   static const String _title = 'Material Purchase Entry';
@@ -14,7 +15,7 @@ class AddMaterialPurchaseScreen extends StatelessWidget {
         child: AddMaterialPurchaseForm(),
         providers: [
           BlocProvider(
-            create: (BuildContext context) => MaterialPurchaseBloc(),
+            create: (BuildContext context) => MPPrerequisiteBloc(),
           ),
         ],
       ),
@@ -29,13 +30,13 @@ class AddMaterialPurchaseForm extends StatefulWidget {
 }
 
 class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
-  MaterialPurchaseBloc _materialPurchaseBloc;
+  MPPrerequisiteBloc _mpPrerequisiteBloc;
   TextEditingController _dateController;
 
   @override
   void initState() {
-    _materialPurchaseBloc = BlocProvider.of<MaterialPurchaseBloc>(context)
-      ..add(FetchPrerequisite(selectedDate));
+    _mpPrerequisiteBloc = BlocProvider.of<MPPrerequisiteBloc>(context)
+      ..add(GetMPPrerequisite());
     _dateController = TextEditingController();
     _dateController.text = selectedDate.toString();
     super.initState();
@@ -43,7 +44,7 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
 
   @override
   void dispose() {
-    _materialPurchaseBloc.close();
+    _mpPrerequisiteBloc.close();
     _dateController.dispose();
     super.dispose();
   }
@@ -67,15 +68,19 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
+    return BlocBuilder<MPPrerequisiteBloc, MPPrerequisiteState>(
       builder: (BuildContext context, state) {
-        if (state is PrerequisiteLoaded) {
-          return _buildFields(context, state.suppliers);
+        if (state is MPPrerequisiteLoaded) {
+          return BuildEntryFields(
+            suppliers: state.suppliers,
+            materials: state.material,
+          );
+          // return _buildFields(context, state.suppliers, state.material);
         }
-        if (state is PrerequisiteLoading) {
+        if (state is MPPrerequisiteLoading) {
           return LinearProgressIndicator();
         }
-        if (state is PrerequisiteError) {
+        if (state is MPPrerequisiteError) {
           return Text("${state.message}");
         } else {
           return Text('unknown state error please report to developer');
@@ -84,81 +89,107 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
     );
   }
 
-  ListView _buildFields(
-      BuildContext context, List<SupplierNameCode> supplierNameCodes) {
+  ListView _buildFields(BuildContext context,
+      List<SupplierNameCode> supplierNameCodes, List<m.Material> materials) {
     return ListView(
       children: [
-        InputField(
-          child: FlatButton(
-            minWidth: double.maxFinite,
-            onPressed: () {
-              return _selectDate(context);
-            },
-            child: BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
-              builder: (BuildContext context, state) {
-                if (state is PrerequisiteLoaded) {
-                  return Text(state.date);
-                } else {
-                  return Text("No state returned");
-                }
-              },
-            ),
-          ),
-          iconData: Icons.date_range,
-        ),
-        MyStatefulWidget(
-          suppliers: supplierNameCodes,
-        )
+        // InputField(
+        //   child: FlatButton(
+        //     minWidth: double.maxFinite,
+        //     onPressed: () {
+        //       return _selectDate(context);
+        //     },
+        //     child: BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
+        //       builder: (BuildContext context, state) {
+        //         if (state is PrerequisiteLoaded) {
+        //           return Text(state.date);
+        //         } else {
+        //           return Text("No state returned");
+        //         }
+        //       },
+        //     ),
+        //   ),
+        //   iconData: Icons.date_range,
+        // ),
       ],
     );
   }
 }
 
-//
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key, this.suppliers}) : super(key: key);
+class BuildEntryFields extends StatefulWidget {
   final List<SupplierNameCode> suppliers;
+  final List<m.Material> materials;
+
+  const BuildEntryFields({Key key, this.suppliers, this.materials})
+      : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(
-      suppliers, suppliers.first.sname, suppliers.single.scode);
+  _BuildEntryFieldsState createState() =>
+      _BuildEntryFieldsState(suppliers, materials);
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _BuildEntryFieldsState extends State<BuildEntryFields> {
   List<SupplierNameCode> suppliers;
+  List<m.Material> materials;
 
-  _MyStatefulWidgetState(
-      List<SupplierNameCode> suppliers, String scode, String sname) {
-    this.firstValue = scode + "-" + sname;
+  _BuildEntryFieldsState(
+      List<SupplierNameCode> suppliers, List<m.Material> materials) {
     this.suppliers = suppliers;
+    this.materials = materials;
   }
 
-  String firstValue;
+  String selectedSupplier;
+  String selectedMaterial;
+
+  @override
+  void initState() {
+    selectedSupplier = suppliers[0].scode;
+    selectedMaterial = materials[0].mcode;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: firstValue,
-      onChanged: (String newValue) {
-        setState(() {
-          print(newValue);
-          firstValue = newValue.toString();
-        });
-      },
-      // items: <String>['One', 'Two', 'Free', 'Four']
-      //     .map<DropdownMenuItem<String>>((String value) {
-      //   return DropdownMenuItem<String>(
-      //     value: value,
-      //     child: Text(value),
-      //   );
-      // }).toList(),
-      items: widget.suppliers
-          .map<DropdownMenuItem<String>>((SupplierNameCode value) {
-        return DropdownMenuItem<String>(
-          value: value.sname,
-          child: Text(value.sname),
-        );
-      }).toList(),
+    return ListView(
+      children: [
+        DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            hint: Text("Select Supplier"),
+            value: selectedSupplier,
+            onChanged: (String newValue) {
+              setState(() {
+                selectedSupplier = newValue;
+              });
+              print(selectedSupplier);
+            },
+            items: suppliers.map((SupplierNameCode s) {
+              return DropdownMenuItem<String>(
+                value: s.scode,
+                child: Text(s.sname),
+              );
+            }).toList(),
+          ),
+        ),
+        DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            hint: Text("Select Material"),
+            value: selectedMaterial,
+            onChanged: (String newValue) {
+              setState(() {
+                selectedMaterial = newValue;
+              });
+              print(selectedMaterial);
+            },
+            items: materials.map((m.Material m) {
+              return DropdownMenuItem<String>(
+                value: m.mcode,
+                child: Text(m.mname),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
     );
   }
 }

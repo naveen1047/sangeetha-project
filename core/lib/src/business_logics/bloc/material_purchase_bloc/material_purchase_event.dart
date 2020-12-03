@@ -7,7 +7,11 @@ abstract class MaterialPurchaseEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchPrerequisite extends MaterialPurchaseEvent {}
+class FetchPrerequisite extends MaterialPurchaseEvent {
+  final DateTime dateTime;
+
+  FetchPrerequisite(this.dateTime);
+}
 
 class SetDate extends MaterialPurchaseEvent {
   final DateTime dateTime;

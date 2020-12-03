@@ -35,7 +35,7 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
   @override
   void initState() {
     _materialPurchaseBloc = BlocProvider.of<MaterialPurchaseBloc>(context)
-      ..add(SetDate());
+      ..add(FetchPrerequisite(selectedDate));
     _dateController = TextEditingController();
     _dateController.text = selectedDate.toString();
     super.initState();
@@ -61,76 +61,104 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
         selectedDate = picked;
         context
             .bloc<MaterialPurchaseBloc>()
-            .add(SetDate(dateTime: selectedDate));
+            .add(FetchPrerequisite(selectedDate));
       });
-  }
-
-  String generateDate() {
-    String day =
-        selectedDate.day < 10 ? '0${selectedDate.day}' : '${selectedDate.day}';
-    String month = selectedDate.month < 10
-        ? '0${selectedDate.month}'
-        : '${selectedDate.month}';
-    int year = selectedDate.year;
-    return '$day-$month-$year';
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
+      builder: (BuildContext context, state) {
+        if (state is PrerequisiteLoaded) {
+          return _buildFields(context, state.suppliers);
+        }
+        if (state is PrerequisiteLoading) {
+          return LinearProgressIndicator();
+        }
+        if (state is PrerequisiteError) {
+          return Text("${state.message}");
+        } else {
+          return Text('unknown state error please report to developer');
+        }
+      },
+    );
+  }
+
+  ListView _buildFields(
+      BuildContext context, List<SupplierNameCode> supplierNameCodes) {
     return ListView(
       children: [
         InputField(
           child: FlatButton(
             minWidth: double.maxFinite,
             onPressed: () {
-              _selectDate(context);
+              return _selectDate(context);
             },
             child: BlocBuilder<MaterialPurchaseBloc, MaterialPurchaseState>(
               builder: (BuildContext context, state) {
-                if (state is GetDate) {
+                if (state is PrerequisiteLoaded) {
                   return Text(state.date);
                 } else {
-                  return Text("asdf");
+                  return Text("No state returned");
                 }
               },
             ),
           ),
           iconData: Icons.date_range,
         ),
+        MyStatefulWidget(
+          suppliers: supplierNameCodes,
+        )
       ],
     );
   }
 }
 
 //
-// class MyStatefulWidget extends StatefulWidget {
-//   MyStatefulWidget({Key key}) : super(key: key);
-//
-//   @override
-//   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-// }
-//
-// class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-//   String dropdownValue = 'One';
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButton<String>(
-//       value: dropdownValue,
-//       icon: Icon(Icons.arrow_downward),
-//       onChanged: (String newValue) {
-//         setState(() {
-//           dropdownValue = newValue;
-//           print("${dropdownValue}");
-//         });
-//       },
-//       items: <String>['One', 'Two', 'Free', 'Four']
-//           .map<DropdownMenuItem<String>>((String value) {
-//         return DropdownMenuItem<String>(
-//           value: value,
-//           child: Text(value),
-//         );
-//       }).toList(),
-//     );
-//   }
-// }
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key, this.suppliers}) : super(key: key);
+  final List<SupplierNameCode> suppliers;
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(
+      suppliers, suppliers.first.sname, suppliers.single.scode);
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  List<SupplierNameCode> suppliers;
+
+  _MyStatefulWidgetState(
+      List<SupplierNameCode> suppliers, String scode, String sname) {
+    this.firstValue = scode + "-" + sname;
+    this.suppliers = suppliers;
+  }
+
+  String firstValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: firstValue,
+      onChanged: (String newValue) {
+        setState(() {
+          print(newValue);
+          firstValue = newValue.toString();
+        });
+      },
+      // items: <String>['One', 'Two', 'Free', 'Four']
+      //     .map<DropdownMenuItem<String>>((String value) {
+      //   return DropdownMenuItem<String>(
+      //     value: value,
+      //     child: Text(value),
+      //   );
+      // }).toList(),
+      items: widget.suppliers
+          .map<DropdownMenuItem<String>>((SupplierNameCode value) {
+        return DropdownMenuItem<String>(
+          value: value.sname,
+          child: Text(value.sname),
+        );
+      }).toList(),
+    );
+  }
+}

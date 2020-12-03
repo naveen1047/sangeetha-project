@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/material_purchase.dart';
+import 'package:core/src/business_logics/models/supplier_name_code.dart';
 import 'package:core/src/business_logics/util/util.dart';
 import 'package:core/src/services/material_purchase_service.dart';
 import 'package:core/src/services/material_service.dart';
@@ -33,8 +34,8 @@ class MaterialPurchaseBloc
 
   Stream<String> get getDateInFormat => _dateController.stream;
 
-  Suppliers _suppliers;
-  List<Supplier> _filteredSupplier;
+  SupplierNameCodes _suppliers;
+  List<SupplierNameCode> _filteredSupplier;
 
   Materials _materials;
   List<Material> _filteredMaterial;
@@ -51,47 +52,43 @@ class MaterialPurchaseBloc
   Stream<MaterialPurchaseState> mapEventToState(
       MaterialPurchaseEvent event) async* {
     if (event is FetchPrerequisite) {
-      yield* _mapFetchPrerequisite();
+      yield* _mapFetchPrerequisite(event);
     } else if (event is AddMaterialPurchase) {
       yield* _mapAddMaterialPurchaseToState(event);
     } else if (event is EditMaterialPurchase) {
       yield* _mapEditMaterialPurchaseToState(event);
     } else if (event is DeleteMaterialPurchase) {
       yield* _mapDeleteMaterialPurchaseToState(event);
-    } else if (event is SetDate) {
-      yield* _mapSetDateToState(event);
     }
   }
 
-  Stream<MaterialPurchaseState> _mapSetDateToState(SetDate event) async* {
+  Stream<MaterialPurchaseState> _mapFetchPrerequisite(
+      FetchPrerequisite event) async* {
     try {
       if (event.dateTime == null) {
         date = generateDate();
       } else {
         date = generateDate(selectedDate: event.dateTime);
       }
-      yield GetDate(date);
-    } catch (e) {
-      yield PrerequisiteError(e.toString());
-    }
-  }
 
-  Stream<MaterialPurchaseState> _mapFetchPrerequisite() async* {
-    try {
-      yield PrerequisiteLoading();
-      _suppliers = await _viewSupplierService.getAllSuppliers();
+      if (_suppliers == null || _materials == null) {
+        yield PrerequisiteLoading();
 
-      _filteredSupplier = _suppliers.suppliers.toList();
-      _filteredSupplier.sort(
-          (a, b) => a.sname.toLowerCase().compareTo(b.sname.toLowerCase()));
+        _suppliers = await _viewSupplierService.getSupplierNameAndCode();
 
-      _materials = await _viewMaterialService.getAllMaterials();
+        _filteredSupplier = _suppliers.supplierNameCodes;
 
-      _filteredMaterial = _materials.materials.toList();
-      _filteredMaterial.sort(
-          (a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
+        _filteredSupplier.sort(
+            (a, b) => a.sname.toLowerCase().compareTo(b.sname.toLowerCase()));
 
-      yield _eventResult();
+        _materials = await _viewMaterialService.getAllMaterials();
+
+        _filteredMaterial = _materials.materials.toList();
+        _filteredMaterial.sort(
+            (a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
+      }
+
+      yield _eventResult(date);
     } catch (e) {
       yield PrerequisiteError(e.toString());
     }
@@ -184,9 +181,9 @@ class MaterialPurchaseBloc
     return MaterialPurchaseError(false, 'please fill required fields');
   }
 
-  MaterialPurchaseState _eventResult() {
+  MaterialPurchaseState _eventResult(String date) {
     if (_filteredSupplier.length >= 0 && _filteredMaterial.length >= 0) {
-      return PrerequisiteLoaded(_filteredSupplier, _filteredMaterial);
+      return PrerequisiteLoaded(_filteredSupplier, _filteredMaterial, date);
     } else {
       return PrerequisiteError(
           "Material or Supplier  is empty, You can't add data");

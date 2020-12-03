@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/business_logics/models/supplier.dart';
+import 'package:core/src/business_logics/models/supplier_name_code.dart';
 import 'package:core/src/services/config.dart';
 import 'package:core/src/services/supplier_service.dart';
 import 'package:flutter/foundation.dart';
@@ -74,8 +75,26 @@ class SupplierServiceImpl implements SupplierService {
     // TODO: implement getSupplierByName
     throw UnimplementedError();
   }
+
+  @override
+  Future<SupplierNameCodes> getSupplierNameAndCode() async {
+    final url = "$_baseUrl/fetch_supplier_name_code.php";
+    var response = await http.get(url);
+    print(response.request.url.toString());
+    print(response.body.toString());
+    if (response.statusCode == 200) {
+      return compute(parseSupplierNameCodes, response.body);
+    } else {
+      throw Exception(
+          'Error Code: ${response.statusCode}\nWe were not able to successfully download the json data.');
+    }
+  }
 }
 
 Suppliers parseSuppliers(String response) {
   return Suppliers.fromJson(json.decode(response));
+}
+
+SupplierNameCodes parseSupplierNameCodes(String response) {
+  return SupplierNameCodes.fromJson(json.decode(response));
 }

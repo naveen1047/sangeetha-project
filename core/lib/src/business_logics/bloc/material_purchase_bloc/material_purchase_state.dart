@@ -6,11 +6,11 @@ abstract class MaterialPurchaseState {
 
 class MaterialPurchaseIdleState extends MaterialPurchaseState {}
 
-class GetDate extends MaterialPurchaseState {
-  final String date;
-
-  GetDate(this.date);
-}
+// class GetDate extends MaterialPurchaseState {
+//   final String date;
+//
+//   GetDate(this.date);
+// }
 
 class PrerequisiteLoading extends MaterialPurchaseState {}
 
@@ -21,10 +21,11 @@ class PrerequisiteError extends MaterialPurchaseState {
 }
 
 class PrerequisiteLoaded extends MaterialPurchaseState {
-  final List<Supplier> suppliers;
+  final List<SupplierNameCode> suppliers;
   final List<Material> material;
+  final String date;
 
-  PrerequisiteLoaded(this.suppliers, this.material);
+  PrerequisiteLoaded(this.suppliers, this.material, this.date);
 }
 
 class MaterialPurchaseLoading extends MaterialPurchaseState {

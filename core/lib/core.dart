@@ -25,3 +25,4 @@ export 'src/business_logics/models/employee.dart';
 export 'src/business_logics/models/product.dart';
 export 'src/business_logics/models/customer.dart';
 export 'src/business_logics/models/material_purchase.dart';
+export 'src/business_logics/models/supplier_name_code.dart';

@@ -88,13 +88,23 @@ class _DataSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
-        DataCell(Text(row.valueA)),
+        DataCell(Text(
+          row.valueA,
+        )),
         DataCell(Text(row.valueB)),
         DataCell(Text(row.valueC)),
         DataCell(Text(row.valueD)),
         DataCell(Text(row.valueE)),
         DataCell(Text(row.valueF)),
         DataCell(Text(row.valueG)),
+        // TODO: it can be repaced by this for smaller text
+        // dataCellDecorator(row.valueA),
+        // dataCellDecorator(row.valueB),
+        // dataCellDecorator(row.valueC),
+        // dataCellDecorator(row.valueD),
+        // dataCellDecorator(row.valueE),
+        // dataCellDecorator(row.valueF),
+        // dataCellDecorator(row.valueG),
         _modifyDataCell(row.valueProduct),
       ],
     );

@@ -262,7 +262,7 @@ class InputField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            decoration: kOutlineBorderDisabled,
+            decoration: kOutBdrDisabledDecoration,
             child: Padding(
               padding: kFieldPadding,
               child: Icon(
@@ -273,7 +273,9 @@ class InputField extends StatelessWidget {
           ),
           Flexible(
             child: Container(
-              decoration: isDisabled ? kOutlineBorderDisabled : kOutlineBorder,
+              decoration: isDisabled
+                  ? kOutBdrDisabledDecoration
+                  : kOutlineBorderDecoration,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: child,
@@ -545,4 +547,28 @@ class SecondaryActionButton extends StatelessWidget {
       },
     );
   }
+}
+
+class DropdownDecorator extends StatelessWidget {
+  final Widget child;
+
+  const DropdownDecorator({Key key, this.child}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: kTopPadding,
+      child: Container(
+        padding: kHorizontalPadding,
+        decoration: kOutlineBorderDecoration,
+        child: child,
+      ),
+    );
+  }
+}
+
+DataCell dataCellDecorator(String text) {
+  return DataCell(Text(
+    text,
+    style: kDatatableCellStyle,
+  ));
 }

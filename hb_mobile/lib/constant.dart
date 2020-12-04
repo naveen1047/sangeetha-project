@@ -16,7 +16,7 @@ const String kAddCustomerScreen = '/addCustomerScreen';
 const String kExistingCustomerScreen = '/existingCustomerScreen';
 
 // decoration
-Decoration kOutlineBorder = BoxDecoration(
+Decoration kOutlineBorderDecoration = BoxDecoration(
   border: Border.all(
     color: kMutedColor,
     width: 1,
@@ -61,7 +61,7 @@ List<BoxShadow> kBoxShadow = [
 ];
 
 // enabled input field
-Decoration kOutlineBorderDisabled = BoxDecoration(
+Decoration kOutBdrDisabledDecoration = BoxDecoration(
   color: kMutedColorLight,
   border: Border.all(
     color: kMutedColor,
@@ -73,8 +73,10 @@ Decoration kOutlineBorderDisabled = BoxDecoration(
 // data table label style
 TextStyle kDatatableLabelStyle = TextStyle(
   fontWeight: FontWeight.bold,
-  color: kPrimaryColor,
+  color: kPrimaryColor, /* fontSize: 10.0*/
 );
+
+TextStyle kDatatableCellStyle = TextStyle(color: kPrimaryColor, fontSize: 10.0);
 
 // border radius
 BorderRadiusGeometry kDefaultBorderRadius = BorderRadius.circular(4.0);
@@ -88,6 +90,7 @@ const Color kWhiteColor = Color(0xFFFFFFFF);
 const Color kPrimaryColor = Color(0xFF263238);
 const Color kPrimaryAccentColor = Color(0xFF0091EA);
 const Color kErrorColor = Color(0xFFF44336);
+const Color kActionIconColor = Color(0xFF007700);
 const Color kSecondaryColor = Color(0xFF37474F);
 
 //padding

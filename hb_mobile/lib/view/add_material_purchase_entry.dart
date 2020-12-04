@@ -73,9 +73,15 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
     return BlocBuilder<MPPrerequisiteBloc, MPPrerequisiteState>(
       builder: (BuildContext context, state) {
         if (state is MPPrerequisiteLoaded) {
-          return BuildEntryFields(
-            suppliers: state.suppliers,
-            materials: state.material,
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (BuildContext context) => TotalPriceCubit(0)),
+            ],
+            child: BuildEntryFields(
+              suppliers: state.suppliers,
+              materials: state.material,
+            ),
           );
           // return _buildFields(context, state.suppliers, state.material);
         }
@@ -138,6 +144,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   TextEditingController _unitPriceController;
   TextEditingController _totalPriceController;
   TextEditingController _remarksController;
+  TextEditingController _dateController;
 
   _BuildEntryFieldsState(
       List<SupplierNameCode> suppliers, List<m.Material> materials) {
@@ -159,6 +166,9 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     _unitPriceController = TextEditingController();
     _totalPriceController = TextEditingController();
     _remarksController = TextEditingController();
+    _dateController = TextEditingController();
+
+    _unitPriceController.text = materials[0].mpriceperunit;
 
     super.initState();
   }
@@ -170,146 +180,187 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     _unitPriceController.dispose();
     _totalPriceController.dispose();
     _remarksController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            hint: Text("Select Supplier"),
-            value: selectedSupplier,
-            onChanged: (String newValue) {
-              setState(() {
-                selectedSupplier = newValue;
-              });
-              print(selectedSupplier);
-            },
-            items: suppliers.map((SupplierNameCode s) {
-              return DropdownMenuItem<String>(
-                value: s.scode,
-                child: Text(s.sname),
-              );
-            }).toList(),
-          ),
-        ),
-        InputField(
-          child: TextField(
-            maxLength: 28,
-            controller: _billNoController,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              hintText: 'Bill No',
-            ),
-          ),
-          iconData: Icons.notes,
-        ),
-        DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            hint: Text("Select Material"),
-            value: selectedMaterial,
-            onChanged: (String newValue) {
-              setState(() {
-                selectedMaterial = newValue;
-                var material = materials
-                    .where((element) => element.mcode == selectedMaterial);
-                _unitPriceController.text =
-                    material.first.mpriceperunit.toString();
-              });
-              print(selectedMaterial);
-            },
-            items: materials.map((m.Material m) {
-              return DropdownMenuItem<String>(
-                value: m.mcode,
-                child: Text(m.mname),
-              );
-            }).toList(),
-          ),
-        ),
-        InputField(
-          isDisabled: isDisabled,
-          child: TextField(
-            keyboardType: TextInputType.number,
-            controller: _unitPriceController,
-            enabled: !isDisabled,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              hintText: 'Unit Price',
-            ),
-          ),
-          iconData: Icons.attach_money_sharp,
-          trailing: Container(
-            decoration: kOutlineBorderDisabled,
-            child: IconButton(
-              icon: Icon(
-                Icons.edit,
-                color: kPrimaryColor,
+    return Padding(
+      padding: kPrimaryPadding,
+      child: ListView(
+        children: [
+          InputField(
+            child: TextField(
+              enabled: false,
+              controller: _dateController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
               ),
+            ),
+            iconData: Icons.date_range,
+            isDisabled: true,
+            trailing: Container(
+              decoration: kOutBdrDisabledDecoration,
+              child: IconButton(
+                icon: Icon(
+                  Icons.date_range,
+                  color: kActionIconColor,
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ),
+          DropdownButtonHideUnderline(
+            child: DropdownDecorator(
+              child: DropdownButton<String>(
+                hint: Text("Select Supplier"),
+                value: selectedSupplier,
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedSupplier = newValue;
+                  });
+                  print(selectedSupplier);
+                },
+                items: suppliers.map((SupplierNameCode s) {
+                  return DropdownMenuItem<String>(
+                    value: s.scode,
+                    child: Text(s.sname),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          InputField(
+            child: TextField(
+              maxLength: 28,
+              controller: _billNoController,
+              decoration: InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
+                hintText: 'Bill No',
+              ),
+            ),
+            iconData: Icons.notes,
+          ),
+          DropdownButtonHideUnderline(
+            child: DropdownDecorator(
+              child: DropdownButton<String>(
+                hint: Text("Select Material"),
+                value: selectedMaterial,
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedMaterial = newValue;
+                    var material = materials
+                        .where((element) => element.mcode == selectedMaterial);
+                    _unitPriceController.text =
+                        material.first.mpriceperunit.toString();
+                  });
+                  print(selectedMaterial);
+                },
+                items: materials.map((m.Material m) {
+                  return DropdownMenuItem<String>(
+                    value: m.mcode,
+                    child: Text(m.mname),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          InputField(
+            isDisabled: isDisabled,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: _unitPriceController,
+              enabled: !isDisabled,
+              onChanged: (text) {
+                int p = text != "" ? int.parse(text) : 0;
+                context.bloc<TotalPriceCubit>().setPrice(p);
+              },
+              decoration: InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
+                hintText: 'Unit Price',
+              ),
+            ),
+            iconData: Icons.attach_money_sharp,
+            trailing: Container(
+              decoration: kOutBdrDisabledDecoration,
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  color: kActionIconColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isDisabled = !isDisabled;
+                  });
+                },
+              ),
+            ),
+          ),
+          InputField(
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: _quantityController,
+              onChanged: (text) {
+                int q = text != "" ? int.parse(text) : 0;
+                context.bloc<TotalPriceCubit>().setQuantity(q);
+              },
+              decoration: InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
+                hintText: 'Quantity',
+              ),
+            ),
+            iconData: Icons.chevron_right,
+          ),
+          BlocBuilder<TotalPriceCubit, int>(
+              builder: (BuildContext context, state) {
+            _totalPriceController.text = '$state';
+            return InputField(
+              child: TextField(
+                keyboardType: TextInputType.number,
+                controller: _totalPriceController,
+                decoration: InputDecoration(
+                  counterText: "",
+                  border: InputBorder.none,
+                  hintText: 'Total Price',
+                ),
+              ),
+              iconData: Icons.attach_money_sharp,
+            );
+          }),
+          InputField(
+            child: TextField(
+              controller: _remarksController,
+              decoration: InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
+                hintText: 'Remarks',
+              ),
+            ),
+            iconData: Icons.report,
+          ),
+          Padding(
+            padding: kTopPadding,
+            child: PrimaryActionButton(
+              title: 'Upload',
               onPressed: () {
-                setState(() {
-                  isDisabled = !isDisabled;
-                });
+                FocusScope.of(context).requestFocus(FocusNode());
+                uploadData();
               },
             ),
           ),
-        ),
-        InputField(
-          child: TextField(
-            keyboardType: TextInputType.number,
-            controller: _quantityController,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              hintText: 'Quantity',
-            ),
-          ),
-          iconData: Icons.chevron_right,
-        ),
-        InputField(
-          child: TextField(
-            keyboardType: TextInputType.number,
-            controller: _totalPriceController,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              hintText: 'Total Price',
-            ),
-          ),
-          iconData: Icons.attach_money_sharp,
-        ),
-        InputField(
-          child: TextField(
-            controller: _remarksController,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              hintText: 'Remarks',
-            ),
-          ),
-          iconData: Icons.report,
-        ),
-        Padding(
-          padding: kTopPadding,
-          child: PrimaryActionButton(
-            title: 'Upload',
+          FlatButton(
+            child: Text('View Materials purchase'),
             onPressed: () {
               FocusScope.of(context).requestFocus(FocusNode());
-              uploadData();
+              // Navigator.pushNamed(context, kExistingMaterialScreen);
             },
           ),
-        ),
-        FlatButton(
-          child: Text('View Materials purchase'),
-          onPressed: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-            // Navigator.pushNamed(context, kExistingMaterialScreen);
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 

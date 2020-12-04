@@ -33,39 +33,18 @@ class AddMaterialPurchaseForm extends StatefulWidget {
 
 class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
   MPPrerequisiteBloc _mpPrerequisiteBloc;
-  TextEditingController _dateController;
 
   @override
   void initState() {
     _mpPrerequisiteBloc = BlocProvider.of<MPPrerequisiteBloc>(context)
       ..add(GetMPPrerequisite());
-    _dateController = TextEditingController();
-    _dateController.text = selectedDate.toString();
     super.initState();
   }
 
   @override
   void dispose() {
     _mpPrerequisiteBloc.close();
-    _dateController.dispose();
     super.dispose();
-  }
-
-  DateTime selectedDate = DateTime.now();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        context
-            .bloc<MaterialPurchaseBloc>()
-            .add(FetchPrerequisite(selectedDate));
-      });
   }
 
   @override
@@ -77,6 +56,9 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
             providers: [
               BlocProvider(
                   create: (BuildContext context) => TotalPriceCubit(0)),
+              BlocProvider(
+                  create: (BuildContext context) =>
+                      DatePickerCubit("Select Date")),
             ],
             child: BuildEntryFields(
               suppliers: state.suppliers,
@@ -155,6 +137,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   String selectedSupplier;
   String selectedMaterial;
   bool isDisabled = true;
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -167,6 +150,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     _totalPriceController = TextEditingController();
     _remarksController = TextEditingController();
     _dateController = TextEditingController();
+    _dateController.text = selectedDate.toString();
 
     _unitPriceController.text = materials[0].mpriceperunit;
 
@@ -184,6 +168,19 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     super.dispose();
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        context.bloc<DatePickerCubit>().selectDate(selectedDate);
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -191,25 +188,25 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
       child: ListView(
         children: [
           InputField(
-            child: TextField(
-              enabled: false,
-              controller: _dateController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
+            child: FlatButton(
+              minWidth: double.maxFinite,
+              onPressed: () {
+                return _selectDate(context);
+              },
+              child: BlocBuilder<DatePickerCubit, String>(
+                builder: (BuildContext context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(),
+                      Text(state),
+                      Icon(Icons.edit, color: kActionIconColor),
+                    ],
+                  );
+                },
               ),
             ),
             iconData: Icons.date_range,
-            isDisabled: true,
-            trailing: Container(
-              decoration: kOutBdrDisabledDecoration,
-              child: IconButton(
-                icon: Icon(
-                  Icons.date_range,
-                  color: kActionIconColor,
-                ),
-                onPressed: () {},
-              ),
-            ),
           ),
           DropdownButtonHideUnderline(
             child: DropdownDecorator(

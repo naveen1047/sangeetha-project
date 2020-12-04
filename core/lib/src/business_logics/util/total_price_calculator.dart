@@ -1,20 +1,22 @@
 import 'package:bloc/bloc.dart';
 
-class TotalPriceCubit extends Cubit<int> {
-  TotalPriceCubit(int state) : super(0);
-  int unitPrice = 0;
-  int quantity = 0;
-  int totalPrice;
+class TotalPriceCubit extends Cubit<double> {
+  TotalPriceCubit(double state) : super(0.0);
+  double unitPrice = 0;
+  double quantity = 0;
+  double totalPrice;
 
-  void setPrice(int price) {
+  void setPrice(double price) {
     unitPrice = price;
-    emit(quantity * unitPrice);
+    totalPrice = quantity * unitPrice;
+    emit(totalPrice);
   }
 
-  void setQuantity(int q) {
+  void setQuantity(double q) {
     print(quantity.toString());
 
     quantity = q;
-    emit(quantity * unitPrice);
+    totalPrice = quantity * unitPrice;
+    emit(totalPrice);
   }
 }

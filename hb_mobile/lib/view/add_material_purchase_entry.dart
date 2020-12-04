@@ -255,6 +255,9 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                         .where((element) => element.mcode == selectedMaterial);
                     _unitPriceController.text =
                         material.first.mpriceperunit.toString();
+                    context
+                        .bloc<TotalPriceCubit>()
+                        .setPrice(double.parse(material.first.mpriceperunit));
                   });
                   print(selectedMaterial);
                 },
@@ -274,7 +277,13 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
               controller: _unitPriceController,
               enabled: !isDisabled,
               onChanged: (text) {
-                int p = text != "" ? int.parse(text) : 0;
+                double p;
+                print("a");
+                if (text != null && text != "") {
+                  p = double.parse(text);
+                } else {
+                  p = 0.0;
+                }
                 context.bloc<TotalPriceCubit>().setPrice(p);
               },
               decoration: InputDecoration(
@@ -304,7 +313,12 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
               keyboardType: TextInputType.number,
               controller: _quantityController,
               onChanged: (text) {
-                int q = text != "" ? int.parse(text) : 0;
+                double q;
+                if (text != null && text != "") {
+                  q = double.parse(text);
+                } else {
+                  q = 0.0;
+                }
                 context.bloc<TotalPriceCubit>().setQuantity(q);
               },
               decoration: InputDecoration(
@@ -315,7 +329,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
             ),
             iconData: Icons.chevron_right,
           ),
-          BlocBuilder<TotalPriceCubit, int>(
+          BlocBuilder<TotalPriceCubit, double>(
               builder: (BuildContext context, state) {
             _totalPriceController.text = '$state';
             return InputField(

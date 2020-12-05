@@ -244,7 +244,8 @@ class InputField extends StatelessWidget {
   final IconData iconData;
   final bool isDisabled;
   final Widget trailing;
-  final String tooltip;
+
+  // final String tooltip;
 
   const InputField({
     Key key,
@@ -252,7 +253,7 @@ class InputField extends StatelessWidget {
     this.iconData,
     this.isDisabled = false,
     this.trailing,
-    @required this.tooltip,
+    // @required this.tooltip,
   }) : super(key: key);
 
   @override
@@ -263,19 +264,20 @@ class InputField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Tooltip(
-            message: tooltip == null ? "" : tooltip,
-            child: Container(
-              decoration: kOutBdrDisabledDecoration,
-              child: Padding(
-                padding: kFieldPadding,
-                child: Icon(
-                  iconData,
-                  color: kPrimaryColor,
-                ),
-              ),
-            ),
+          // Tooltip(
+          //   message: tooltip == null ? "" : tooltip,
+          //   child: Container(
+          //     decoration: kOutBdrDisabledDecoration,
+          //     child: Padding(
+          //       padding: kFieldPadding,
+          //       child:
+          Icon(
+            iconData,
+            color: kPrimaryColor,
           ),
+          //     ),
+          //   ),
+          // ),
           Flexible(
             child: Container(
               decoration: isDisabled
@@ -558,6 +560,7 @@ class DropdownDecorator extends StatelessWidget {
   final Widget child;
 
   const DropdownDecorator({Key key, this.child}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -94,127 +94,137 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
           _datePicker(context),
           _supplierDropdown(),
           _materialDropdown(context),
-          Padding(
-            padding: kTopPadding,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: _unitPriceController,
-                    enabled: !isDisabled,
-                    onChanged: (text) {
-                      double p;
-                      print("a");
-                      if (text != null && text != "") {
-                        p = double.parse(text);
-                      } else {
-                        p = 0.0;
-                      }
-                      context.bloc<TotalPriceCubit>().setPrice(p);
-                    },
-                    cursorColor: isDisabled
-                        ? Colors.grey
-                        : Theme.of(context).cursorColor,
-                    maxLength: 20,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.money_sharp),
-                      labelText: 'Unit price',
-                      labelStyle: TextStyle(
-                        color: Color(0xFF6200EE),
-                      ),
-                      // helperText: '',
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF6200EE)),
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    setState(() {
-                      isDisabled = !isDisabled;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-          // _unitPrice(context),
-          TextFormField(
-            keyboardType: TextInputType.number,
-            controller: _quantityController,
-            onChanged: (text) {
-              double q;
-              if (text != null && text != "") {
-                q = double.parse(text);
-              } else {
-                q = 0.0;
-              }
-              context.bloc<TotalPriceCubit>().setQuantity(q);
-            },
-            cursorColor: Theme.of(context).cursorColor,
-            maxLength: 20,
-            decoration: InputDecoration(
-              icon: Icon(Icons.chevron_right),
-              labelText: 'Quantity',
-              labelStyle: TextStyle(
-                color: Color(0xFF6200EE),
-              ),
-              // helperText: '',
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF6200EE)),
-              ),
-            ),
-          ),
-          // _quantity(context),
-          // _totalPrice(),
-          BlocBuilder<TotalPriceCubit, double>(
-            builder: (BuildContext context, state) {
-              _totalPriceController.text = '$state';
-              return TextFormField(
-                keyboardType: TextInputType.number,
-                controller: _totalPriceController,
-                cursorColor: Theme.of(context).cursorColor,
-                maxLength: 20,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.money_sharp),
-                  labelText: 'Total price',
-                  labelStyle: TextStyle(
-                    color: Color(0xFF6200EE),
-                  ),
-                  // helperText: '',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF6200EE)),
-                  ),
-                ),
-              );
-            },
-          ),
-          TextFormField(
-            cursorColor: Theme.of(context).cursorColor,
-            controller: _remarksController,
-            keyboardType: TextInputType.multiline,
-            maxLines: 3,
-            minLines: 1,
-            maxLength: 30,
-            decoration: InputDecoration(
-              hintText: '(optional)',
-              icon: Icon(Icons.report_gmailerrorred_outlined),
-              labelText: 'Remarks',
-              labelStyle: TextStyle(
-                color: Color(0xFF6200EE),
-              ),
-              // helperText: '',
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFF6200EE)),
-              ),
-            ),
-          ),
-          // _remarks(),
-          _uplaod(context),
+          _unitPrice(context),
+          _quantity(context),
+          _totalPrice(),
+          _remarks(context),
+          _upload(context),
           _navigator(context),
+        ],
+      ),
+    );
+  }
+
+  TextFormField _remarks(BuildContext context) {
+    return TextFormField(
+      // cursorColor: Theme.of(context).cursorColor,
+      controller: _remarksController,
+      keyboardType: TextInputType.multiline,
+      maxLines: 3,
+      minLines: 1,
+      maxLength: 30,
+      decoration: InputDecoration(
+        hintText: '(optional)',
+        icon: Icon(Icons.report_gmailerrorred_outlined),
+        labelText: 'Remarks',
+        labelStyle: TextStyle(
+          color: Color(0xFF6200EE),
+        ),
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF6200EE)),
+        ),
+      ),
+    );
+  }
+
+  TextFormField _quantity(BuildContext context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _quantityController,
+      onChanged: (text) {
+        double q;
+        if (text != null && text != "") {
+          q = double.parse(text);
+        } else {
+          q = 0.0;
+        }
+        context.bloc<TotalPriceCubit>().setQuantity(q);
+      },
+      // // cursorColor: Theme.of(context).cursorColor,
+      maxLength: 20,
+      decoration: InputDecoration(
+        icon: Icon(Icons.chevron_right),
+        labelText: 'Quantity',
+        labelStyle: TextStyle(
+          color: Color(0xFF6200EE),
+        ),
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF6200EE)),
+        ),
+      ),
+    );
+  }
+
+  BlocBuilder<TotalPriceCubit, double> _totalPrice() {
+    return BlocBuilder<TotalPriceCubit, double>(
+      builder: (BuildContext context, state) {
+        _totalPriceController.text = '$state';
+        return TextFormField(
+          keyboardType: TextInputType.number,
+          controller: _totalPriceController,
+          // cursorColor: Theme.of(context).cursorColor,
+          maxLength: 20,
+          decoration: InputDecoration(
+            icon: Icon(Icons.money_sharp),
+            labelText: 'Total price',
+            labelStyle: TextStyle(
+              color: Color(0xFF6200EE),
+            ),
+            // helperText: '',
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF6200EE)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Padding _unitPrice(BuildContext context) {
+    return Padding(
+      padding: kTopPadding,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              controller: _unitPriceController,
+              enabled: !isDisabled,
+              onChanged: (text) {
+                double p;
+                print("a");
+                if (text != null && text != "") {
+                  p = double.parse(text);
+                } else {
+                  p = 0.0;
+                }
+                context.bloc<TotalPriceCubit>().setPrice(p);
+              },
+              // cursorColor: Theme.of(context).cursorColor,
+              maxLength: 20,
+              decoration: InputDecoration(
+                icon: Icon(Icons.money_sharp),
+                labelText: 'Unit price',
+                labelStyle: TextStyle(
+                  color: isDisabled ? Colors.grey : Color(0xFF6200EE),
+                ),
+                // helperText: '',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF6200EE)),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              setState(() {
+                isDisabled = !isDisabled;
+              });
+            },
+          ),
         ],
       ),
     );
@@ -222,7 +232,6 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
 
   TextFormField _billNo(BuildContext context) {
     return TextFormField(
-      cursorColor: Theme.of(context).cursorColor,
       maxLength: 20,
       decoration: InputDecoration(
         icon: Icon(Icons.notes),
@@ -301,7 +310,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     );
   }
 
-  Padding _uplaod(BuildContext context) {
+  Padding _upload(BuildContext context) {
     return Padding(
       padding: kTopPadding,
       child: PrimaryActionButton(
@@ -310,91 +319,6 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
           FocusScope.of(context).requestFocus(FocusNode());
           uploadData();
         },
-      ),
-    );
-  }
-
-  InputField _remarks() {
-    return InputField(
-      child: TextField(
-        controller: _remarksController,
-        decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          hintText: 'Remarks  (Optional)',
-        ),
-      ),
-      iconData: Icons.report,
-    );
-  }
-
-  BlocBuilder<TotalPriceCubit, double> _totalPrice() {
-    return BlocBuilder<TotalPriceCubit, double>(
-        builder: (BuildContext context, state) {
-      _totalPriceController.text = '$state';
-      return InputField(
-        child: TextField(
-          keyboardType: TextInputType.number,
-          controller: _totalPriceController,
-          decoration: InputDecoration(
-            counterText: "",
-            border: InputBorder.none,
-            hintText: 'Total Price',
-          ),
-        ),
-        iconData: Icons.attach_money_sharp,
-      );
-    });
-  }
-
-  InputField _quantity(BuildContext context) {
-    return InputField(
-      child: TextField(
-        keyboardType: TextInputType.number,
-        controller: _quantityController,
-        onChanged: (text) {
-          double q;
-          if (text != null && text != "") {
-            q = double.parse(text);
-          } else {
-            q = 0.0;
-          }
-          context.bloc<TotalPriceCubit>().setQuantity(q);
-        },
-        decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          hintText: 'Quantity',
-        ),
-      ),
-      iconData: Icons.chevron_right,
-    );
-  }
-
-  InputField _unitPrice(BuildContext context) {
-    return InputField(
-      isDisabled: isDisabled,
-      child: TextField(
-        decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          hintText: 'Unit Price',
-        ),
-      ),
-      iconData: Icons.attach_money_sharp,
-      trailing: Container(
-        decoration: kOutBdrDisabledDecoration,
-        child: IconButton(
-          icon: Icon(
-            Icons.edit,
-            color: kActionIconColor,
-          ),
-          onPressed: () {
-            setState(() {
-              isDisabled = !isDisabled;
-            });
-          },
-        ),
       ),
     );
   }

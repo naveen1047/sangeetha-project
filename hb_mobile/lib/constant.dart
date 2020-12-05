@@ -99,6 +99,7 @@ const kHorizontalPadding = const EdgeInsets.symmetric(horizontal: 16.0);
 const kRightPadding = const EdgeInsets.only(right: 8.0);
 const kLeftPadding = const EdgeInsets.only(left: 8.0);
 const kDoubleLeftPadding = const EdgeInsets.only(left: 16.0);
+const kTripleLeftPadding = const EdgeInsets.only(left: 24.0);
 const kSearchPadding = const EdgeInsets.symmetric(horizontal: 6.0);
 const kTopPadding = const EdgeInsets.only(top: 8.0);
 const kCardPadding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);

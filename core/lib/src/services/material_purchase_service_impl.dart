@@ -16,7 +16,9 @@ class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
       MaterialPurchase materialPurchase) async {
     final data = materialPurchase.toJson();
     final url = "$_baseUrl/add_material_purchase.php";
+    print(data.toString());
     var response = await http.post(url, body: json.encode(data));
+    print(response.headers);
     print(response.body.toString());
     if (response.statusCode == 200) {
       var result = json.decode(response.body);

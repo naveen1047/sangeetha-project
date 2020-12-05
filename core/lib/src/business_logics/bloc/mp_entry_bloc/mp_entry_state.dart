@@ -1,33 +1,35 @@
-part of 'material_bloc.dart';
+part of 'mp_entry_bloc.dart';
 
-abstract class MaterialState {
-  const MaterialState();
+abstract class MPState {
+  const MPState();
 }
 
-class MaterialLoading extends MaterialState {
+class MPIdle extends MPState {}
+
+class MPLoading extends MPState {
   final bool status;
   final String message;
 
-  MaterialLoading(this.status, this.message);
+  MPLoading(this.status, this.message);
 }
 
-class MaterialSuccess extends MaterialState {
+class MPSuccess extends MPState {
   final bool status;
   final String message;
 
-  MaterialSuccess(this.status, this.message);
+  MPSuccess(this.status, this.message);
 }
 
-class MaterialError extends MaterialState {
+class MPError extends MPState {
   final bool status;
   final String message;
 
-  MaterialError(this.status, this.message);
+  MPError(this.status, this.message);
 }
 
-class MaterialErrorAndClear extends MaterialState {
+class MPErrorAndClear extends MPState {
   final bool status;
   final String message;
 
-  MaterialErrorAndClear(this.status, this.message);
+  MPErrorAndClear(this.status, this.message);
 }

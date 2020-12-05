@@ -244,6 +244,7 @@ class InputField extends StatelessWidget {
   final IconData iconData;
   final bool isDisabled;
   final Widget trailing;
+  final String tooltip;
 
   const InputField({
     Key key,
@@ -251,6 +252,7 @@ class InputField extends StatelessWidget {
     this.iconData,
     this.isDisabled = false,
     this.trailing,
+    @required this.tooltip,
   }) : super(key: key);
 
   @override
@@ -261,13 +263,16 @@ class InputField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            decoration: kOutBdrDisabledDecoration,
-            child: Padding(
-              padding: kFieldPadding,
-              child: Icon(
-                iconData,
-                color: kPrimaryColor,
+          Tooltip(
+            message: tooltip == null ? "" : tooltip,
+            child: Container(
+              decoration: kOutBdrDisabledDecoration,
+              child: Padding(
+                padding: kFieldPadding,
+                child: Icon(
+                  iconData,
+                  color: kPrimaryColor,
+                ),
               ),
             ),
           ),

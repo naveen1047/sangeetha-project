@@ -385,18 +385,17 @@ class PrimaryActionButton extends StatelessWidget {
   const PrimaryActionButton(
       {Key key,
       @required this.title,
-      this.color = kPrimaryAccentColor,
+      this.color = kSDarkColor,
       @required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      color: color,
+      // color: color,
       onPressed: onPressed,
       child: Text(
         title,
-        style: TextStyle(color: kWhiteColor),
       ),
     );
   }

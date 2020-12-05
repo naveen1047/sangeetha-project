@@ -70,9 +70,11 @@ class MPBloc extends Bloc<MPEvent, MPState> {
   bool _isEventAttributeIsNotNull(var event) {
     if (event.mpcode != '' &&
             event.scode != '' &&
+            event.scode != null &&
             event.date != '' &&
             event.billno != '' &&
             event.mcode != '' &&
+            event.mcode != null &&
             event.quantity != '' &&
             event.unitprice != '' &&
             event.price != ''

@@ -87,11 +87,28 @@ const Color kMutedColor = Color(0x15000000);
 const Color kIconColor = Color(0x80000000);
 const Color kTextColor = Color(0x80000000);
 const Color kWhiteColor = Color(0xFFFFFFFF);
-const Color kPrimaryColor = Color(0xFF263238);
+// ******
+const Color kPrimaryColor = Color(0xff6200EE); //Color(0xFF263238);
+const Color kPLightColor = Color(0xff9e47ff);
+const Color kPDarkColor = Color(0xff0400ba);
+const Color kSecondaryColor = Color(0xff03dac6); //Color(0xFF37474F);
+const Color kSLightColor = Color(0xff66fff9);
+const Color kSDarkColor = Color(0xff00a896);
+
+const Color kPTextColor = Color(0xFFFFFFFF);
+const Color kBackgroundColor = Color(0xFFFFFFFF);
+const Color kSurfaceColor = Color(0xFFFFFFFF);
+const Color kErrorColor = Color(0xFFB00020);
+const Color kOnPrimaryColor = Color(0xFFFFFFFF);
+const Color kOnSecondaryColor = Color(0xFF000000);
+const Color kOnBackgroundColor = Color(0xFF000000);
+const Color kOnSurfaceColor = Color(0xFF000000);
+const Color kOnErrorColor = Color(0xFFFFFFFF);
+// *****
+
 const Color kPrimaryAccentColor = Color(0xFF0091EA);
-const Color kErrorColor = Color(0xFFF44336);
+// const Color kErrorColor = Color(0xFFF44336);
 const Color kActionIconColor = Color(0xFF007700);
-const Color kSecondaryColor = Color(0xFF37474F);
 
 //padding
 const kVerticalPadding = const EdgeInsets.symmetric(vertical: 8.0);

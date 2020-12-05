@@ -107,7 +107,6 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
 
   TextFormField _remarks(BuildContext context) {
     return TextFormField(
-      // cursorColor: Theme.of(context).cursorColor,
       controller: _remarksController,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
@@ -117,13 +116,9 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         hintText: '(optional)',
         icon: Icon(Icons.report_gmailerrorred_outlined),
         labelText: 'Remarks',
-        labelStyle: TextStyle(
-          color: Color(0xFF6200EE),
-        ),
+
         // helperText: '',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF6200EE)),
-        ),
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }
@@ -141,18 +136,13 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         }
         context.bloc<TotalPriceCubit>().setQuantity(q);
       },
-      // // cursorColor: Theme.of(context).cursorColor,
       maxLength: 20,
       decoration: InputDecoration(
         icon: Icon(Icons.chevron_right),
         labelText: 'Quantity',
-        labelStyle: TextStyle(
-          color: Color(0xFF6200EE),
-        ),
+
         // helperText: '',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF6200EE)),
-        ),
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }
@@ -164,17 +154,14 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         return TextFormField(
           keyboardType: TextInputType.number,
           controller: _totalPriceController,
-          // cursorColor: Theme.of(context).cursorColor,
           maxLength: 20,
           decoration: InputDecoration(
             icon: Icon(Icons.money_sharp),
             labelText: 'Total price',
-            labelStyle: TextStyle(
-              color: Color(0xFF6200EE),
-            ),
+
             // helperText: '',
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF6200EE)),
+              borderSide: BorderSide(),
             ),
           ),
         );
@@ -202,18 +189,13 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                 }
                 context.bloc<TotalPriceCubit>().setPrice(p);
               },
-              // cursorColor: Theme.of(context).cursorColor,
               maxLength: 20,
               decoration: InputDecoration(
                 icon: Icon(Icons.money_sharp),
                 labelText: 'Unit price',
-                labelStyle: TextStyle(
-                  color: isDisabled ? Colors.grey : Color(0xFF6200EE),
-                ),
+
                 // helperText: '',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF6200EE)),
-                ),
+                enabledBorder: UnderlineInputBorder(),
               ),
             ),
           ),
@@ -236,13 +218,8 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
       decoration: InputDecoration(
         icon: Icon(Icons.notes),
         labelText: 'Bill No',
-        labelStyle: TextStyle(
-          color: Color(0xFF6200EE),
-        ),
         // helperText: '',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF6200EE)),
-        ),
+        enabledBorder: UnderlineInputBorder(),
       ),
       controller: _billNoController,
     );
@@ -278,7 +255,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                               Text(
                                 state,
                               ),
-                              Icon(Icons.edit, color: kActionIconColor),
+                              Icon(Icons.edit),
                             ],
                           ),
                           Padding(
@@ -355,7 +332,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                     items: materials.map((m.Material m) {
                       return DropdownMenuItem<String>(
                         value: m.mcode,
-                        child: Text(m.mname),
+                        child: Text('${m.mname} - ${m.munit}'),
                       );
                     }).toList(),
                   ),
@@ -407,6 +384,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   }
 
   void uploadData() {
+    print(selectedSupplier);
     _mpBloc.add(UploadMPEntry(
       mpcode: _billNoController.text,
       scode: selectedSupplier,

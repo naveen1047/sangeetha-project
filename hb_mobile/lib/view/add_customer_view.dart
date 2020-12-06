@@ -115,75 +115,6 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
         padding: kPrimaryPadding,
         child: ListView(
           children: [
-            // InputField(
-            //   child: TextField(
-            //     maxLength: 35,
-            //     controller: _customerNameController,
-            //     onChanged: (text) {
-            //       context.bloc<RandomCodeCubit>().generate(text);
-            //     },
-            //     decoration: InputDecoration(
-            //       counterText: "",
-            //       border: InputBorder.none,
-            //       hintText: 'Customer Name',
-            //     ),
-            //   ),
-            //   iconData: Icons.person,
-            // ),
-            // BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-            //   _customerCodeController.text = '$state';
-            //   return InputField(
-            //     child: TextField(
-            //       enabled: false,
-            //       controller: _customerCodeController,
-            //       decoration: InputDecoration(
-            //         border: InputBorder.none,
-            //         hintText: 'Customer code',
-            //       ),
-            //     ),
-            //     iconData: Icons.info,
-            //     isDisabled: true,
-            //   );
-            // }),
-            // InputField(
-            //   child: TextField(
-            //     maxLength: 15,
-            //     controller: _contactController,
-            //     keyboardType: TextInputType.number,
-            //     decoration: InputDecoration(
-            //       border: InputBorder.none,
-            //       hintText: 'Contact',
-            //       counterText: "",
-            //     ),
-            //   ),
-            //   iconData: Icons.call,
-            // ),
-            // InputField(
-            //   child: TextFormField(
-            //     maxLength: 250,
-            //     minLines: 1,
-            //     maxLines: 2,
-            //     controller: _addressController,
-            //     decoration: InputDecoration(
-            //       counterText: "",
-            //       border: InputBorder.none,
-            //       hintText: 'Address',
-            //     ),
-            //   ),
-            //   iconData: Icons.home,
-            // ),
-            // InputField(
-            //   child: TextField(
-            //     enabled: false,
-            //     controller: _addDateController,
-            //     decoration: InputDecoration(
-            //       border: InputBorder.none,
-            //     ),
-            //   ),
-            //   iconData: Icons.date_range,
-            //   isDisabled: true,
-            // ),
-
             _name(context),
             _code(),
             _contact(),
@@ -200,19 +131,23 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
                 },
               ),
             ),
-            FlatButton(
-              child: Text('View existing customers'),
-              onPressed: () async {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.pushNamed(
-                  context,
-                  kExistingCustomerScreen,
-                );
-              },
-            ),
+            _navigator(context),
           ],
         ),
       ),
+    );
+  }
+
+  FlatButton _navigator(BuildContext context) {
+    return FlatButton(
+      child: Text('View existing customers'),
+      onPressed: () async {
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pushNamed(
+          context,
+          kExistingCustomerScreen,
+        );
+      },
     );
   }
 

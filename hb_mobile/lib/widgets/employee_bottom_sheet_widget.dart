@@ -103,11 +103,6 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
           _name(),
           _contact(),
           _address(),
-          // _buildCodeField(),
-          // _buildCalender(),
-          // _buildNameField(),
-          // _buildContactField(),
-          // _buildAddressField(),
           _buildActionButton(context)
         ],
       ),

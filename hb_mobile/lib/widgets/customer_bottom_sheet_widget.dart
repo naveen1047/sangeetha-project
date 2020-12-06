@@ -98,14 +98,87 @@ class _BottomSheetState extends State<CustomerBottomSheet> {
               },
             ),
           ),
-          _buildCodeField(),
-          _buildDateField(),
-          _buildNameField(),
-          _buildContactField(),
-          _buildAddressField(),
+          _date(),
+          _code(),
+          _name(),
+          _contact(),
+          _address(),
           _buildActionButtons(context),
         ],
       ),
+    );
+  }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _address() {
+    return TextFormField(
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      controller: _addressController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _contact() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _contactController,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _code() {
+    return TextFormField(
+      enabled: false,
+      controller: _customerCodeController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Customer code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _name() {
+    return TextFormField(
+      controller: _customerNameController,
+      maxLength: 28,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Customer Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Padding _title() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text('Edit Customer'),
     );
   }
 
@@ -142,90 +215,6 @@ class _BottomSheetState extends State<CustomerBottomSheet> {
           cnum: _contactController.text,
         ),
       );
-  }
-
-  InputField _buildAddressField() {
-    return InputField(
-      child: TextField(
-        minLines: 1,
-        maxLines: 2,
-        controller: _addressController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Address',
-        ),
-      ),
-      iconData: Icons.home,
-    );
-  }
-
-  InputField _buildContactField() {
-    return InputField(
-      child: TextField(
-        controller: _contactController,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Contact',
-        ),
-      ),
-      iconData: Icons.call,
-    );
-  }
-
-  InputField _buildNameField() {
-    return InputField(
-      child: TextField(
-        controller: _customerNameController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Name',
-        ),
-      ),
-      iconData: Icons.person,
-    );
-  }
-
-  InputField _buildDateField() {
-    return InputField(
-      child: TextField(
-        enabled: false,
-        controller: _addDateController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Date',
-        ),
-      ),
-      iconData: Icons.calendar_today,
-      isDisabled: true,
-    );
-  }
-
-  InputField _buildCodeField() {
-    return InputField(
-      child: TextField(
-        enabled: false,
-        controller: _customerCodeController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Customer code',
-        ),
-      ),
-      iconData: Icons.info,
-      isDisabled: true,
-    );
-  }
-
-  Padding _title() {
-    return Padding(
-      padding: kPrimaryPadding,
-      child: Text(
-        'Edit Customer',
-        style: TextStyle(
-          fontSize: 16.0,
-        ),
-      ),
-    );
   }
 
   Padding _errorMessage(CustomerError state) {

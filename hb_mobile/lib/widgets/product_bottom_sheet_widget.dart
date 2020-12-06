@@ -124,103 +124,230 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
               },
             ),
           ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _productCodeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Product code',
-              ),
-            ),
-            iconData: Icons.info,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              controller: _productNameController,
-              onChanged: (text) {
-                context.bloc<RandomCodeCubit>().generate(text);
-              },
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Product Name',
-              ),
-            ),
-            iconData: Icons.bookmark,
-          ),
-          InputField(
-            child: TextField(
-              keyboardType: TextInputType.number,
-              controller: _salaryPerStrokeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Salary per stroke',
-              ),
-            ),
-            iconData: Icons.attach_money,
-          ),
-          InputField(
-            child: TextField(
-              keyboardType: TextInputType.number,
-              controller: _unitPerStrokeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'No of Unit Produced Per Stroke',
-              ),
-            ),
-            iconData: Icons.arrow_forward_ios,
-          ),
-          InputField(
-            child: TextField(
-              controller: _sellingUnitController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Load, unit etc..,',
-              ),
-            ),
-            iconData: Icons.bookmark,
-          ),
-          InputField(
-            child: TextField(
-              controller: _pricePerSellingUnitController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Price per selling unit',
-              ),
-            ),
-            iconData: Icons.attach_money,
-          ),
-          InputField(
-            child: TextField(
-              keyboardType: TextInputType.number,
-              controller: _unitsPerSellingUnitController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'No of Units Per selling unit',
-              ),
-            ),
-            iconData: Icons.arrow_forward_ios,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PrimaryActionButton(
-                  title: 'Change',
-                  onPressed: () {
-                    _uploadData();
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          )
+          _code(),
+          _productName(),
+          _salaryPerStroke(),
+          _nosPerStroke(),
+          _unit(),
+          _pricePerUnit(),
+          _nosPerSellingUnit(),
+          _action(context)
         ],
+      ),
+    );
+  }
+
+  Padding _action(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          PrimaryActionButton(
+            title: 'Change',
+            onPressed: () {
+              _uploadData();
+            },
+          ),
+          SecondaryActionButton(
+            title: 'Cancel',
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // InputField _nosPerSellingUnit() {
+  //   return InputField(
+  //     child: TextField(
+  //       keyboardType: TextInputType.number,
+  //       controller: _unitsPerSellingUnitController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'No of Units Per selling unit',
+  //       ),
+  //     ),
+  //     iconData: Icons.arrow_forward_ios,
+  //   );
+  // }
+
+  TextFormField _nosPerSellingUnit() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _unitsPerSellingUnitController,
+      maxLength: 10,
+      decoration: InputDecoration(
+        icon: Icon(Icons.chevron_right),
+        labelText: 'No of Units Per selling unit',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _pricePerUnit() {
+  //   return InputField(
+  //     child: TextField(
+  //       controller: _pricePerSellingUnitController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Price per selling unit',
+  //       ),
+  //     ),
+  //     iconData: Icons.attach_money,
+  //   );
+  // }
+
+  TextFormField _pricePerUnit() {
+    return TextFormField(
+      maxLength: 10,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        icon: rupee,
+        labelText: 'Price per selling unit',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+      controller: _pricePerSellingUnitController,
+    );
+  }
+
+  // InputField _unit() {
+  //   return InputField(
+  //     child: TextField(
+  //       controller: _sellingUnitController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Load, unit etc..,',
+  //       ),
+  //     ),
+  //     iconData: Icons.bookmark,
+  //   );
+  // }
+
+  TextFormField _unit() {
+    return TextFormField(
+      controller: _sellingUnitController,
+      maxLength: 10,
+      decoration: InputDecoration(
+        icon: Icon(Icons.bookmark),
+        labelText: 'Selling unit',
+        helperText: 'Load / unit (ltr, kg) etc..,',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _nosPerStroke() {
+  //   return InputField(
+  //     child: TextField(
+  //       keyboardType: TextInputType.number,
+  //       controller: _unitPerStrokeController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'No of Unit Produced Per Stroke',
+  //       ),
+  //     ),
+  //     iconData: Icons.arrow_forward_ios,
+  //   );
+  // }
+
+  TextFormField _nosPerStroke() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _unitPerStrokeController,
+      maxLength: 10,
+      decoration: InputDecoration(
+        icon: Icon(Icons.chevron_right),
+        labelText: 'No of Unit Produced Per Stroke',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _salaryPerStroke() {
+  //   return InputField(
+  //     child: TextField(
+  //       keyboardType: TextInputType.number,
+  //       controller: _salaryPerStrokeController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Salary per stroke',
+  //       ),
+  //     ),
+  //     iconData: Icons.attach_money,
+  //   );
+  // }
+
+  TextFormField _salaryPerStroke() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _salaryPerStrokeController,
+      maxLength: 10,
+      decoration: InputDecoration(
+        icon: rupee,
+        labelText: 'Salary per stroke',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _productName(BuildContext context) {
+  //   return InputField(
+  //     child: TextField(
+  //       controller: _productNameController,
+  //       onChanged: (text) {
+  //         context.bloc<RandomCodeCubit>().generate(text);
+  //       },
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Product Name',
+  //       ),
+  //     ),
+  //     iconData: Icons.bookmark,
+  //   );
+  // }
+
+  TextFormField _productName() {
+    return TextFormField(
+      controller: _productNameController,
+      maxLength: 30,
+      decoration: InputDecoration(
+        icon: Icon(Icons.bookmark),
+        labelText: 'Product Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _code() {
+  //   return InputField(
+  //     child: TextField(
+  //       enabled: false,
+  //       controller: _productCodeController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Product code',
+  //       ),
+  //     ),
+  //     iconData: Icons.info,
+  //     isDisabled: true,
+  //   );
+  // }
+
+  Widget _code() {
+    return TextFormField(
+      enabled: false,
+      controller: _productCodeController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Product code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

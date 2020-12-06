@@ -11,6 +11,7 @@ class AddMaterialScreen extends StatelessWidget {
   final String title;
 
   const AddMaterialScreen({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,21 +122,6 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
     );
   }
 
-  // InputField _pricePerUnit() {
-  //   return InputField(
-  //     child: TextField(
-  //       keyboardType: TextInputType.number,
-  //       maxLength: 6,
-  //       controller: _priceController,
-  //       decoration: InputDecoration(
-  //         counterText: "",
-  //         border: InputBorder.none,
-  //         hintText: 'Price per unit',
-  //       ),
-  //     ),
-  //     iconData: Icons.attach_money,
-  //   );
-  // }
   TextFormField _pricePerUnit() {
     return TextFormField(
       keyboardType: TextInputType.number,
@@ -149,20 +135,6 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
       ),
     );
   }
-  // InputField _unit() {
-  //   return InputField(
-  //     child: TextField(
-  //       maxLength: 13,
-  //       controller: _unitController,
-  //       decoration: InputDecoration(
-  //         counterText: "",
-  //         border: InputBorder.none,
-  //         hintText: 'Unit (kg, load etc..,)',
-  //       ),
-  //     ),
-  //     iconData: Icons.arrow_forward_ios,
-  //   );
-  // }
 
   TextFormField _unit() {
     return TextFormField(
@@ -200,25 +172,6 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
     );
   }
 
-  // BlocBuilder<RandomCodeCubit, String> _code() {
-  //   return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-  //     _materialCodeController.text = '$state';
-  //     return InputField(
-  //       child: TextField(
-  //         enabled: false,
-  //         controller: _materialCodeController,
-  //         decoration: InputDecoration(
-  //           counterText: "",
-  //           border: InputBorder.none,
-  //           hintText: 'Material code',
-  //         ),
-  //       ),
-  //       iconData: Icons.info,
-  //       isDisabled: true,
-  //     );
-  //   });
-  // }
-
   Widget _code() {
     return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
       _materialCodeController.text = '$state';
@@ -238,24 +191,6 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
       );
     });
   }
-
-  // InputField _name(BuildContext context) {
-  //   return InputField(
-  //     child: TextField(
-  //       maxLength: 28,
-  //       controller: _materialNameController,
-  //       onChanged: (text) {
-  //         context.bloc<RandomCodeCubit>().generate(text);
-  //       },
-  //       decoration: InputDecoration(
-  //         counterText: "",
-  //         border: InputBorder.none,
-  //         hintText: 'Material Name',
-  //       ),
-  //     ),
-  //     iconData: Icons.bookmark,
-  //   );
-  // }
 
   TextFormField _name(BuildContext context) {
     return TextFormField(

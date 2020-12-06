@@ -106,67 +106,89 @@ class _MaterialBottomSheetState extends State<MaterialBottomSheet> {
               },
             ),
           ),
-          InputField(
-            child: TextField(
-              controller: _materialNameController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Material Name',
-              ),
-            ),
-            iconData: Icons.bookmark,
-          ),
-          InputField(
-            child: TextField(
-              enabled: false,
-              controller: _materialCodeController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Material code',
-              ),
-            ),
-            iconData: Icons.info,
-            isDisabled: true,
-          ),
-          InputField(
-            child: TextField(
-              controller: _materialUnitController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Unit',
-              ),
-            ),
-            iconData: Icons.chevron_right,
-          ),
-          InputField(
-            child: TextField(
-              controller: _materialPriceController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Price per unit',
-              ),
-            ),
-            iconData: Icons.attach_money,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PrimaryActionButton(
-                  title: 'Change',
-                  onPressed: () {
-                    _uploadData();
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Cancel'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          )
+          _name(),
+          _code(),
+          _unit(),
+          _pricePerUnit(),
+          _action(context)
         ],
+      ),
+    );
+  }
+
+  Padding _action(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          PrimaryActionButton(
+            title: 'Change',
+            onPressed: () {
+              _uploadData();
+            },
+          ),
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _code() {
+    return TextFormField(
+      enabled: false,
+      controller: _materialCodeController,
+      onChanged: (text) {
+        print(text);
+        context.bloc<RandomCodeCubit>().generate(text);
+      },
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Material code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _name() {
+    return TextFormField(
+      controller: _materialNameController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.bookmark),
+        labelText: 'Material Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _pricePerUnit() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      maxLength: 6,
+      controller: _materialPriceController,
+      decoration: InputDecoration(
+        icon: rupee,
+        labelText: 'Price per unit',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _unit() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _materialUnitController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.chevron_right),
+        labelText: 'Unit',
+        helperText: 'Unit (kg, load etc..,)',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

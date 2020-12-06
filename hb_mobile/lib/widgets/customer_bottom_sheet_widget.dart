@@ -195,7 +195,7 @@ class _BottomSheetState extends State<CustomerBottomSheet> {
               uploadData();
             },
           ),
-          RaisedButton(
+          FlatButton(
             child: Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),

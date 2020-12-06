@@ -9,6 +9,7 @@ class AddEmployeeScreen extends StatelessWidget {
   final String title;
 
   const AddEmployeeScreen({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,35 +132,25 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 },
               ),
             ),
-            FlatButton(
-              child: Text(
-                'View existing employees',
-                // style: TextStyle(color: kTextColor),
-              ),
-              onPressed: () async {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.pushNamed(context, kExistingEmployeeScreen);
-              },
-            ),
+            _navigator(context),
           ],
         ),
       ),
     );
   }
 
-  // InputField _date() {
-  //   return InputField(
-  //     child: TextField(
-  //       enabled: false,
-  //       controller: _addDateController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //       ),
-  //     ),
-  //     iconData: Icons.date_range,
-  //     isDisabled: true,
-  //   );
-  // }
+  FlatButton _navigator(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        'View existing employees',
+        // style: TextStyle(color: kTextColor),
+      ),
+      onPressed: () async {
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pushNamed(context, kExistingEmployeeScreen);
+      },
+    );
+  }
 
   Widget _date() {
     return TextFormField(
@@ -173,23 +164,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
       ),
     );
   }
-
-  // InputField _address() {
-  //   return InputField(
-  //     child: TextFormField(
-  //       maxLength: 250,
-  //       minLines: 1,
-  //       maxLines: 2,
-  //       controller: _addressController,
-  //       decoration: InputDecoration(
-  //         counterText: "",
-  //         border: InputBorder.none,
-  //         hintText: 'Address',
-  //       ),
-  //     ),
-  //     iconData: Icons.home,
-  //   );
-  // }
 
   TextFormField _address() {
     return TextFormField(
@@ -205,20 +179,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     );
   }
 
-  // InputField _contact() {
-  //   return InputField(
-  //     child: TextField(
-  //       controller: _contactController,
-  //       keyboardType: TextInputType.phone,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Contact',
-  //       ),
-  //     ),
-  //     iconData: Icons.call,
-  //   );
-  // }
-
   TextFormField _contact() {
     return TextFormField(
       maxLength: 13,
@@ -231,24 +191,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
       ),
     );
   }
-
-  // BlocBuilder<RandomCodeCubit, String> _code() {
-  //   return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-  //     _employeeCodeController.text = '$state';
-  //     return InputField(
-  //       child: TextField(
-  //         enabled: false,
-  //         controller: _employeeCodeController,
-  //         decoration: InputDecoration(
-  //           border: InputBorder.none,
-  //           hintText: 'Employee code',
-  //         ),
-  //       ),
-  //       iconData: Icons.info,
-  //       isDisabled: true,
-  //     );
-  //   });
-  // }
 
   Widget _code() {
     return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
@@ -269,22 +211,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
       );
     });
   }
-
-  // InputField _name(BuildContext context) {
-  //   return InputField(
-  //           child: TextField(
-  //             controller: _employeeNameController,
-  //             onChanged: (text) {
-  //               context.bloc<RandomCodeCubit>().generate(text);
-  //             },
-  //             decoration: InputDecoration(
-  //               border: InputBorder.none,
-  //               hintText: 'Employee Name',
-  //             ),
-  //           ),
-  //           iconData: Icons.person,
-  //         );
-  // }
 
   TextFormField _name(BuildContext context) {
     return TextFormField(

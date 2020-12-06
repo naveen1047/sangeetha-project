@@ -98,13 +98,84 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
               },
             ),
           ),
-          _buildCodeField(),
-          _buildCalender(),
-          _buildNameField(),
-          _buildContactField(),
-          _buildAddressField(),
+          _date(),
+          _code(),
+          _name(),
+          _contact(),
+          _address(),
+          // _buildCodeField(),
+          // _buildCalender(),
+          // _buildNameField(),
+          // _buildContactField(),
+          // _buildAddressField(),
           _buildActionButton(context)
         ],
+      ),
+    );
+  }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _address() {
+    return TextFormField(
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      controller: _addressController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _contact() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _contactController,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _code() {
+    return TextFormField(
+      enabled: false,
+      controller: _employeeCodeController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Employee code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _name() {
+    return TextFormField(
+      controller: _employeeNameController,
+      maxLength: 28,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Employee Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }
@@ -128,84 +199,12 @@ class _BottomSheetState extends State<EmployeeBottomSheet> {
               uploadData();
             },
           ),
-          RaisedButton(
+          FlatButton(
             child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
-    );
-  }
-
-  InputField _buildAddressField() {
-    return InputField(
-      child: TextField(
-        minLines: 1,
-        maxLines: 2,
-        controller: _addressController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Address',
-        ),
-      ),
-      iconData: Icons.home,
-    );
-  }
-
-  InputField _buildContactField() {
-    return InputField(
-      child: TextField(
-        keyboardType: TextInputType.phone,
-        controller: _contactController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Contact',
-        ),
-      ),
-      iconData: Icons.call,
-    );
-  }
-
-  InputField _buildNameField() {
-    return InputField(
-      child: TextField(
-        controller: _employeeNameController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Name',
-        ),
-      ),
-      iconData: Icons.person,
-    );
-  }
-
-  InputField _buildCalender() {
-    return InputField(
-      child: TextField(
-        enabled: false,
-        controller: _addDateController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Date',
-        ),
-      ),
-      iconData: Icons.calendar_today,
-      isDisabled: true,
-    );
-  }
-
-  InputField _buildCodeField() {
-    return InputField(
-      child: TextField(
-        enabled: false,
-        controller: _employeeCodeController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Employee code',
-        ),
-      ),
-      iconData: Icons.info,
-      isDisabled: true,
     );
   }
 

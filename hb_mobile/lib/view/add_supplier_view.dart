@@ -9,6 +9,7 @@ class AddSuppliersScreen extends StatelessWidget {
   final String title;
 
   const AddSuppliersScreen({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,74 +116,11 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
         padding: kPrimaryPadding,
         child: ListView(
           children: [
-            InputField(
-              child: TextField(
-                maxLength: 35,
-                controller: _supplierNameController,
-                onChanged: (text) {
-                  context.bloc<RandomCodeCubit>().generate(text);
-                },
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Supplier Name',
-                ),
-              ),
-              iconData: Icons.person,
-            ),
-            BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _supplierCodeController.text = '$state';
-              return InputField(
-                child: TextField(
-                  enabled: false,
-                  controller: _supplierCodeController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Supplier code',
-                  ),
-                ),
-                iconData: Icons.info,
-                isDisabled: true,
-              );
-            }),
-            InputField(
-              child: TextField(
-                maxLength: 15,
-                controller: _contactController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Contact',
-                  counterText: "",
-                ),
-              ),
-              iconData: Icons.call,
-            ),
-            InputField(
-              child: TextFormField(
-                maxLength: 250,
-                minLines: 1,
-                maxLines: 2,
-                controller: _addressController,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Address',
-                ),
-              ),
-              iconData: Icons.home,
-            ),
-            InputField(
-              child: TextField(
-                enabled: false,
-                controller: _addDateController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-              iconData: Icons.date_range,
-              isDisabled: true,
-            ),
+            _name(context),
+            _code(context),
+            _contact(),
+            _address(),
+            _date(),
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
@@ -194,18 +132,100 @@ class _AddSupplierFormState extends State<AddSupplierForm> {
                 },
               ),
             ),
-            FlatButton(
-              child: Text('View existing suppliers'),
-              onPressed: () async {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.pushNamed(
-                  context,
-                  kExistingSuppliersScreen,
-                );
-              },
-            ),
+            _navigator(context),
           ],
         ),
+      ),
+    );
+  }
+
+  FlatButton _navigator(BuildContext context) {
+    return FlatButton(
+      child: Text('View existing suppliers'),
+      onPressed: () async {
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pushNamed(
+          context,
+          kExistingSuppliersScreen,
+        );
+      },
+    );
+  }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _address() {
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      controller: _addressController,
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _contact() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _contactController,
+      maxLength: 15,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _code(BuildContext context) {
+    return BlocBuilder<RandomCodeCubit, String>(
+      builder: (context, state) {
+        _supplierCodeController.text = '$state';
+        return TextFormField(
+          enabled: false,
+          controller: _supplierCodeController,
+          decoration: InputDecoration(
+            icon: Icon(Icons.info),
+            labelText: 'Supplier code',
+            // helperText: '',
+            enabledBorder: UnderlineInputBorder(),
+          ),
+        );
+      },
+    );
+  }
+
+  TextFormField _name(BuildContext context) {
+    return TextFormField(
+      controller: _supplierNameController,
+      onChanged: (text) {
+        print(text);
+        context.bloc<RandomCodeCubit>().generate(text);
+      },
+      maxLength: 35,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Supplier Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

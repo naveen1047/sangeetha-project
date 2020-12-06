@@ -549,7 +549,7 @@ class SecondaryActionButton extends StatelessWidget {
     return FlatButton(
       child: Text(
         title,
-        style: TextStyle(color: kTextColor),
+        // style: TextStyle(color: kTextColor),
       ),
       onPressed: () {
         Navigator.pushNamed(context, kExistingProductScreen);

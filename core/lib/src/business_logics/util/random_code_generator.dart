@@ -7,6 +7,8 @@ class RandomCodeCubit extends Cubit<String> {
   void generate(String sname) => emit(_convertToCode(sname));
 
   String _convertToCode(String text) {
+    print('asdf');
+
     if (text == '' || text == null) return '';
     text = text
         .replaceAll("_", "")

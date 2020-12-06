@@ -98,12 +98,18 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
               },
             ),
           ),
-          _buildCodeField(),
-          _buildDateField(),
-          _buildNameField(),
-          _buildContactField(),
-          _buildAddressField(),
+          _name(),
+          _code(context),
+          _contact(),
+          _address(),
+          _date(),
           _buildActionButtons(context),
+          // _buildCodeField(),
+          // _buildDateField(),
+          // _buildNameField(),
+          // _buildContactField(),
+          // _buildAddressField(),
+          // _buildActionButtons(context),
         ],
       ),
     );
@@ -122,11 +128,80 @@ class _BottomSheetState extends State<SupplierBottomSheet> {
               uploadData();
             },
           ),
-          RaisedButton(
+          FlatButton(
             child: Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _address() {
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      controller: _addressController,
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _contact() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _contactController,
+      maxLength: 15,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _code(BuildContext context) {
+    return TextFormField(
+      enabled: false,
+      controller: _supplierCodeController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Supplier code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _name() {
+    return TextFormField(
+      controller: _supplierNameController,
+      maxLength: 35,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Supplier Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

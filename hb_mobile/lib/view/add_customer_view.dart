@@ -115,74 +115,80 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
         padding: kPrimaryPadding,
         child: ListView(
           children: [
-            InputField(
-              child: TextField(
-                maxLength: 35,
-                controller: _customerNameController,
-                onChanged: (text) {
-                  context.bloc<RandomCodeCubit>().generate(text);
-                },
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Customer Name',
-                ),
-              ),
-              iconData: Icons.person,
-            ),
-            BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _customerCodeController.text = '$state';
-              return InputField(
-                child: TextField(
-                  enabled: false,
-                  controller: _customerCodeController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Customer code',
-                  ),
-                ),
-                iconData: Icons.info,
-                isDisabled: true,
-              );
-            }),
-            InputField(
-              child: TextField(
-                maxLength: 15,
-                controller: _contactController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Contact',
-                  counterText: "",
-                ),
-              ),
-              iconData: Icons.call,
-            ),
-            InputField(
-              child: TextFormField(
-                maxLength: 250,
-                minLines: 1,
-                maxLines: 2,
-                controller: _addressController,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Address',
-                ),
-              ),
-              iconData: Icons.home,
-            ),
-            InputField(
-              child: TextField(
-                enabled: false,
-                controller: _addDateController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-              iconData: Icons.date_range,
-              isDisabled: true,
-            ),
+            // InputField(
+            //   child: TextField(
+            //     maxLength: 35,
+            //     controller: _customerNameController,
+            //     onChanged: (text) {
+            //       context.bloc<RandomCodeCubit>().generate(text);
+            //     },
+            //     decoration: InputDecoration(
+            //       counterText: "",
+            //       border: InputBorder.none,
+            //       hintText: 'Customer Name',
+            //     ),
+            //   ),
+            //   iconData: Icons.person,
+            // ),
+            // BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+            //   _customerCodeController.text = '$state';
+            //   return InputField(
+            //     child: TextField(
+            //       enabled: false,
+            //       controller: _customerCodeController,
+            //       decoration: InputDecoration(
+            //         border: InputBorder.none,
+            //         hintText: 'Customer code',
+            //       ),
+            //     ),
+            //     iconData: Icons.info,
+            //     isDisabled: true,
+            //   );
+            // }),
+            // InputField(
+            //   child: TextField(
+            //     maxLength: 15,
+            //     controller: _contactController,
+            //     keyboardType: TextInputType.number,
+            //     decoration: InputDecoration(
+            //       border: InputBorder.none,
+            //       hintText: 'Contact',
+            //       counterText: "",
+            //     ),
+            //   ),
+            //   iconData: Icons.call,
+            // ),
+            // InputField(
+            //   child: TextFormField(
+            //     maxLength: 250,
+            //     minLines: 1,
+            //     maxLines: 2,
+            //     controller: _addressController,
+            //     decoration: InputDecoration(
+            //       counterText: "",
+            //       border: InputBorder.none,
+            //       hintText: 'Address',
+            //     ),
+            //   ),
+            //   iconData: Icons.home,
+            // ),
+            // InputField(
+            //   child: TextField(
+            //     enabled: false,
+            //     controller: _addDateController,
+            //     decoration: InputDecoration(
+            //       border: InputBorder.none,
+            //     ),
+            //   ),
+            //   iconData: Icons.date_range,
+            //   isDisabled: true,
+            // ),
+
+            _name(context),
+            _code(),
+            _contact(),
+            _address(),
+            _date(),
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
@@ -206,6 +212,82 @@ class _AddCustomerFormState extends State<AddCustomerForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _address() {
+    return TextFormField(
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      controller: _addressController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  TextFormField _contact() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _contactController,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _code() {
+    return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+      _customerCodeController.text = '$state';
+      return TextFormField(
+        enabled: false,
+        controller: _customerCodeController,
+        onChanged: (text) {
+          print(text);
+          context.bloc<RandomCodeCubit>().generate(text);
+        },
+        decoration: InputDecoration(
+          icon: Icon(Icons.info),
+          labelText: 'Customer code',
+          // helperText: '',
+          enabledBorder: UnderlineInputBorder(),
+        ),
+      );
+    });
+  }
+
+  TextFormField _name(BuildContext context) {
+    return TextFormField(
+      controller: _customerNameController,
+      onChanged: (text) {
+        context.bloc<RandomCodeCubit>().generate(text);
+      },
+      maxLength: 28,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Customer Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

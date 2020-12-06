@@ -8,7 +8,7 @@ class ConfigScreen extends StatelessWidget {
     final configWidgets = [
       DualButton(
         title: 'Add Suppliers',
-        subtitle: 'Existing suppliers',
+        subtitle: 'Suppliers',
         primaryColor: Color(0xff343a40),
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingSuppliersScreen),
@@ -16,7 +16,7 @@ class ConfigScreen extends StatelessWidget {
       ),
       DualButton(
         title: 'Add Material',
-        subtitle: 'Existing material',
+        subtitle: 'Material',
         primaryColor: Colors.amber,
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingMaterialScreen),
@@ -24,7 +24,7 @@ class ConfigScreen extends StatelessWidget {
       ),
       DualButton(
         title: 'Add Employee',
-        subtitle: 'Existing Employee',
+        subtitle: 'Employee',
         primaryColor: Colors.blue,
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingEmployeeScreen),
@@ -32,7 +32,7 @@ class ConfigScreen extends StatelessWidget {
       ),
       DualButton(
         title: 'Add Product',
-        subtitle: 'Existing products',
+        subtitle: 'Products',
         primaryColor: Colors.teal,
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingProductScreen),
@@ -40,7 +40,7 @@ class ConfigScreen extends StatelessWidget {
       ),
       DualButton(
         title: 'Add Customer',
-        subtitle: 'Existing Customer',
+        subtitle: 'Customer',
         primaryColor: Colors.teal,
         onTapSecondary: () =>
             Navigator.pushNamed(context, kExistingCustomerScreen),

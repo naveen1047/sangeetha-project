@@ -26,7 +26,7 @@ class ProductDataTable extends StatelessWidget {
       child: ListView(
         children: [
           PaginatedDataTable(
-            columnSpacing: 0.5,
+            columnSpacing: 10,
             header: Text(isEmpty ? 'No result found' : 'Product'),
             rowsPerPage: isEmpty ? 1 : 6,
             columns: dataColumn,
@@ -88,13 +88,30 @@ class _DataSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
-        DataCell(Text(
-          row.valueA,
+        DataCell(Container(
+          width: 130,
+          child: Text(
+            row.valueA,
+            softWrap: true,
+            overflow: TextOverflow.visible,
+          ),
         )),
-        DataCell(Text(row.valueB)),
-        DataCell(Text(row.valueC)),
-        DataCell(Text(row.valueD)),
-        DataCell(Text(row.valueE)),
+        DataCell(Text(
+          row.valueB,
+          style: TextStyle(color: Colors.grey),
+        )),
+        DataCell(
+          Text(row.valueC),
+        ),
+        DataCell(Text(
+          row.valueD,
+        )),
+        DataCell(
+          Text(
+            row.valueE,
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
         DataCell(Text(row.valueF)),
         DataCell(Text(row.valueG)),
         // TODO: it can be repaced by this for smaller text
@@ -126,7 +143,7 @@ class _DataSource extends DataTableSource {
           IconButton(
             icon: Icon(
               Icons.edit,
-              color: kPrimaryAccentColor,
+              // color: kPrimaryAccentColor,
             ),
             onPressed: () {
               _showModalBottomSheet(context, data);
@@ -135,7 +152,7 @@ class _DataSource extends DataTableSource {
           IconButton(
               icon: Icon(
                 Icons.delete,
-                color: kPrimaryColor,
+                // color: kPrimaryColor,
               ),
               onPressed: () {
                 showDialog(

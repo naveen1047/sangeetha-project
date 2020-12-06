@@ -93,10 +93,14 @@ class MaterialDemoThemeData {
   );
 
   static const _colorScheme = ColorScheme(
-    primary: Color(0xFF6200EE),
-    primaryVariant: Color(0xFF3700B2),
-    secondary: Color(0xFF03DAC6),
-    secondaryVariant: Color(0xFF018786),
+    primary: Color(0xFF263238),
+    // primary: Color(0xFF344955),
+    primaryVariant: Color(0xFF000a12),
+    // primaryVariant: Color(0xFF0b222c),
+    secondary: Color(0xFFfafafa),
+    // secondary: Color(0xFFf9aa33),
+    secondaryVariant: Color(0xFFc7c7c7),
+    // secondaryVariant: Color(0xFF17b00),
     background: Colors.white,
     surface: Color(0xFFF2F2F2),
     onBackground: Colors.black,

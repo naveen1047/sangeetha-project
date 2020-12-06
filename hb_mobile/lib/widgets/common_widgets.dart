@@ -85,8 +85,8 @@ class CategoryCard extends StatelessWidget {
   final String subTitle;
 
   // final IconData subTitleIcon;
-  final Color backgroundColor;
-  final Color textColor;
+  // final Color backgroundColor;
+  // final Color textColor;
   final Function onTap;
   final Function onPressedSecondary;
 
@@ -97,8 +97,8 @@ class CategoryCard extends StatelessWidget {
     this.titleIcon,
     @required this.subTitle,
     // this.subTitleIcon,
-    @required this.backgroundColor,
-    this.textColor,
+    // @required this.backgroundColor,
+    // this.textColor,
     this.onPressedSecondary,
     // this.textColor = const Color(0xFFFFFFFF),
   }) : super(key: key);
@@ -119,7 +119,7 @@ class CategoryCard extends StatelessWidget {
                     padding: const EdgeInsets.all(24.0),
                     child: Icon(
                       titleIcon,
-                      color: kPrimaryColor,
+                      // color: kPrimaryColor,
                     ),
                   ),
                 ),
@@ -273,7 +273,7 @@ class InputField extends StatelessWidget {
           //       child:
           Icon(
             iconData,
-            color: kPrimaryColor,
+            // color: kPrimaryColor,
           ),
           //     ),
           //   ),
@@ -379,13 +379,13 @@ class InputField extends StatelessWidget {
 
 class PrimaryActionButton extends StatelessWidget {
   final String title;
-  final Color color;
+  // final Color color;
   final Function onPressed;
 
   const PrimaryActionButton(
       {Key key,
       @required this.title,
-      this.color = kSDarkColor,
+      // this.color = kSDarkColor,
       @required this.onPressed})
       : super(key: key);
 
@@ -416,7 +416,7 @@ SnackBar warningSnackBar({@required String message, Widget widget}) {
         widget != null ? widget : Icon(Icons.info),
       ],
     ),
-    backgroundColor: Colors.red,
+    backgroundColor: ThemeData.light().errorColor,
   );
 }
 
@@ -441,7 +441,7 @@ SnackBar progressSnackBar({
             ? child
             : Icon(
                 Icons.check_circle,
-                color: Colors.green,
+                color: ColorScheme.light().secondary,
               ),
       ],
     ),
@@ -478,14 +478,16 @@ Row _label(String message, {Widget child}) {
 Widget datatableLabel(String message, {bool isSortable = false}) {
   if (isSortable) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           message,
+          softWrap: true,
           style: kDatatableLabelStyle,
         ),
         Icon(
           Icons.swap_vert,
-          color: kPrimaryAccentColor,
+          // color: kPrimaryAccentColor,
         ),
       ],
     );
@@ -523,7 +525,8 @@ class DualButton extends StatelessWidget {
           onTap: onTapSecondary,
           trailing: IconButton(
             icon: Icon(Icons.add_circle_rounded),
-            color: kPrimaryAccentColor,
+            color: ColorScheme.light().onSecondary,
+            // color: kPrimaryAccentColor,
             onPressed: onTapPrimary,
             tooltip: title,
           ),

@@ -116,7 +116,7 @@ class _BottomSheetState extends State<CustomerBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           PrimaryActionButton(
-            color: Theme.of(context).primaryColor,
+            // color: Theme.of(context).primaryColor,
             title: 'Change',
             onPressed: () {
               uploadData();

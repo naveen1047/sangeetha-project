@@ -27,7 +27,7 @@ class MaterialDataTable extends StatelessWidget {
       child: ListView(
         children: [
           PaginatedDataTable(
-            columnSpacing: 0.5,
+            columnSpacing: 10,
             header: Text(isEmpty ? 'No result found' : 'Material'),
             rowsPerPage: isEmpty ? 1 : 6,
             columns: dataColumn,
@@ -63,7 +63,7 @@ class _DataSource extends DataTableSource {
       this._editMaterialBloc) {
     _rows = materials
         .map((data) =>
-            _Row(data.mname, data.munit, data.mpriceperunit, data.mcode, data))
+            _Row(data.mname, data.mcode, data.munit, data.mpriceperunit, data))
         .toList();
   }
 
@@ -117,7 +117,7 @@ class _DataSource extends DataTableSource {
           IconButton(
             icon: Icon(
               Icons.edit,
-              color: kPrimaryAccentColor,
+              // color: kPrimaryAccentColor,
             ),
             onPressed: () {
               _showModalBottomSheet(context, data);
@@ -126,7 +126,7 @@ class _DataSource extends DataTableSource {
           IconButton(
               icon: Icon(
                 Icons.delete,
-                color: kPrimaryColor,
+                // color: kPrimaryColor,
               ),
               onPressed: () {
                 showDialog(

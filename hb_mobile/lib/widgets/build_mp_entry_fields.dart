@@ -111,7 +111,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
       keyboardType: TextInputType.multiline,
       maxLines: 3,
       minLines: 1,
-      maxLength: 30,
+      maxLength: 250,
       decoration: InputDecoration(
         hintText: '(optional)',
         icon: Icon(Icons.report_gmailerrorred_outlined),
@@ -136,7 +136,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         }
         context.bloc<TotalPriceCubit>().setQuantity(q);
       },
-      maxLength: 20,
+      maxLength: 10,
       decoration: InputDecoration(
         icon: Icon(Icons.chevron_right),
         labelText: 'Quantity',
@@ -154,9 +154,9 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         return TextFormField(
           keyboardType: TextInputType.number,
           controller: _totalPriceController,
-          maxLength: 20,
+          maxLength: 12,
           decoration: InputDecoration(
-            icon: Icon(Icons.money_sharp),
+            icon: rupee,
             labelText: 'Total price',
 
             // helperText: '',
@@ -189,9 +189,9 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                 }
                 context.bloc<TotalPriceCubit>().setPrice(p);
               },
-              maxLength: 20,
+              maxLength: 10,
               decoration: InputDecoration(
-                icon: Icon(Icons.money_sharp),
+                icon: rupee,
                 labelText: 'Unit price',
 
                 // helperText: '',

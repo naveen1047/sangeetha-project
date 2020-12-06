@@ -15,6 +15,11 @@ const String kExistingProductScreen = '/existingProductScreen';
 const String kAddCustomerScreen = '/addCustomerScreen';
 const String kExistingCustomerScreen = '/existingCustomerScreen';
 
+const Text rupee = Text(
+  ' \u20B9 ',
+  style: TextStyle(fontSize: 20.0),
+);
+
 // decoration
 Decoration kOutlineBorderDecoration = BoxDecoration(
   border: Border.all(
@@ -73,10 +78,14 @@ Decoration kOutBdrDisabledDecoration = BoxDecoration(
 // data table label style
 TextStyle kDatatableLabelStyle = TextStyle(
   fontWeight: FontWeight.bold,
-  color: kPrimaryColor, /* fontSize: 10.0*/
+  // color: kPrimaryColor,
+  // fontSize: 10.0,
 );
 
-TextStyle kDatatableCellStyle = TextStyle(color: kPrimaryColor, fontSize: 10.0);
+TextStyle kDatatableCellStyle = TextStyle(
+  // color: kPrimaryColor,
+  fontSize: 10.0,
+);
 
 // border radius
 BorderRadiusGeometry kDefaultBorderRadius = BorderRadius.circular(4.0);
@@ -88,22 +97,22 @@ const Color kIconColor = Color(0x80000000);
 const Color kTextColor = Color(0x80000000);
 const Color kWhiteColor = Color(0xFFFFFFFF);
 // ******
-const Color kPrimaryColor = Color(0xff6200EE); //Color(0xFF263238);
-const Color kPLightColor = Color(0xff9e47ff);
-const Color kPDarkColor = Color(0xff0400ba);
-const Color kSecondaryColor = Color(0xff03dac6); //Color(0xFF37474F);
-const Color kSLightColor = Color(0xff66fff9);
-const Color kSDarkColor = Color(0xff00a896);
-
-const Color kPTextColor = Color(0xFFFFFFFF);
-const Color kBackgroundColor = Color(0xFFFFFFFF);
-const Color kSurfaceColor = Color(0xFFFFFFFF);
-const Color kErrorColor = Color(0xFFB00020);
-const Color kOnPrimaryColor = Color(0xFFFFFFFF);
-const Color kOnSecondaryColor = Color(0xFF000000);
-const Color kOnBackgroundColor = Color(0xFF000000);
-const Color kOnSurfaceColor = Color(0xFF000000);
-const Color kOnErrorColor = Color(0xFFFFFFFF);
+// const Color kPrimaryColor = Color(0xff6200EE); //Color(0xFF263238);
+// const Color kPLightColor = Color(0xff9e47ff);
+// const Color kPDarkColor = Color(0xff0400ba);
+// const Color kSecondaryColor = Color(0xff03dac6); //Color(0xFF37474F);
+// const Color kSLightColor = Color(0xff66fff9);
+// const Color kSDarkColor = Color(0xff00a896);
+//
+// const Color kPTextColor = Color(0xFFFFFFFF);
+// const Color kBackgroundColor = Color(0xFFFFFFFF);
+// const Color kSurfaceColor = Color(0xFFFFFFFF);
+// const Color kErrorColor = Color(0xFFB00020);
+// const Color kOnPrimaryColor = Color(0xFFFFFFFF);
+// const Color kOnSecondaryColor = Color(0xFF000000);
+// const Color kOnBackgroundColor = Color(0xFF000000);
+// const Color kOnSurfaceColor = Color(0xFF000000);
+// const Color kOnErrorColor = Color(0xFFFFFFFF);
 // *****
 
 const Color kPrimaryAccentColor = Color(0xFF0091EA);
@@ -114,6 +123,7 @@ const Color kActionIconColor = Color(0xFF007700);
 const kVerticalPadding = const EdgeInsets.symmetric(vertical: 8.0);
 const kHorizontalPadding = const EdgeInsets.symmetric(horizontal: 16.0);
 const kRightPadding = const EdgeInsets.only(right: 8.0);
+const kDoubleRightPadding = const EdgeInsets.only(right: 16.0);
 const kLeftPadding = const EdgeInsets.only(left: 8.0);
 const kDoubleLeftPadding = const EdgeInsets.only(left: 16.0);
 const kTripleLeftPadding = const EdgeInsets.only(left: 24.0);

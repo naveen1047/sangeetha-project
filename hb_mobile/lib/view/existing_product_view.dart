@@ -130,36 +130,35 @@ class _ExistingProductsListState extends State<ExistingProductsList> {
             }),
         DataColumn(
           label: datatableLabel("Code", isSortable: false),
-          numeric: true,
           // onSort: (columnIndex, ascending) {
           //   _viewProductBloc.add(SortProductBySalaryPerStroke());
           // }
         ),
         DataColumn(
-            label: datatableLabel("Salary per Stroke", isSortable: true),
+            label: datatableLabel("Salary per\nStroke", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
               _viewProductBloc.add(SortProductBySalaryPerStroke());
             }),
         DataColumn(
-            label: datatableLabel("Nos produced per stroke", isSortable: true),
+            label: datatableLabel("Nos produced\nper stroke", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
               _viewProductBloc.add(SortProductByNosProducedPerStroke());
             }),
         DataColumn(
-            label: datatableLabel("Selling unit", isSortable: true),
+            label: datatableLabel("Selling\nunit", isSortable: true),
             onSort: (columnIndex, ascending) {
               _viewProductBloc.add(SortProductBySellingUnit());
             }),
         DataColumn(
-            label: datatableLabel("price per selling unit", isSortable: true),
+            label: datatableLabel("price per\nselling unit", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
               _viewProductBloc.add(SortProductByPricePerSellingUnit());
             }),
         DataColumn(
-            label: datatableLabel("Nos per selling unit", isSortable: true),
+            label: datatableLabel("Nos per\nselling unit", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
               _viewProductBloc.add(SortProductByNosPerSellingUnit());

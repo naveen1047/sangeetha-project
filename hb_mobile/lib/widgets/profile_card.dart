@@ -36,7 +36,7 @@ class ProfileCard extends StatelessWidget {
         child: ExpansionTile(
           key: Key(cardKey),
           title: _titleCard(context, title),
-          subtitle: _subtitleCard(subtitle),
+          subtitle: _subtitleCard(context, subtitle),
           children: [
             _addressCard(detail),
             Row(
@@ -80,7 +80,7 @@ class ProfileCard extends StatelessWidget {
     );
   }
 
-  Row _subtitleCard(String title) {
+  Row _subtitleCard(BuildContext context, String title) {
     return Row(
       children: [
         Row(
@@ -89,7 +89,7 @@ class ProfileCard extends StatelessWidget {
               padding: kRightPadding,
               child: Icon(
                 Icons.call,
-                color: kSecondaryColor,
+                // color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             Text(title),
@@ -106,10 +106,14 @@ class ProfileCard extends StatelessWidget {
         children: [
           Padding(
             padding: kRightPadding,
-            child: Icon(Icons.home),
+            child: Icon(
+              Icons.home,
+            ),
           ),
           Flexible(
-            child: Text(title),
+            child: Text(
+              title,
+            ),
           ),
         ],
       ),

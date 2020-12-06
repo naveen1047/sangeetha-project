@@ -133,20 +133,19 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
               _viewMaterialBloc.add(SortMaterialByName());
             }),
         DataColumn(
+          label: datatableLabel("Code"),
+        ),
+        DataColumn(
             label: datatableLabel("Unit", isSortable: true),
-            numeric: true,
             onSort: (columnIndex, ascending) {
               _viewMaterialBloc.add(SortMaterialByUnit());
             }),
         DataColumn(
-            label: datatableLabel("Price per unit", isSortable: true),
+            label: datatableLabel("\u20B9 / unit", isSortable: true),
             numeric: true,
             onSort: (columnIndex, ascending) {
               _viewMaterialBloc.add(SortMaterialByPrice());
             }),
-        DataColumn(
-          label: datatableLabel("Code"),
-        ),
         DataColumn(
             label: datatableLabel(
           "Modify / delete",

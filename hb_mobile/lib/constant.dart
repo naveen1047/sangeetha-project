@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hb_mobile/main.dart';
 
 const String kHome = '/dash_board';
 const String kExistingMaterialPurchase = '/existing_material_purchase';
@@ -45,7 +46,7 @@ Decoration kSearchDecoration = BoxDecoration(
 );
 
 Decoration kCardDecoration = BoxDecoration(
-  color: Colors.white,
+  color: MaterialDemoThemeData.themeData.colorScheme.secondary,
   borderRadius: kDefaultBorderRadius,
   boxShadow: kBoxShadow,
 );

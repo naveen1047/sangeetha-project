@@ -115,70 +115,11 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
         padding: kPrimaryPadding,
         child: ListView(
           children: [
-            InputField(
-              child: TextField(
-                controller: _employeeNameController,
-                onChanged: (text) {
-                  context.bloc<RandomCodeCubit>().generate(text);
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Employee Name',
-                ),
-              ),
-              iconData: Icons.person,
-            ),
-            BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _employeeCodeController.text = '$state';
-              return InputField(
-                child: TextField(
-                  enabled: false,
-                  controller: _employeeCodeController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Employee code',
-                  ),
-                ),
-                iconData: Icons.info,
-                isDisabled: true,
-              );
-            }),
-            InputField(
-              child: TextField(
-                controller: _contactController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Contact',
-                ),
-              ),
-              iconData: Icons.call,
-            ),
-            InputField(
-              child: TextFormField(
-                maxLength: 250,
-                minLines: 1,
-                maxLines: 2,
-                controller: _addressController,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Address',
-                ),
-              ),
-              iconData: Icons.home,
-            ),
-            InputField(
-              child: TextField(
-                enabled: false,
-                controller: _addDateController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-              iconData: Icons.date_range,
-              isDisabled: true,
-            ),
+            _name(context),
+            _code(),
+            _contact(),
+            _address(),
+            _date(),
             Padding(
               padding: kTopPadding,
               child: PrimaryActionButton(
@@ -202,6 +143,161 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // InputField _date() {
+  //   return InputField(
+  //     child: TextField(
+  //       enabled: false,
+  //       controller: _addDateController,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //       ),
+  //     ),
+  //     iconData: Icons.date_range,
+  //     isDisabled: true,
+  //   );
+  // }
+
+  Widget _date() {
+    return TextFormField(
+      enabled: false,
+      controller: _addDateController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.date_range),
+        labelText: 'Date',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _address() {
+  //   return InputField(
+  //     child: TextFormField(
+  //       maxLength: 250,
+  //       minLines: 1,
+  //       maxLines: 2,
+  //       controller: _addressController,
+  //       decoration: InputDecoration(
+  //         counterText: "",
+  //         border: InputBorder.none,
+  //         hintText: 'Address',
+  //       ),
+  //     ),
+  //     iconData: Icons.home,
+  //   );
+  // }
+
+  TextFormField _address() {
+    return TextFormField(
+      maxLength: 250,
+      minLines: 1,
+      maxLines: 2,
+      controller: _addressController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.home),
+        labelText: 'Address',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // InputField _contact() {
+  //   return InputField(
+  //     child: TextField(
+  //       controller: _contactController,
+  //       keyboardType: TextInputType.phone,
+  //       decoration: InputDecoration(
+  //         border: InputBorder.none,
+  //         hintText: 'Contact',
+  //       ),
+  //     ),
+  //     iconData: Icons.call,
+  //   );
+  // }
+
+  TextFormField _contact() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _contactController,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        icon: Icon(Icons.call),
+        labelText: 'Contact',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  // BlocBuilder<RandomCodeCubit, String> _code() {
+  //   return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+  //     _employeeCodeController.text = '$state';
+  //     return InputField(
+  //       child: TextField(
+  //         enabled: false,
+  //         controller: _employeeCodeController,
+  //         decoration: InputDecoration(
+  //           border: InputBorder.none,
+  //           hintText: 'Employee code',
+  //         ),
+  //       ),
+  //       iconData: Icons.info,
+  //       isDisabled: true,
+  //     );
+  //   });
+  // }
+
+  Widget _code() {
+    return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+      _employeeCodeController.text = '$state';
+      return TextFormField(
+        enabled: false,
+        controller: _employeeCodeController,
+        onChanged: (text) {
+          print(text);
+          context.bloc<RandomCodeCubit>().generate(text);
+        },
+        decoration: InputDecoration(
+          icon: Icon(Icons.info),
+          labelText: 'Employee code',
+          // helperText: '',
+          enabledBorder: UnderlineInputBorder(),
+        ),
+      );
+    });
+  }
+
+  // InputField _name(BuildContext context) {
+  //   return InputField(
+  //           child: TextField(
+  //             controller: _employeeNameController,
+  //             onChanged: (text) {
+  //               context.bloc<RandomCodeCubit>().generate(text);
+  //             },
+  //             decoration: InputDecoration(
+  //               border: InputBorder.none,
+  //               hintText: 'Employee Name',
+  //             ),
+  //           ),
+  //           iconData: Icons.person,
+  //         );
+  // }
+
+  TextFormField _name(BuildContext context) {
+    return TextFormField(
+      controller: _employeeNameController,
+      onChanged: (text) {
+        context.bloc<RandomCodeCubit>().generate(text);
+      },
+      maxLength: 28,
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        labelText: 'Employee Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

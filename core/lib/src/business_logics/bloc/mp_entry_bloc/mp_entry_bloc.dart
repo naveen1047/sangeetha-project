@@ -108,9 +108,9 @@ class MPBloc extends Bloc<MPEvent, MPState> {
     return MPLoading(true, "Uploading...");
   }
 
-  MPState _errorAndClear(ResponseResult result) {
-    return MPErrorAndClear(result.status, result.message);
-  }
+  // MPState _errorAndClear(ResponseResult result) {
+  //   return MPErrorAndClear(result.status, result.message);
+  // }
 
   MPState _error(ResponseResult result) {
     return MPError(result.status, result.message);

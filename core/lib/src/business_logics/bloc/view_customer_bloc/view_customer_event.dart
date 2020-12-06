@@ -2,9 +2,9 @@ part of 'view_customer_bloc.dart';
 
 abstract class ViewCustomerEvent {
   const ViewCustomerEvent();
-
-  @override
-  List<Object> get props => [];
+  //
+  // @override
+  // List<Object> get props => [];
 }
 
 class FetchCustomerEvent extends ViewCustomerEvent {
@@ -16,8 +16,8 @@ class FetchCustomerEvent extends ViewCustomerEvent {
     this.ccode,
   });
 
-  @override
-  List<Object> get props => [cname];
+  // @override
+  // List<Object> get props => [cname];
 }
 
 class SearchAndFetchCustomerEvent extends ViewCustomerEvent {
@@ -29,6 +29,6 @@ class SearchAndFetchCustomerEvent extends ViewCustomerEvent {
     this.ccode,
   });
 
-  @override
-  List<Object> get props => [cname];
+  // @override
+  // List<Object> get props => [cname];
 }

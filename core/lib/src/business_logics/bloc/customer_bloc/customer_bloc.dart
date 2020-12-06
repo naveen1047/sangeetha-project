@@ -97,9 +97,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     return CustomerLoading(true, "Uploading..");
   }
 
-  CustomerState _error(ResponseResult result) {
-    return CustomerError(result.status, result.message);
-  }
+  // CustomerState _error(ResponseResult result) {
+  //   return CustomerError(result.status, result.message);
+  // }
 
   CustomerState _success(ResponseResult result) {
     return CustomerSuccess(result.status, result.message);

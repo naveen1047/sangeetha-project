@@ -165,9 +165,9 @@ class MaterialPurchaseBloc
     return MaterialPurchaseLoading(true, "Uploading..");
   }
 
-  MaterialPurchaseState _error(ResponseResult result) {
-    return MaterialPurchaseError(result.status, result.message);
-  }
+  // MaterialPurchaseState _error(ResponseResult result) {
+  //   return MaterialPurchaseError(result.status, result.message);
+  // }
 
   MaterialPurchaseState _success(ResponseResult result) {
     return MaterialPurchaseSuccess(result.status, result.message);

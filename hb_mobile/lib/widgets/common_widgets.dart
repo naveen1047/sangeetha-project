@@ -409,7 +409,7 @@ SnackBar warningSnackBar({@required String message, Widget widget}) {
       children: [
         Flexible(
           child: Text(
-            '${message}',
+            '$message',
             softWrap: true,
           ),
         ),
@@ -433,7 +433,7 @@ SnackBar progressSnackBar({
       children: [
         Flexible(
           child: Text(
-            '${message}',
+            '$message',
             softWrap: true,
           ),
         ),
@@ -461,7 +461,7 @@ Row _label(String message, {Widget child}) {
     children: [
       Flexible(
         child: Text(
-          '${message}',
+          '$message',
           softWrap: true,
         ),
       ),

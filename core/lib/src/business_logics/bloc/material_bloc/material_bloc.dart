@@ -93,9 +93,9 @@ class MaterialBloc extends Bloc<MaterialEvent, MaterialState> {
     return MaterialLoading(true, "Uploading...");
   }
 
-  MaterialState _errorAndClear(ResponseResult result) {
-    return MaterialErrorAndClear(result.status, result.message);
-  }
+  // MaterialState _errorAndClear(ResponseResult result) {
+  //   return MaterialErrorAndClear(result.status, result.message);
+  // }
 
   MaterialState _error(ResponseResult result) {
     return MaterialError(result.status, result.message);

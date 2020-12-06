@@ -97,9 +97,9 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
     return SupplierLoading(true, "Uploading..");
   }
 
-  SupplierState _error(ResponseResult result) {
-    return SupplierError(result.status, result.message);
-  }
+  // SupplierState _error(ResponseResult result) {
+  //   return SupplierError(result.status, result.message);
+  // }
 
   SupplierState _success(ResponseResult result) {
     return SupplierSuccess(result.status, result.message);

@@ -90,9 +90,9 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     return EmployeeSuccess(result.status, result.message);
   }
 
-  EmployeeState _error(ResponseResult result) {
-    return EmployeeError(result.status, result.message);
-  }
+  // EmployeeState _error(ResponseResult result) {
+  //   return EmployeeError(result.status, result.message);
+  // }
 
   EmployeeState _nullValueError() {
     return EmployeeError(false, 'please fill required fields');

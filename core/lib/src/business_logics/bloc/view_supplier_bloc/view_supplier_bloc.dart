@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:core/src/business_logics/models/supplier.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:core/src/services/supplier_service.dart';
-import 'package:equatable/equatable.dart';
 
 part 'view_supplier_event.dart';
 part 'view_supplier_state.dart';

@@ -1,17 +1,16 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/src/business_logics/bloc/view_material_bloc/view_material_bloc.dart';
-import 'package:core/src/business_logics/models/material.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('View material Bloc test', () {
     ViewMaterialBloc viewMaterialBloc;
-    List<Material> materials;
+    // List<Material> materials;
 
     setUp(() {
       viewMaterialBloc = ViewMaterialBloc();
-      materials = Materials().materials;
+      // materials = Materials().materials;
     });
 
     setUpAll(() {

@@ -2,9 +2,9 @@ part of 'view_supplier_bloc.dart';
 
 abstract class ViewSupplierEvent {
   const ViewSupplierEvent();
-
-  @override
-  List<Object> get props => [];
+  //
+  // @override
+  // List<Object> get props => [];
 }
 
 class FetchSupplierEvent extends ViewSupplierEvent {
@@ -16,8 +16,8 @@ class FetchSupplierEvent extends ViewSupplierEvent {
     this.scode,
   });
 
-  @override
-  List<Object> get props => [sname];
+  // @override
+  // List<Object> get props => [sname];
 }
 
 class SearchAndFetchSupplierEvent extends ViewSupplierEvent {
@@ -29,6 +29,6 @@ class SearchAndFetchSupplierEvent extends ViewSupplierEvent {
     this.scode,
   });
 
-  @override
-  List<Object> get props => [sname];
+  // @override
+  // List<Object> get props => [sname];
 }

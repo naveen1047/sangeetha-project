@@ -5,8 +5,8 @@ abstract class ViewCustomerState {
 }
 
 class ViewCustomerLoading extends ViewCustomerState {
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewCustomerLoaded extends ViewCustomerState {
@@ -14,15 +14,15 @@ class ViewCustomerLoaded extends ViewCustomerState {
 
   ViewCustomerLoaded(this.customers);
 
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewCustomerError extends ViewCustomerState {
   final String message;
 
   ViewCustomerError(this.message);
-
-  @override
-  List<Object> get props => [message];
+  //
+  // @override
+  // List<Object> get props => [message];
 }

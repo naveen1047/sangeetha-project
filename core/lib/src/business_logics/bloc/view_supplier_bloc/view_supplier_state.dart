@@ -5,8 +5,8 @@ abstract class ViewSupplierState {
 }
 
 class ViewSupplierLoading extends ViewSupplierState {
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewSupplierLoaded extends ViewSupplierState {
@@ -14,8 +14,8 @@ class ViewSupplierLoaded extends ViewSupplierState {
 
   ViewSupplierLoaded(this.suppliers);
 
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewSupplierError extends ViewSupplierState {
@@ -23,6 +23,6 @@ class ViewSupplierError extends ViewSupplierState {
 
   ViewSupplierError(this.message);
 
-  @override
-  List<Object> get props => [message];
+  // @override
+  // List<Object> get props => [message];
 }

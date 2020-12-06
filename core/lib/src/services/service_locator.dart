@@ -1,4 +1,3 @@
-import 'package:core/src/business_logics/models/product.dart';
 import 'package:core/src/services/customer_service.dart';
 import 'package:core/src/services/customer_service_impl.dart';
 import 'package:core/src/services/employee_service.dart';

@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/material.dart';
-import 'package:core/src/services/material_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -15,9 +14,9 @@ void main() {
     test('getMaterialEntryDetail name should should equals fake data',
         () async {
       setupServiceLocator();
-      final MaterialService fakeMaterial = serviceLocator<MaterialService>();
+      // final MaterialService fakeMaterial = serviceLocator<MaterialService>();
 
-      final actualMaterialFakeDetail = await fakeMaterial.getAllMaterials();
+      // final actualMaterialFakeDetail = await fakeMaterial.getAllMaterials();
 
       expect(materialFakeDetail.mname, "event.mname");
     });

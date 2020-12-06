@@ -123,19 +123,19 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
         ),
       ),
     );
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (BuildContext context) => TotalPriceCubit(0)),
-        BlocProvider(
-            create: (BuildContext context) => DatePickerCubit("Select Date")),
-        // BlocProvider(
-        //   create: (BuildContext context) => MPBloc(),
-        // ),
-      ],
-      child: BuildEntryFields(
-        suppliers: state.suppliers,
-        materials: state.material,
-      ),
-    );
+    // return MultiBlocProvider(
+    //   providers: [
+    //     BlocProvider(create: (BuildContext context) => TotalPriceCubit(0)),
+    //     BlocProvider(
+    //         create: (BuildContext context) => DatePickerCubit("Select Date")),
+    //     // BlocProvider(
+    //     //   create: (BuildContext context) => MPBloc(),
+    //     // ),
+    //   ],
+    //   child: BuildEntryFields(
+    //     suppliers: state.suppliers,
+    //     materials: state.material,
+    //   ),
+    // );
   }
 }

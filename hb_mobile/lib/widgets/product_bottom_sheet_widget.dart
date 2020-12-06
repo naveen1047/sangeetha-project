@@ -149,28 +149,14 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
               _uploadData();
             },
           ),
-          SecondaryActionButton(
-            title: 'Cancel',
+          FlatButton(
             onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
           ),
         ],
       ),
     );
   }
-
-  // InputField _nosPerSellingUnit() {
-  //   return InputField(
-  //     child: TextField(
-  //       keyboardType: TextInputType.number,
-  //       controller: _unitsPerSellingUnitController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'No of Units Per selling unit',
-  //       ),
-  //     ),
-  //     iconData: Icons.arrow_forward_ios,
-  //   );
-  // }
 
   TextFormField _nosPerSellingUnit() {
     return TextFormField(
@@ -186,19 +172,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     );
   }
 
-  // InputField _pricePerUnit() {
-  //   return InputField(
-  //     child: TextField(
-  //       controller: _pricePerSellingUnitController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Price per selling unit',
-  //       ),
-  //     ),
-  //     iconData: Icons.attach_money,
-  //   );
-  // }
-
   TextFormField _pricePerUnit() {
     return TextFormField(
       maxLength: 10,
@@ -213,19 +186,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     );
   }
 
-  // InputField _unit() {
-  //   return InputField(
-  //     child: TextField(
-  //       controller: _sellingUnitController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Load, unit etc..,',
-  //       ),
-  //     ),
-  //     iconData: Icons.bookmark,
-  //   );
-  // }
-
   TextFormField _unit() {
     return TextFormField(
       controller: _sellingUnitController,
@@ -238,20 +198,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
       ),
     );
   }
-
-  // InputField _nosPerStroke() {
-  //   return InputField(
-  //     child: TextField(
-  //       keyboardType: TextInputType.number,
-  //       controller: _unitPerStrokeController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'No of Unit Produced Per Stroke',
-  //       ),
-  //     ),
-  //     iconData: Icons.arrow_forward_ios,
-  //   );
-  // }
 
   TextFormField _nosPerStroke() {
     return TextFormField(
@@ -267,20 +213,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     );
   }
 
-  // InputField _salaryPerStroke() {
-  //   return InputField(
-  //     child: TextField(
-  //       keyboardType: TextInputType.number,
-  //       controller: _salaryPerStrokeController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Salary per stroke',
-  //       ),
-  //     ),
-  //     iconData: Icons.attach_money,
-  //   );
-  // }
-
   TextFormField _salaryPerStroke() {
     return TextFormField(
       keyboardType: TextInputType.number,
@@ -295,22 +227,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
     );
   }
 
-  // InputField _productName(BuildContext context) {
-  //   return InputField(
-  //     child: TextField(
-  //       controller: _productNameController,
-  //       onChanged: (text) {
-  //         context.bloc<RandomCodeCubit>().generate(text);
-  //       },
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Product Name',
-  //       ),
-  //     ),
-  //     iconData: Icons.bookmark,
-  //   );
-  // }
-
   TextFormField _productName() {
     return TextFormField(
       controller: _productNameController,
@@ -323,21 +239,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
       ),
     );
   }
-
-  // InputField _code() {
-  //   return InputField(
-  //     child: TextField(
-  //       enabled: false,
-  //       controller: _productCodeController,
-  //       decoration: InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Product code',
-  //       ),
-  //     ),
-  //     iconData: Icons.info,
-  //     isDisabled: true,
-  //   );
-  // }
 
   Widget _code() {
     return TextFormField(

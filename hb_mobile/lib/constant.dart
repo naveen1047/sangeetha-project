@@ -132,7 +132,7 @@ const kSearchPadding = const EdgeInsets.symmetric(horizontal: 6.0);
 const kTopPadding = const EdgeInsets.only(top: 8.0);
 const kCardPadding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
 const kFieldPadding = const EdgeInsets.all(12.0);
-const kPrimaryPadding = const EdgeInsets.all(8.0);
+const kPrimaryPadding = const EdgeInsets.all(16.0);
 const kBottomPadding = const EdgeInsets.only(bottom: 4.0);
 const kIconLeftPadding = const EdgeInsets.only(left: 24.0);
 

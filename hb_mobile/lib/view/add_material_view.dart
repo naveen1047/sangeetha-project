@@ -109,81 +109,167 @@ class _AddMaterialFormState extends State<AddMaterialForm> {
         padding: kPrimaryPadding,
         child: ListView(
           children: [
-            InputField(
-              child: TextField(
-                maxLength: 28,
-                controller: _materialNameController,
-                onChanged: (text) {
-                  context.bloc<RandomCodeCubit>().generate(text);
-                },
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Material Name',
-                ),
-              ),
-              iconData: Icons.bookmark,
-            ),
-            BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
-              _materialCodeController.text = '$state';
-              return InputField(
-                child: TextField(
-                  enabled: false,
-                  controller: _materialCodeController,
-                  decoration: InputDecoration(
-                    counterText: "",
-                    border: InputBorder.none,
-                    hintText: 'Material code',
-                  ),
-                ),
-                iconData: Icons.info,
-                isDisabled: true,
-              );
-            }),
-            InputField(
-              child: TextField(
-                maxLength: 13,
-                controller: _unitController,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Unit (kg, load etc..,)',
-                ),
-              ),
-              iconData: Icons.arrow_forward_ios,
-            ),
-            InputField(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                maxLength: 6,
-                controller: _priceController,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  hintText: 'Price per unit',
-                ),
-              ),
-              iconData: Icons.attach_money,
-            ),
-            Padding(
-              padding: kTopPadding,
-              child: PrimaryActionButton(
-                title: 'Upload',
-                onPressed: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  uploadData();
-                },
-              ),
-            ),
-            FlatButton(
-              child: Text('View existing materials'),
-              onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Navigator.pushNamed(context, kExistingMaterialScreen);
-              },
-            ),
+            _name(context),
+            _code(),
+            _unit(),
+            _pricePerUnit(),
+            _upload(context),
+            _navigator(context),
           ],
         ),
+      ),
+    );
+  }
+
+  // InputField _pricePerUnit() {
+  //   return InputField(
+  //     child: TextField(
+  //       keyboardType: TextInputType.number,
+  //       maxLength: 6,
+  //       controller: _priceController,
+  //       decoration: InputDecoration(
+  //         counterText: "",
+  //         border: InputBorder.none,
+  //         hintText: 'Price per unit',
+  //       ),
+  //     ),
+  //     iconData: Icons.attach_money,
+  //   );
+  // }
+  TextFormField _pricePerUnit() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      maxLength: 6,
+      controller: _priceController,
+      decoration: InputDecoration(
+        icon: rupee,
+        labelText: 'Price per unit',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+  // InputField _unit() {
+  //   return InputField(
+  //     child: TextField(
+  //       maxLength: 13,
+  //       controller: _unitController,
+  //       decoration: InputDecoration(
+  //         counterText: "",
+  //         border: InputBorder.none,
+  //         hintText: 'Unit (kg, load etc..,)',
+  //       ),
+  //     ),
+  //     iconData: Icons.arrow_forward_ios,
+  //   );
+  // }
+
+  TextFormField _unit() {
+    return TextFormField(
+      maxLength: 13,
+      controller: _unitController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.chevron_right),
+        labelText: 'Unit',
+        helperText: 'Unit (kg, load etc..,)',
+        enabledBorder: UnderlineInputBorder(),
+      ),
+    );
+  }
+
+  FlatButton _navigator(BuildContext context) {
+    return FlatButton(
+      child: Text('View existing materials'),
+      onPressed: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pushNamed(context, kExistingMaterialScreen);
+      },
+    );
+  }
+
+  Padding _upload(BuildContext context) {
+    return Padding(
+      padding: kTopPadding,
+      child: PrimaryActionButton(
+        title: 'Upload',
+        onPressed: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+          uploadData();
+        },
+      ),
+    );
+  }
+
+  // BlocBuilder<RandomCodeCubit, String> _code() {
+  //   return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+  //     _materialCodeController.text = '$state';
+  //     return InputField(
+  //       child: TextField(
+  //         enabled: false,
+  //         controller: _materialCodeController,
+  //         decoration: InputDecoration(
+  //           counterText: "",
+  //           border: InputBorder.none,
+  //           hintText: 'Material code',
+  //         ),
+  //       ),
+  //       iconData: Icons.info,
+  //       isDisabled: true,
+  //     );
+  //   });
+  // }
+
+  Widget _code() {
+    return BlocBuilder<RandomCodeCubit, String>(builder: (context, state) {
+      _materialCodeController.text = '$state';
+      return TextFormField(
+        enabled: false,
+        controller: _materialCodeController,
+        onChanged: (text) {
+          print(text);
+          context.bloc<RandomCodeCubit>().generate(text);
+        },
+        decoration: InputDecoration(
+          icon: Icon(Icons.info),
+          labelText: 'Material code',
+          // helperText: '',
+          enabledBorder: UnderlineInputBorder(),
+        ),
+      );
+    });
+  }
+
+  // InputField _name(BuildContext context) {
+  //   return InputField(
+  //     child: TextField(
+  //       maxLength: 28,
+  //       controller: _materialNameController,
+  //       onChanged: (text) {
+  //         context.bloc<RandomCodeCubit>().generate(text);
+  //       },
+  //       decoration: InputDecoration(
+  //         counterText: "",
+  //         border: InputBorder.none,
+  //         hintText: 'Material Name',
+  //       ),
+  //     ),
+  //     iconData: Icons.bookmark,
+  //   );
+  // }
+
+  TextFormField _name(BuildContext context) {
+    return TextFormField(
+      controller: _materialNameController,
+      onChanged: (text) {
+        print(text);
+        context.bloc<RandomCodeCubit>().generate(text);
+      },
+      maxLength: 28,
+      decoration: InputDecoration(
+        icon: Icon(Icons.bookmark),
+        labelText: 'Material Name',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
       ),
     );
   }

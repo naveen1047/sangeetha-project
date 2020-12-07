@@ -7,15 +7,12 @@ import 'package:hb_mobile/view/add_customer_view.dart';
 import 'package:hb_mobile/view/add_product_view.dart';
 import 'package:hb_mobile/view/existing_customer_view.dart';
 import 'package:hb_mobile/view/existing_material_view.dart';
+import 'package:hb_mobile/view/existing_mp_view.dart';
 import 'package:hb_mobile/view/existing_product_view.dart';
 import 'package:hb_mobile/view/view.dart';
 
 import 'constant.dart';
 
-/*
-*   Task:
-*   MaterialPurchase
-* */
 void main() {
   setupServiceLocator();
   Bloc.observer = SimpleBlocObserver();
@@ -37,6 +34,7 @@ class MyApp extends StatelessWidget {
         kHome: (context) => HomeScreen(title: title),
         // kMaterialPurchase: (context) => MaterialPurchase(),
         kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
+        kExistingMaterialPurchase: (context) => ExistingMPScreen(),
         kConfigScreen: (context) => ConfigScreen(),
         kAddSuppliersScreen: (context) =>
             AddSuppliersScreen(title: "Add Suppliers"),

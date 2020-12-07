@@ -14,6 +14,7 @@ export 'src/business_logics/bloc/view_customer_bloc/view_customer_bloc.dart';
 export 'src/business_logics/bloc/material_purchase_bloc/material_purchase_bloc.dart';
 export 'src/business_logics/bloc/mp_prerequisite/mp_prerequisite_bloc.dart';
 export 'src/business_logics/bloc/mp_entry_bloc/mp_entry_bloc.dart';
+export 'src/business_logics/bloc/view_mp_bloc/view_mp_bloc.dart';
 
 export 'src/business_logics/util/random_code_generator.dart';
 export 'src/business_logics/util/total_price_calculator.dart';

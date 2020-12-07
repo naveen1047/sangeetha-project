@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/core.dart';
+import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/build_mp_entry_fields.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
@@ -105,7 +106,7 @@ class _AddMaterialPurchaseFormState extends State<AddMaterialPurchaseForm> {
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
           await Future.delayed(Duration(milliseconds: 2500));
-          // Navigator.pushNamed(context, kExistingCustomerScreen);
+          Navigator.pushNamed(context, kExistingMaterialPurchase);
         }
       },
       child: MultiBlocProvider(

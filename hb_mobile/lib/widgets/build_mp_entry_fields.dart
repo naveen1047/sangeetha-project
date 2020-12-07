@@ -282,7 +282,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
       child: Text('View Materials purchase'),
       onPressed: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        // Navigator.pushNamed(context, kExistingMaterialScreen);
+        Navigator.pushNamed(context, kExistingMaterialPurchase);
       },
     );
   }

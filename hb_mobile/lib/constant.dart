@@ -172,6 +172,15 @@ class MaterialConstants {
   static const List<String> choices = <String>[Refresh, AddMaterial, Settings];
 }
 
+// MP constants
+class MPConstants {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+  static const String AddMP = 'Add Material purchase';
+
+  static const List<String> choices = <String>[Refresh, AddMP, Settings];
+}
+
 // Product constants
 class ProductConstants {
   static const String Refresh = 'Refresh';

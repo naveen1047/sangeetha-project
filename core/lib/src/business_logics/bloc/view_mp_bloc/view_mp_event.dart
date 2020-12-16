@@ -35,8 +35,14 @@ class SearchAndFetchMPEvent extends ViewMPEvent {
 }
 
 // sorting
-class SortMPByName extends ViewMPEvent {}
+class SortMPBySName extends ViewMPEvent {}
 
-class SortMPByPrice extends ViewMPEvent {}
+class SortMPByMName extends ViewMPEvent {}
+
+class SortMPByBillNo extends ViewMPEvent {}
+
+class SortMPByQuantity extends ViewMPEvent {}
 
 class SortMPByUnit extends ViewMPEvent {}
+
+class SortMPByTotal extends ViewMPEvent {}

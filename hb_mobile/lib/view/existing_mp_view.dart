@@ -107,31 +107,46 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     return MPDataTable(
       dataColumn: [
         DataColumn(
-          label: datatableLabel("Date", isSortable: true),
+          label: datatableLabel("Date"),
         ),
         DataColumn(
           label: datatableLabel("Supplier", isSortable: true),
-          // onSort: (columnIndex, ascending) {
-          //   _viewMPBloc.add(SortMaterialByName());
-          // },
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPBySName());
+          },
         ),
         DataColumn(
           label: datatableLabel("Bill no", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByBillNo());
+          },
         ),
         DataColumn(
           label: datatableLabel("Material", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByMName());
+          },
         ),
         DataColumn(
           label: datatableLabel("Unit", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByUnit());
+          },
         ),
         DataColumn(
           label: datatableLabel("Quantity", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByQuantity());
+          },
         ),
         DataColumn(
           label: datatableLabel("Total", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByTotal());
+          },
         ),
         DataColumn(
-          label: datatableLabel("Remarks", isSortable: true),
+          label: datatableLabel("Remarks"),
         ),
         DataColumn(
           label: datatableLabel("Modify/Delete"),

@@ -29,7 +29,8 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   String _query = '';
 
   // sorting
-  var sortByName = sorting.ascending;
+  var sortBySName = sorting.ascending;
+  var sortByMName = sorting.ascending;
   var sortByBillNo = sorting.ascending;
   var sortByMaterial = sorting.ascending;
   var sortByUnit = sorting.ascending;
@@ -51,24 +52,27 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     if (event is SearchAndFetchMPEvent) {
       yield* _mapSearchAndFetchMPToState(event.billNo);
     }
-    // if (event is SortMPByName) {
-    //   yield* _mapSortMPByNameToState();
-    // }
-    // if (event is SortMPByBillNo) {
-    //   yield* _mapSortMPByBillNoToState();
-    // }
+    if (event is SortMPBySName) {
+      yield* _mapSortMPBySNameToState();
+    }
+    if (event is SortMPByMName) {
+      yield* _mapSortMPByMNameToState();
+    }
+    if (event is SortMPByBillNo) {
+      yield* _mapSortMPByBillNoToState();
+    }
     // if (event is SortMPByMaterial) {
     //   yield* _mapSortMPByMaterialToState();
     // }
-    // if (event is sortByUnit) {
-    //   yield* _mapSortByUnitToState();
-    // }
-    // if (event is sortByQuantity) {
-    //   yield* _mapSortByQuantityToState();
-    // }
-    // if (event is sortByTotal) {
-    //   yield* _mapSortByTotalToState();
-    // }
+    if (event is SortMPByUnit) {
+      yield* _mapSortMPByUnitPriceToState();
+    }
+    if (event is SortMPByQuantity) {
+      yield* _mapSortMPByQuantityToState();
+    }
+    if (event is SortMPByTotal) {
+      yield* _mapSortMPByTotalToState();
+    }
   }
 
   Stream<ViewMPState> _mapSearchAndFetchMPToState(String billNo) async* {
@@ -108,60 +112,180 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     }
   }
 
-  /// TODO: sort materials by ( price) and yield result
-  // Stream<ViewMPState> _mapSortMPByNameToState() async* {
-  //   try {
-  //     _filteredMP = _mp.materials.toList();
-  //     if (sortByName != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByMName();
-  //       sortByName = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByMName();
-  //       sortByName = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield  ViewMPErrorState(e.toString());
-  //   }
-  // }
-  //
-  // Stream<ViewMPState> _mapSortMPByBillNoToState() async* {
-  //   try {
-  //     _filteredMP = _mp.materials.toList();
-  //     if (sortByBillNo != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByMBillNo();
-  //       sortByBillNo = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByMBillNo();
-  //       sortByBillNo = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield  ViewMPErrorState(e.toString());
-  //   }
-  // }
-  //
-  // Stream<ViewMPState> _mapSortMPByPriceToState() async* {
-  //   try {
-  //     _filteredMP = _mp.materials.toList();
-  //     if (sortByPrice != sorting.ascending) {
-  //       _extractResult();
-  //       _sortAscendingByMPrice();
-  //       sortByPrice = sorting.ascending;
-  //     } else {
-  //       _extractResult();
-  //       _sortDescendingByMPrice();
-  //       sortByPrice = sorting.descending;
-  //     }
-  //     yield _eventResult();
-  //   } catch (e) {
-  //     yield  ViewMPErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewMPState> _mapSortMPBySNameToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortBySName != sorting.ascending) {
+        _extractResult();
+        _sortAscendingBySName();
+        sortBySName = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingBySName();
+        sortBySName = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByMNameToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByMName != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByMName();
+        sortByMName = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByMName();
+        sortByMName = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByBillNoToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByBillNo != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByMBillNo();
+        sortByBillNo = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByMBillNo();
+        sortByBillNo = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByTotalToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByTotal != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByTotal();
+        sortByTotal = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByTotal();
+        sortByTotal = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByUnitPriceToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByTotal != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByUnitPrice();
+        sortByTotal = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByUnitPrice();
+        sortByTotal = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByQuantityToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByQuantity != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByQuantity();
+        sortByQuantity = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByQuantity();
+        sortByQuantity = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  void _sortAscendingBySName() {
+    _filteredMP
+        .sort((a, b) => a.sname.toLowerCase().compareTo(b.sname.toLowerCase()));
+  }
+
+  void _sortDescendingBySName() {
+    _filteredMP
+        .sort((a, b) => b.sname.toLowerCase().compareTo(a.sname.toLowerCase()));
+  }
+
+  void _sortAscendingByMName() {
+    _filteredMP
+        .sort((a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
+  }
+
+  void _sortDescendingByMName() {
+    _filteredMP
+        .sort((a, b) => b.mname.toLowerCase().compareTo(a.mname.toLowerCase()));
+  }
+
+  void _sortAscendingByMBillNo() {
+    _filteredMP.sort(
+        (a, b) => a.billno.toLowerCase().compareTo(b.billno.toLowerCase()));
+  }
+
+  void _sortDescendingByMBillNo() {
+    _filteredMP.sort(
+        (a, b) => b.billno.toLowerCase().compareTo(a.billno.toLowerCase()));
+  }
+
+  void _sortAscendingByTotal() {
+    _filteredMP
+        .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
+  }
+
+  void _sortDescendingByTotal() {
+    _filteredMP
+        .sort((a, b) => double.parse(b.price).compareTo(double.parse(a.price)));
+  }
+
+  void _sortAscendingByUnitPrice() {
+    _filteredMP.sort((a, b) =>
+        double.parse(a.unitprice).compareTo(double.parse(b.unitprice)));
+  }
+
+  void _sortDescendingByUnitPrice() {
+    _filteredMP.sort((a, b) =>
+        double.parse(b.unitprice).compareTo(double.parse(a.unitprice)));
+  }
+
+  void _sortAscendingByQuantity() {
+    _filteredMP.sort(
+        (a, b) => double.parse(a.quantity).compareTo(double.parse(b.quantity)));
+  }
+
+  void _sortDescendingByQuantity() {
+    _filteredMP.sort(
+        (a, b) => double.parse(b.quantity).compareTo(double.parse(a.quantity)));
+  }
+
+  void _extractResult() {
+    _filteredMP = _mp.materialPurchases
+        .where((element) =>
+            element.billno.toLowerCase().contains(_query.toLowerCase()))
+        .toList();
+  }
 
   ViewMPState _eventResult() {
     if (_filteredMP.length > 0) {
@@ -169,42 +293,5 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     } else {
       return ViewMPErrorState("no data found");
     }
-  }
-
-  // void _sortAscendingByMName() {
-  //   _filteredMP
-  //       .sort((a, b) => a.mname.toLowerCase().compareTo(b.mname.toLowerCase()));
-  // }
-  //
-  // void _sortDescendingByMName() {
-  //   _filteredMP
-  //       .sort((a, b) => b.mname.toLowerCase().compareTo(a.mname.toLowerCase()));
-  // }
-  //
-  // void _sortAscendingByMBillNo() {
-  //   _filteredMP
-  //       .sort((a, b) => double.parse(a.munit).compareTo(double.parse(b.munit)));
-  // }
-  //
-  // void _sortDescendingByMBillNo() {
-  //   _filteredMP
-  //       .sort((a, b) => double.parse(b.munit).compareTo(double.parse(a.munit)));
-  // }
-  //
-  // void _sortAscendingByMPrice() {
-  //   _filteredMP.sort((a, b) =>
-  //       double.parse(a.mpriceperunit).compareTo(double.parse(b.mpriceperunit)));
-  // }
-  //
-  // void _sortDescendingByMPrice() {
-  //   _filteredMP.sort((a, b) =>
-  //       double.parse(b.mpriceperunit).compareTo(double.parse(a.mpriceperunit)));
-  // }
-  //
-  void _extractResult() {
-    _filteredMP = _mp.materialPurchases
-        .where((element) =>
-            element.price.toLowerCase().contains(_query.toLowerCase()))
-        .toList();
   }
 }

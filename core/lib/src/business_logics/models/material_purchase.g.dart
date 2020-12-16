@@ -8,6 +8,8 @@ part of 'material_purchase.dart';
 
 MaterialPurchase _$MaterialPurchaseFromJson(Map<String, dynamic> json) {
   return MaterialPurchase(
+    mname: json['mname'] as String,
+    sname: json['sname'] as String,
     mpcode: json['mpcode'] as String,
     scode: json['scode'] as String,
     date: json['date'] as String,
@@ -31,6 +33,8 @@ Map<String, dynamic> _$MaterialPurchaseToJson(MaterialPurchase instance) =>
       'unitprice': instance.unitprice,
       'price': instance.price,
       'remarks': instance.remarks,
+      'mname': instance.mname,
+      'sname': instance.sname,
     };
 
 MaterialPurchases _$MaterialPurchasesFromJson(Map<String, dynamic> json) {

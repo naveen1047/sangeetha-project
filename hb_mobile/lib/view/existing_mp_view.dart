@@ -83,18 +83,18 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Padding(
-        //   padding: kTopPadding,
-        //   child: SearchWidget(
-        //     child: TextField(
-        //       style: TextStyle(color: Colors.white),
-        //       autofocus: false,
-        //       onChanged: (query) => _viewMPBloc
-        //           .add(SearchAndFetchMaterialEvent(mname: query)),
-        //       decoration: kSearchTextFieldDecoration,
-        //     ),
-        //   ),
-        // ),
+        Padding(
+          padding: kTopPadding,
+          child: SearchWidget(
+            child: TextField(
+              style: TextStyle(color: Colors.white),
+              autofocus: false,
+              onChanged: (query) =>
+                  _viewMPBloc.add(SearchAndFetchMPEvent(billNo: query)),
+              decoration: kSearchTextFieldDecoration,
+            ),
+          ),
+        ),
         Expanded(
           child: _buildPaginatedDataTable(state, mp),
         ),

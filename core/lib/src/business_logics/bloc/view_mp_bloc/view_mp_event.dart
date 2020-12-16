@@ -20,8 +20,15 @@ class FetchMPEvent extends ViewMPEvent {
 class SearchAndFetchMPEvent extends ViewMPEvent {
   final String mname;
   final String mcode;
+  final String sname;
+  final String billNo;
 
-  SearchAndFetchMPEvent({this.mname, this.mcode});
+  SearchAndFetchMPEvent({
+    this.mname,
+    this.sname,
+    this.billNo,
+    this.mcode,
+  });
 
   @override
   List<Object> get props => [mname];

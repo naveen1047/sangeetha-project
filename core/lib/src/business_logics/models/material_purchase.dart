@@ -14,8 +14,12 @@ class MaterialPurchase extends Equatable {
   final String unitprice;
   final String price;
   final String remarks;
+  final String mname;
+  final String sname;
 
   MaterialPurchase({
+    this.mname,
+    this.sname,
     this.mpcode,
     this.scode,
     this.date,

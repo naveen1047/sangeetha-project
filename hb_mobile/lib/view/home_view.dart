@@ -136,7 +136,7 @@ class HomeScreen extends StatelessWidget {
       );
     } else {
       return SliverGrid.count(
-        crossAxisCount: 4,
+        crossAxisCount: 2,
         children: categories(context),
       );
     }

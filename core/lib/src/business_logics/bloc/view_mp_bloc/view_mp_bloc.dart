@@ -48,9 +48,9 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     if (event is FetchMPEvent) {
       yield* _mapFetchMPToState(event, event.mname);
     }
-    // if (event is SearchAndFetchMPEvent) {
-    //   yield* _mapSearchAndFetchMPToState(event.mname);
-    // }
+    if (event is SearchAndFetchMPEvent) {
+      yield* _mapSearchAndFetchMPToState(event.billNo);
+    }
     // if (event is SortMPByName) {
     //   yield* _mapSortMPByNameToState();
     // }
@@ -71,26 +71,25 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     // }
   }
 
-  // TODO: ugly state do sink and stream
-  // Stream<ViewMPState> _mapSearchAndFetchMPToState(String mpname) async* {
-  //   try {
-  //     _query = mpname;
-  //     if (_query != null) {
-  //       print(_query);
-  //       _extractResult();
-  //       if (sortByName == sorting.ascending) {
-  //         _sortAscendingByMName();
-  //       } else {
-  //         _sortDescendingByMName();
-  //       }
-  //       print(_filteredMP.toString());
-  //
-  //       yield  ViewMPLoadedState(_filteredMP);
-  //     }
-  //   } catch (e) {
-  //     yield  ViewMPErrorState(e.toString());
-  //   }
-  // }
+  Stream<ViewMPState> _mapSearchAndFetchMPToState(String billNo) async* {
+    try {
+      _query = billNo;
+      if (_query != null) {
+        print(_query);
+        _extractResult();
+        // if (sortByName == sorting.ascending) {
+        //   _sortAscendingByMName();
+        // } else {
+        //   _sortDescendingByMName();
+        // }
+        print(_filteredMP.toString());
+
+        yield ViewMPLoadedState(_filteredMP);
+      }
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
 
   Stream<ViewMPState> _mapFetchMPToState(
       ViewMPEvent event, String mpname) async* {
@@ -202,10 +201,10 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   //       double.parse(b.mpriceperunit).compareTo(double.parse(a.mpriceperunit)));
   // }
   //
-  // void _extractResult() {
-  //   _filteredMP = _mp.materials
-  //       .where((element) =>
-  //           element.mname.toLowerCase().contains(_query.toLowerCase()))
-  //       .toList();
-  // }
+  void _extractResult() {
+    _filteredMP = _mp.materialPurchases
+        .where((element) =>
+            element.price.toLowerCase().contains(_query.toLowerCase()))
+        .toList();
+  }
 }

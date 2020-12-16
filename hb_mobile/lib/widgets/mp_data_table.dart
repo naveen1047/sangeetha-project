@@ -73,9 +73,9 @@ class _DataSource extends DataTableSource {
     _rows = mps
         .map((data) => _Row(
               data.date,
-              data.scode,
+              data.sname,
               data.billno,
-              data.mcode,
+              data.mname,
               data.unitprice,
               data.quantity,
               data.price,

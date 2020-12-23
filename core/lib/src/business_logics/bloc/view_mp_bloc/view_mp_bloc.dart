@@ -29,6 +29,7 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   String _query = '';
 
   // sorting
+  var sortByDate = sorting.ascending;
   var sortBySName = sorting.ascending;
   var sortByMName = sorting.ascending;
   var sortByBillNo = sorting.ascending;
@@ -53,6 +54,9 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
       yield* _mapSearchAndFetchMPToState(event.billNo);
     }
     if (event is SortMPBySName) {
+      yield* _mapSortMPBySNameToState();
+    }
+    if (event is SortMPByDate) {
       yield* _mapSortMPBySNameToState();
     }
     if (event is SortMPByMName) {
@@ -123,6 +127,24 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
         _extractResult();
         _sortDescendingBySName();
         sortBySName = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewMPErrorState(e.toString());
+    }
+  }
+
+  Stream<ViewMPState> _mapSortMPByDateToState() async* {
+    try {
+      _filteredMP = _mp.materialPurchases.toList();
+      if (sortByDate != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByDate();
+        sortByDate = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByDate();
+        sortByDate = sorting.descending;
       }
       yield _eventResult();
     } catch (e) {
@@ -228,6 +250,16 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   void _sortDescendingBySName() {
     _filteredMP
         .sort((a, b) => b.sname.toLowerCase().compareTo(a.sname.toLowerCase()));
+  }
+
+  void _sortAscendingByDate() {
+    _filteredMP
+        .sort((a, b) => a.date.toLowerCase().compareTo(b.date.toLowerCase()));
+  }
+
+  void _sortDescendingByDate() {
+    _filteredMP
+        .sort((a, b) => b.date.toLowerCase().compareTo(a.date.toLowerCase()));
   }
 
   void _sortAscendingByMName() {

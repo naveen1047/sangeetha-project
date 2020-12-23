@@ -60,9 +60,13 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     _remarksController = TextEditingController();
     _dateController = TextEditingController();
     _dateController.text = selectedDate.toString();
+
     _unitPriceController.text = '0';
 
     if (widget.isEditable) {
+      selectedDate = DateTime.parse(widget.mp.date);
+      context.bloc<DatePickerCubit>().selectDate(selectedDate);
+
       _billNoController.text = widget.mp.billno;
       _quantityController.text = widget.mp.quantity;
       _unitPriceController.text = widget.mp.unitprice;
@@ -294,7 +298,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                state,
+                                _dateController.text,
                               ),
                               Icon(Icons.edit),
                             ],

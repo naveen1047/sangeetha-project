@@ -107,7 +107,10 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
     return MPDataTable(
       dataColumn: [
         DataColumn(
-          label: datatableLabel("Date"),
+          label: datatableLabel("Date", isSortable: true),
+          onSort: (columnIndex, ascending) {
+            _viewMPBloc.add(SortMPByDate());
+          },
         ),
         DataColumn(
           label: datatableLabel("Supplier", isSortable: true),

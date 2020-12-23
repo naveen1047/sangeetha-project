@@ -9,7 +9,7 @@ String generateDate({DateTime selectedDate}) {
         ? '0${selectedDate.month}'
         : '${selectedDate.month}';
     year = selectedDate.year;
-    return '$day-$month-$year';
+    return '$year-$month-$day';
   } else {
     day = DateTime.now().day < 10
         ? '0${DateTime.now().day}'
@@ -18,6 +18,6 @@ String generateDate({DateTime selectedDate}) {
         ? '0${DateTime.now().month}'
         : '${DateTime.now().month}';
     year = DateTime.now().year;
-    return '$day-$month-$year';
+    return '$year-$month-$day';
   }
 }

@@ -35,6 +35,8 @@ class SearchAndFetchMPEvent extends ViewMPEvent {
 }
 
 // sorting
+class SortMPByDate extends ViewMPEvent {}
+
 class SortMPBySName extends ViewMPEvent {}
 
 class SortMPByMName extends ViewMPEvent {}

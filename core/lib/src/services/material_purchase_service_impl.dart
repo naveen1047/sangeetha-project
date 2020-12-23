@@ -47,9 +47,9 @@ class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
 
   @override
   Future<ResponseResult> deleteMaterialPurchase(
-      Map<String, dynamic> mcode) async {
+      Map<String, dynamic> mpcode) async {
     final url = "$_baseUrl/delete_material_purchase.php";
-    var response = await http.post(url, body: json.encode(mcode));
+    var response = await http.post(url, body: json.encode(mpcode));
     print('here');
     print(response.body.toString());
     if (response.statusCode == 200) {

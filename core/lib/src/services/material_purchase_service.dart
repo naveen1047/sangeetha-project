@@ -6,7 +6,7 @@ abstract class MaterialPurchaseService {
 
   Future<ResponseResult> editMaterialPurchaseByCode(MaterialPurchase material);
 
-  Future<ResponseResult> deleteMaterialPurchase(Map<String, dynamic> mcode);
+  Future<ResponseResult> deleteMaterialPurchase(Map<String, dynamic> mpcode);
 
   Future<MaterialPurchases> getAllMaterialPurchases();
 

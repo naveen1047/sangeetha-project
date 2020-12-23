@@ -49,6 +49,7 @@ class _Row {
     this.valueF,
     this.valueG,
     this.valueH,
+    this.mp,
   );
 
   final String valueA;
@@ -59,6 +60,7 @@ class _Row {
   final String valueF;
   final String valueG;
   final String valueH;
+  final MaterialPurchase mp;
 
   bool selected = false;
 }
@@ -71,17 +73,8 @@ class _DataSource extends DataTableSource {
     /* this._editMPBloc*/
   ) {
     _rows = mps
-        .map((data) => _Row(
-              data.date,
-              data.sname,
-              data.billno,
-              data.mname,
-              data.unitprice,
-              data.quantity,
-              data.price,
-              data.remarks,
-              /*data*/
-            ))
+        .map((data) => _Row(data.date, data.sname, data.billno, data.mname,
+            data.unitprice, data.quantity, data.price, data.remarks, data))
         .toList();
   }
 
@@ -118,8 +111,8 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.valueF)),
         DataCell(Text(row.valueG)),
         DataCell(Text(row.valueH)),
-        DataCell(Text("row.valueH")),
-        // _modifyDataCell(row.valueE),
+        // DataCell(Text("row.valueH")),
+        _modifyDataCell(row.mp),
       ],
     );
   }
@@ -133,49 +126,50 @@ class _DataSource extends DataTableSource {
   @override
   int get selectedRowCount => _selectedCount;
 
-  // DataCell _modifyDataCell(material.MP data) {
-  //   return DataCell(
-  //     Row(
-  //       children: [
-  //         IconButton(
-  //           icon: Icon(
-  //             Icons.edit,
-  //             // color: kPrimaryAccentColor,
-  //           ),
-  //           onPressed: () {
-  //             _showModalBottomSheet(context, data);
-  //           },
-  //         ),
-  //         IconButton(
-  //             icon: Icon(
-  //               Icons.delete,
-  //               // color: kPrimaryColor,
-  //             ),
-  //             onPressed: () {
-  //               showDialog(
-  //                 context: context,
-  //                 builder: (_) => AlertDialog(
-  //                   title: Text(
-  //                     'Are you sure you want to delete "${data.mname}"?',
-  //                   ),
-  //                   actions: [
-  //                     FlatButton(
-  //                         onPressed: () {
-  //                           _editMPBloc.add(DeleteMP(mcode: data.mcode));
-  //                           Navigator.pop(context);
-  //                         },
-  //                         child: Text('Yes')),
-  //                     FlatButton(
-  //                         onPressed: () => Navigator.pop(context),
-  //                         child: Text('No')),
-  //                   ],
-  //                 ),
-  //               );
-  //             }),
-  //       ],
-  //     ),
-  //   );
-  // }
+  DataCell _modifyDataCell(data) {
+    return DataCell(
+      Row(
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.edit,
+              // color: kPrimaryAccentColor,
+            ),
+            onPressed: () {
+              // _showModalBottomSheet(context, data);
+              Navigator.pushNamed(context, kEditMPScreen, arguments: data);
+            },
+          ),
+          IconButton(
+              icon: Icon(
+                Icons.delete,
+                // color: kPrimaryColor,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(
+                      'Are you sure you want to delete "${data.mname}"?',
+                    ),
+                    actions: [
+                      FlatButton(
+                          onPressed: () {
+                            // _editMPBloc.add(DeleteMP(mcode: data.mcode));
+                            // Navigator.pop(context);
+                          },
+                          child: Text('Yes')),
+                      FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('No')),
+                    ],
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
+  }
 
   // Future<void> _showModalBottomSheet(BuildContext context, material.MP data) {
   //   return showModalBottomSheet<void>(

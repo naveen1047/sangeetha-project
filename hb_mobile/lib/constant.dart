@@ -15,6 +15,7 @@ const String kAddProductScreen = '/addProductScreen';
 const String kExistingProductScreen = '/existingProductScreen';
 const String kAddCustomerScreen = '/addCustomerScreen';
 const String kExistingCustomerScreen = '/existingCustomerScreen';
+const String kEditMPScreen = '/editMPScreen';
 
 const Text rupee = Text(
   ' \u20B9 ',

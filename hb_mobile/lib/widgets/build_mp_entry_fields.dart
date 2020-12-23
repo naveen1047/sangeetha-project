@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hb_mobile/view/edit_mp_view.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/material.dart' as m;
@@ -9,9 +10,16 @@ import '../constant.dart';
 class BuildEntryFields extends StatefulWidget {
   final List<SupplierNameCode> suppliers;
   final List<m.Material> materials;
+  final bool isEditable;
+  final MaterialPurchase mp;
 
-  const BuildEntryFields({Key key, this.suppliers, this.materials})
-      : super(key: key);
+  const BuildEntryFields({
+    Key key,
+    this.suppliers,
+    this.materials,
+    this.isEditable = false,
+    this.mp,
+  }) : super(key: key);
 
   @override
   _BuildEntryFieldsState createState() =>
@@ -28,6 +36,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   TextEditingController _totalPriceController;
   TextEditingController _remarksController;
   TextEditingController _dateController;
+  MaterialPurchase mp;
 
   _BuildEntryFieldsState(
       List<SupplierNameCode> suppliers, List<m.Material> materials) {
@@ -43,8 +52,6 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   @override
   void initState() {
     _mpBloc = BlocProvider.of<MPBloc>(context);
-    // selectedSupplier = suppliers[0].scode;
-    // selectedMaterial = materials[0].mcode;
 
     _billNoController = TextEditingController();
     _quantityController = TextEditingController();
@@ -53,10 +60,43 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     _remarksController = TextEditingController();
     _dateController = TextEditingController();
     _dateController.text = selectedDate.toString();
-
     _unitPriceController.text = '0';
 
+    if (widget.isEditable) {
+      _billNoController.text = widget.mp.billno;
+      _quantityController.text = widget.mp.quantity;
+      _unitPriceController.text = widget.mp.unitprice;
+      _totalPriceController.text = widget.mp.price;
+      _remarksController.text = widget.mp.remarks;
+      _dateController.text = widget.mp.date;
+
+      _unitPriceController.text = widget.mp.unitprice;
+
+      selectedSupplier = widget.mp.scode;
+      selectedMaterial = widget.mp.mcode;
+
+      calculatePrice(widget.mp.unitprice, widget.mp.quantity);
+    }
+
     super.initState();
+  }
+
+  void calculatePrice(String unitPrice, String quantity) {
+    double p;
+    double q;
+    if (unitPrice != null &&
+        unitPrice != "" &&
+        quantity != null &&
+        quantity != "") {
+      p = double.parse(unitPrice);
+      q = double.parse(quantity);
+    } else {
+      p = 0.0;
+      q = 0.0;
+    }
+    context.bloc<TotalPriceCubit>()
+      ..setQuantity(q)
+      ..setPrice(p);
   }
 
   @override
@@ -90,7 +130,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
       padding: kPrimaryPadding,
       child: ListView(
         children: [
-          _billNo(context),
+          _billNo(),
           _datePicker(context),
           _supplierDropdown(),
           _materialDropdown(context),
@@ -99,7 +139,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
           _totalPrice(),
           _remarks(context),
           _upload(context),
-          _navigator(context),
+          widget.isEditable ? _cancel(context) : _navigator(context),
         ],
       ),
     );
@@ -212,9 +252,10 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     );
   }
 
-  TextFormField _billNo(BuildContext context) {
+  TextFormField _billNo() {
     return TextFormField(
       maxLength: 20,
+      enabled: !widget.isEditable,
       decoration: InputDecoration(
         icon: Icon(Icons.notes),
         labelText: 'Bill No',
@@ -287,11 +328,21 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
     );
   }
 
+  FlatButton _cancel(BuildContext context) {
+    return FlatButton(
+      child: Text('Cancel'),
+      onPressed: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pop(context);
+      },
+    );
+  }
+
   Padding _upload(BuildContext context) {
     return Padding(
       padding: kTopPadding,
       child: PrimaryActionButton(
-        title: 'Upload',
+        title: widget.isEditable ? 'Change' : 'Upload',
         onPressed: () {
           FocusScope.of(context).requestFocus(FocusNode());
           uploadData();

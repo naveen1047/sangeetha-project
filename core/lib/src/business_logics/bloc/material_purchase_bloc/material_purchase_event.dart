@@ -74,10 +74,10 @@ class EditMaterialPurchase extends MaterialPurchaseEvent {
 }
 
 class DeleteMaterialPurchase extends MaterialPurchaseEvent {
-  final String scode;
+  final String mpcode;
 
   DeleteMaterialPurchase({
-    this.scode,
+    this.mpcode,
   });
 
   @override

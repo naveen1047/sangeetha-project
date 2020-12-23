@@ -27,11 +27,7 @@ class MPDataTable extends StatelessWidget {
             header: Text(isEmpty ? 'No result found' : 'MP'),
             rowsPerPage: isEmpty ? 1 : 6,
             columns: dataColumn,
-            source: _DataSource(
-              context,
-              mps,
-              viewMPBloc, /*editMPBloc*/
-            ),
+            source: _DataSource(context, mps, viewMPBloc, editMPBloc),
           ),
         ],
       ),
@@ -70,7 +66,7 @@ class _DataSource extends DataTableSource {
     this.context,
     this.mps,
     this._viewMPBloc,
-    /* this._editMPBloc*/
+    this._editMPBloc,
   ) {
     _rows = mps
         .map((data) => _Row(data.date, data.sname, data.billno, data.mname,
@@ -82,7 +78,7 @@ class _DataSource extends DataTableSource {
   List<_Row> _rows;
   List<MaterialPurchase> mps;
   ViewMPBloc _viewMPBloc;
-  MPBloc _editMPBloc; /**/
+  MPBloc _editMPBloc;
 
   int _selectedCount = 0;
 
@@ -136,7 +132,6 @@ class _DataSource extends DataTableSource {
               // color: kPrimaryAccentColor,
             ),
             onPressed: () {
-              // _showModalBottomSheet(context, data);
               Navigator.pushNamed(context, kEditMPScreen, arguments: data);
             },
           ),
@@ -155,8 +150,8 @@ class _DataSource extends DataTableSource {
                     actions: [
                       FlatButton(
                           onPressed: () {
-                            // _editMPBloc.add(DeleteMP(mcode: data.mcode));
-                            // Navigator.pop(context);
+                            _editMPBloc.add(DeleteMP(data.mpcode));
+                            Navigator.pop(context);
                           },
                           child: Text('Yes')),
                       FlatButton(

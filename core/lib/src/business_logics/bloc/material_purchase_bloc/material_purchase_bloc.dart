@@ -129,9 +129,9 @@ class MaterialPurchaseBloc
 
   Stream<MaterialPurchaseState> _mapDeleteMaterialPurchaseToState(
       DeleteMaterialPurchase event) async* {
-    Map<String, String> scode = {'scode': event.scode};
+    Map<String, String> mpcode = {'mpcode': event.mpcode};
     ResponseResult result =
-        await _materialPurchaseServices.deleteMaterialPurchase(scode);
+        await _materialPurchaseServices.deleteMaterialPurchase(mpcode);
     if (result.status == true) {
       yield _success(result);
     } else {

@@ -17,9 +17,9 @@ class ExistingMPScreen extends StatelessWidget {
         BlocProvider(
           create: (BuildContext context) => ViewMPBloc()..add(FetchMPEvent()),
         ),
-        // BlocProvider(
-        //   create: (BuildContext context) => MaterialBloc(),
-        // ),
+        BlocProvider(
+          create: (BuildContext context) => MPBloc(),
+        ),
       ],
       child: ExistingMaterialsList(),
     );
@@ -33,19 +33,19 @@ class ExistingMaterialsList extends StatefulWidget {
 
 class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
   ViewMPBloc _viewMPBloc;
-  // MaterialBloc _editMaterialBloc;
+  MPBloc _editMaterialBloc;
 
   @override
   void initState() {
     _viewMPBloc = BlocProvider.of<ViewMPBloc>(context);
-    // _editMaterialBloc = BlocProvider.of<MaterialBloc>(context);
+    _editMaterialBloc = BlocProvider.of<MPBloc>(context);
     super.initState();
   }
 
   @override
   void dispose() {
     _viewMPBloc.close();
-    // _editMaterialBloc.close();
+    _editMaterialBloc.close();
     super.dispose();
   }
 
@@ -59,22 +59,40 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
           AppbarDropDownMenu(),
         ],
       ),
-      body: BlocBuilder<ViewMPBloc, ViewMPState>(
-        builder: (context, state) {
-          if (state is ViewMPLoadingState) {
-            return LinearProgressIndicator();
-          }
-          if (state is ViewMPLoadedState) {
-            final List<MaterialPurchase> mps = state.materialPurchase;
-            print(" ............${mps.length}");
-            return _buildTable(state, mps);
-          }
-          if (state is ViewMPErrorState) {
-            return _errorMessage(state, context);
-          } else {
-            return Text('unknown state error please report to developer');
+      body: BlocListener<MPBloc, MPState>(
+        listener: (context, state) {
+          if (state is MPSuccess) {
+            _viewMPBloc.add(FetchMPEvent());
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(
+                    '${state.message}',
+                    softWrap: true,
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
           }
         },
+        child: BlocBuilder<ViewMPBloc, ViewMPState>(
+          builder: (context, state) {
+            if (state is ViewMPLoadingState) {
+              return LinearProgressIndicator();
+            }
+            if (state is ViewMPLoadedState) {
+              final List<MaterialPurchase> mps = state.materialPurchase;
+              print(" ............${mps.length}");
+              return _buildTable(state, mps);
+            }
+            if (state is ViewMPErrorState) {
+              return _errorMessage(state, context);
+            } else {
+              return Text('unknown state error please report to developer');
+            }
+          },
+        ),
       ),
     );
   }
@@ -158,6 +176,7 @@ class _ExistingMaterialsListState extends State<ExistingMaterialsList> {
       // materials: materials,
       viewMPBloc: _viewMPBloc,
       mps: mp,
+      editMPBloc: _editMaterialBloc,
       // editMaterialBloc: _editMaterialBloc,
     );
   }

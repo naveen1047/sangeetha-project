@@ -349,7 +349,7 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
         title: widget.isEditable ? 'Change' : 'Upload',
         onPressed: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          uploadData();
+          widget.isEditable ? editData() : uploadData();
         },
       ),
     );
@@ -441,6 +441,21 @@ class _BuildEntryFieldsState extends State<BuildEntryFields> {
   void uploadData() {
     print(selectedSupplier);
     _mpBloc.add(UploadMPEntry(
+      mpcode: _billNoController.text,
+      scode: selectedSupplier,
+      date: _dateController.text,
+      billno: _billNoController.text,
+      mcode: selectedMaterial,
+      quantity: _quantityController.text,
+      unitprice: _unitPriceController.text,
+      price: _totalPriceController.text,
+      remarks: _remarksController.text,
+    ));
+  }
+
+  void editData() {
+    print(selectedSupplier);
+    _mpBloc.add(EditMP(
       mpcode: _billNoController.text,
       scode: selectedSupplier,
       date: _dateController.text,

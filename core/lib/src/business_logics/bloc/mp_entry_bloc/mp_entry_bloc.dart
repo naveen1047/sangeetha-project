@@ -23,10 +23,9 @@ class MPBloc extends Bloc<MPEvent, MPState> {
       yield* _mapAddMPToState(event);
     } else if (event is EditMP) {
       yield* _mapEditMPToState(event);
+    } else if (event is DeleteMP) {
+      yield* _mapDeleteMPToState(event);
     }
-    // else if (event is DeleteMP) {
-    //   yield* _mapDeleteMPToState(event);
-    // }
   }
 
   bool _isEventAttributeIsNotNull(var event) {

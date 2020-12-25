@@ -134,7 +134,7 @@ class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
           await Future.delayed(Duration(milliseconds: 2500));
-          Navigator.pushNamed(context, kExistingMaterialPurchase);
+          Navigator.maybePop(context, kExistingMaterialPurchase);
         }
       },
       child: MultiBlocProvider(
@@ -156,19 +156,5 @@ class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
         ),
       ),
     );
-    // return MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider(create: (BuildContext context) => TotalPriceCubit(0)),
-    //     BlocProvider(
-    //         create: (BuildContext context) => DatePickerCubit("Select Date")),
-    //     // BlocProvider(
-    //     //   create: (BuildContext context) => MPBloc(),
-    //     // ),
-    //   ],
-    //   child: BuildEntryFields(
-    //     suppliers: state.suppliers,
-    //     materials: state.material,
-    //   ),
-    // );
   }
 }

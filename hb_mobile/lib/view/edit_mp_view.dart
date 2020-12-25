@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/build_mp_entry_fields.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
+import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
 class InheritedEditMP extends InheritedWidget {
   const InheritedEditMP({
@@ -34,7 +35,10 @@ class EditMPScreen extends StatelessWidget {
     return InheritedEditMP(
       data: arg,
       child: Scaffold(
-        appBar: AppBar(title: const Text(EditMPScreen._title)),
+        appBar: AppBar(
+          title: const Text(EditMPScreen._title),
+          leading: NavigateBackButton(),
+        ),
         body: MultiBlocProvider(
           child: EditMaterialPurchaseForm(),
           providers: [

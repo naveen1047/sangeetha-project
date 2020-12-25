@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hb_mobile/view/edit_mp_view.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/models/material.dart' as m;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/constant.dart';
+import 'package:hb_mobile/theme.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -81,7 +82,8 @@ class HomeScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: kWhiteColor,
+            backgroundColor:
+                MaterialDemoThemeData.themeData.scaffoldBackgroundColor,
             floating: true,
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(0.0),
@@ -96,15 +98,15 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         'Current User: Mohan',
                         style: TextStyle(
-                          color: kTextColor,
-                        ),
+                            // color: kTextColor,
+                            ),
                       ),
                       Row(
                         children: [
                           IconButton(
                               icon: Icon(
                                 Icons.settings,
-                                color: kTextColor,
+                                // color: kTextColor,
                               ),
                               onPressed: () {
                                 Navigator.pushNamed(context, kConfigScreen);
@@ -112,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                           IconButton(
                               icon: Icon(
                                 Icons.account_circle,
-                                color: kTextColor,
+                                // color: kTextColor,
                               ),
                               onPressed: () {}),
                         ],
@@ -131,13 +133,18 @@ class HomeScreen extends StatelessWidget {
 
   Widget buildHomeList(BuildContext context, Orientation deviceOrientation) {
     if (deviceOrientation == Orientation.portrait) {
-      return SliverList(
-        delegate: SliverChildListDelegate(categories(context)),
+      return SliverPadding(
+        padding: kPrimaryLitePadding,
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(categories(context)),
+        ),
       );
     } else {
-      return SliverGrid.count(
-        crossAxisCount: 2,
-        children: categories(context),
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 100.0),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(categories(context)),
+        ),
       );
     }
   }

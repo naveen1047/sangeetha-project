@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/constant.dart';
+import 'package:hb_mobile/theme.dart';
 
 // class CategoryCard extends StatelessWidget {
 //   final String title;
@@ -106,6 +107,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 6.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -114,12 +116,17 @@ class CategoryCard extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  decoration: BoxDecoration(color: kMutedColor),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(4.0)),
+                      color: Color(
+                              MaterialDemoThemeData.themeData.shadowColor.value)
+                          .withOpacity(0.2)),
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Icon(
                       titleIcon,
-                      // color: kPrimaryColor,
+                      // color: MaterialDemoThemeData.themeData.shadowColor,
                     ),
                   ),
                 ),
@@ -135,7 +142,9 @@ class CategoryCard extends StatelessWidget {
                       ),
                       Text(
                         subTitle,
-                        style: TextStyle(color: kTextColor),
+                        style: TextStyle(
+                            color:
+                                MaterialDemoThemeData.themeData.disabledColor),
                       ),
                     ],
                   ),
@@ -146,12 +155,11 @@ class CategoryCard extends StatelessWidget {
           Divider(
             height: 0.0,
           ),
-          FlatButton(
-            onPressed: onPressedSecondary,
-            child: Text(
-              '+ ADD',
-              style:
-                  TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+          Padding(
+            padding: kRightPadding,
+            child: TextButton(
+              onPressed: onPressedSecondary,
+              child: Text('ADD'),
             ),
           )
         ],
@@ -197,7 +205,7 @@ class MenuTitle extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Text(
         title,
-        style: TextStyle(color: kIconColor),
+        style: TextStyle(color: MaterialDemoThemeData.themeData.disabledColor),
       ),
     );
   }
@@ -220,7 +228,7 @@ class MenuItem extends StatelessWidget {
           iconData != null
               ? Icon(
                   iconData,
-                  color: Colors.black54,
+                  // color: Colors.black54,
                 )
               : Container(),
           Padding(
@@ -441,7 +449,7 @@ SnackBar progressSnackBar({
             ? child
             : Icon(
                 Icons.check_circle,
-                color: ColorScheme.light().secondary,
+                // color: ColorScheme.light().secondary,
               ),
       ],
     ),
@@ -516,22 +524,19 @@ class DualButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: kCardDecoration,
-        child: ListTile(
-          title: Text(subtitle),
-          onTap: onTapSecondary,
-          trailing: IconButton(
-            icon: Icon(Icons.add_circle_rounded),
-            color: ColorScheme.light().onSecondary,
-            // color: kPrimaryAccentColor,
-            onPressed: onTapPrimary,
-            tooltip: title,
-          ),
-          tileColor: kMutedColorLight,
+    return Card(
+      elevation: 6.0,
+      child: ListTile(
+        title: Text(subtitle),
+        onTap: onTapSecondary,
+        trailing: IconButton(
+          icon: Icon(Icons.add_circle_rounded),
+          color: MaterialDemoThemeData.themeData.iconTheme.color,
+          // color: kPrimaryAccentColor,
+          onPressed: onTapPrimary,
+          tooltip: title,
         ),
+        // tileColor: MaterialDemoThemeData.themeData.colorScheme.onPrimary,
       ),
     );
   }

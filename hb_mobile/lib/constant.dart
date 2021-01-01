@@ -47,7 +47,7 @@ Decoration kSearchDecoration = BoxDecoration(
 );
 
 Decoration kCardDecoration = BoxDecoration(
-  color: MaterialDemoThemeData.themeData.colorScheme.secondary,
+  color: MaterialDemoThemeData.themeData.colorScheme.surface,
   borderRadius: kDefaultBorderRadius,
   boxShadow: kBoxShadow,
 );
@@ -60,10 +60,11 @@ Decoration kDualButtonDecoration = BoxDecoration(
 
 List<BoxShadow> kBoxShadow = [
   BoxShadow(
-    color: Colors.grey.withOpacity(0.5),
+    color: Color(MaterialDemoThemeData.themeData.shadowColor.value)
+        .withOpacity(0.2),
     spreadRadius: 0.5,
-    blurRadius: 2.0,
-    offset: Offset(3, 3), // changes position of shadow
+    blurRadius: 1.0,
+    offset: Offset(2, 2), // changes position of shadow
   ),
 ];
 
@@ -133,6 +134,7 @@ const kSearchPadding = const EdgeInsets.symmetric(horizontal: 6.0);
 const kTopPadding = const EdgeInsets.only(top: 8.0);
 const kCardPadding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
 const kFieldPadding = const EdgeInsets.all(12.0);
+const kPrimaryLitePadding = const EdgeInsets.all(8.0);
 const kPrimaryPadding = const EdgeInsets.all(16.0);
 const kBottomPadding = const EdgeInsets.only(bottom: 4.0);
 const kIconLeftPadding = const EdgeInsets.only(left: 24.0);

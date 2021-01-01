@@ -55,8 +55,11 @@ class ConfigScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           if (constraints.maxHeight > constraints.maxWidth) {
-            return ListView(
-              children: configWidgets,
+            return Padding(
+              padding: kPrimaryLitePadding,
+              child: ListView(
+                children: configWidgets,
+              ),
             );
           } else {
             return Padding(

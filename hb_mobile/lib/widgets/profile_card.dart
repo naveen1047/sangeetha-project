@@ -31,8 +31,8 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: kCardPadding,
-      child: Container(
-        decoration: kCardDecoration,
+      child: Card(
+        elevation: kElevation,
         child: ExpansionTile(
           key: Key(cardKey),
           title: _titleCard(context, title),

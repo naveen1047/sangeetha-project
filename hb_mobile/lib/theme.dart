@@ -35,7 +35,7 @@ class MaterialDemoThemeData {
   //       // platform: defaultTargetPlatform,
   //       ),
   // );
-
+  //
   // static const _colorScheme = ColorScheme.dark();
 
   // static const _colorScheme = ColorScheme(
@@ -57,19 +57,19 @@ class MaterialDemoThemeData {
   //   onSecondary: Colors.black,
   //   brightness: Brightness.light,
   // );
-// static const _colorScheme = ColorScheme(
-//   primary: Color(0xFF6200EE),
-//   primaryVariant: Color(0xFF6200EE),
-//   secondary: Color(0xFFFF5722),
-//   secondaryVariant: Color(0xFFFF5722),
-//   background: Colors.white,
-//   surface: Color(0xFFF2F2F2),
-//   onBackground: Colors.black,
-//   onSurface: Colors.black,
-//   error: Colors.red,
-//   onError: Colors.white,
-//   onPrimary: Colors.white,
-//   onSecondary: Colors.white,
-//   brightness: Brightness.light,
-// );
+  // static const _colorScheme = ColorScheme(
+  //   primary: Color(0xFF6200EE),
+  //   primaryVariant: Color(0xFF6200EE),
+  //   secondary: Color(0xFFFF5722),
+  //   secondaryVariant: Color(0xFFFF5722),
+  //   background: Colors.white,
+  //   surface: Color(0xFFF2F2F2),
+  //   onBackground: Colors.black,
+  //   onSurface: Colors.black,
+  //   error: Colors.red,
+  //   onError: Colors.white,
+  //   onPrimary: Colors.white,
+  //   onSecondary: Colors.white,
+  //   brightness: Brightness.light,
+  // );
 }

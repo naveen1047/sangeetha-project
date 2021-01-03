@@ -107,7 +107,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6.0,
+      elevation: kElevation,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -130,23 +130,28 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        subTitle,
-                        style: TextStyle(
-                            color:
-                                MaterialDemoThemeData.themeData.disabledColor),
-                      ),
-                    ],
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          subTitle,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              color: MaterialDemoThemeData
+                                  .themeData.disabledColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -525,7 +530,7 @@ class DualButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6.0,
+      elevation: kElevation,
       child: ListTile(
         title: Text(subtitle),
         onTap: onTapSecondary,

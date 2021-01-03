@@ -159,7 +159,7 @@ class HomeScreen extends StatelessWidget {
       CategoryCard(
         title: 'Material Purchase',
         titleIcon: Icons.note,
-        subTitle: 'add and edit materials',
+        subTitle: 'add and edit materials purchase',
         // subTitleIcon: Icons.edit,
         // backgroundColor: Colors.green,
         onTap: () {
@@ -171,14 +171,7 @@ class HomeScreen extends StatelessWidget {
       CategoryCard(
         title: 'Production',
         titleIcon: Icons.add_circle,
-        subTitle: 'Entry',
-        // subTitleIcon: Icons.edit,
-        // backgroundColor: Colors.amber,
-      ),
-      CategoryCard(
-        title: 'Production',
-        titleIcon: Icons.add_circle,
-        subTitle: 'Report',
+        subTitle: 'view production done and change production',
         // subTitleIcon: Icons.description,
         // backgroundColor: Colors.deepOrange,
       ),

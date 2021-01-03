@@ -206,7 +206,7 @@ class AppbarDropDownMenu extends StatelessWidget {
         choiceAction(choice, context);
       },
       itemBuilder: (BuildContext context) {
-        return MaterialConstants.choices.map((String choice) {
+        return MPConstants.choices.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
             child: Text(choice),
@@ -223,7 +223,7 @@ class AppbarDropDownMenu extends StatelessWidget {
       BlocProvider.of<ViewMPBloc>(context).add(FetchMPEvent());
     } else if (choice == MPConstants.AddMP) {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          kAddMaterialScreen, ModalRoute.withName(kConfigScreen));
+          kAddMaterialScreen, ModalRoute.withName(kHomeScreen));
     }
   }
 }

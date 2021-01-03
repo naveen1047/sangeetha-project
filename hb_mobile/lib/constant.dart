@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/theme.dart';
 
-const String kHome = '/dash_board';
+const String kHomeScreen = '/dash_board';
 const String kExistingMaterialPurchase = '/existing_material_purchase';
 const String kAddMaterialPurchase = '/add_material_purchase';
 const String kConfigScreen = '/configScreen';
@@ -41,9 +41,10 @@ InputDecoration kSearchTextFieldDecoration = InputDecoration(
     hintText: 'Search');
 
 Decoration kSearchDecoration = BoxDecoration(
-  color: Colors.blueGrey.shade800,
+  color:
+      Color(MaterialDemoThemeData.themeData.shadowColor.value).withOpacity(0.5),
   borderRadius: kDefaultBorderRadius,
-  boxShadow: kBoxShadow,
+  // boxShadow: kBoxShadow,
 );
 
 Decoration kCardDecoration = BoxDecoration(
@@ -122,6 +123,9 @@ const Color kPrimaryAccentColor = Color(0xFF0091EA);
 // const Color kErrorColor = Color(0xFFF44336);
 const Color kActionIconColor = Color(0xFF007700);
 
+// elevation
+const double kElevation = 6.0;
+
 //padding
 const kVerticalPadding = const EdgeInsets.symmetric(vertical: 8.0);
 const kHorizontalPadding = const EdgeInsets.symmetric(horizontal: 16.0);
@@ -132,7 +136,7 @@ const kDoubleLeftPadding = const EdgeInsets.only(left: 16.0);
 const kTripleLeftPadding = const EdgeInsets.only(left: 24.0);
 const kSearchPadding = const EdgeInsets.symmetric(horizontal: 6.0);
 const kTopPadding = const EdgeInsets.only(top: 8.0);
-const kCardPadding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
+const kCardPadding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0);
 const kFieldPadding = const EdgeInsets.all(12.0);
 const kPrimaryLitePadding = const EdgeInsets.all(8.0);
 const kPrimaryPadding = const EdgeInsets.all(16.0);
@@ -179,7 +183,7 @@ class MaterialConstants {
 class MPConstants {
   static const String Refresh = 'Refresh';
   static const String Settings = 'Settings';
-  static const String AddMP = 'Add Material purchase';
+  static const String AddMP = 'Add';
 
   static const List<String> choices = <String>[Refresh, AddMP, Settings];
 }

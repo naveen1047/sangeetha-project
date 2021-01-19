@@ -104,8 +104,10 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     try {
       yield ViewMPLoadingState();
 
+      print("*********");
       _mp = await _viewMPService.getAllMaterialPurchases();
       print(_mp.materialPurchases.first.mpcode);
+      print("*********");
 
       _filteredMP = _mp.materialPurchases;
       // _sortAscendingByMName();

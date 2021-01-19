@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/theme.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
@@ -11,120 +12,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Sangeetha groups'),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-              ),
-            ),
-            MenuItem(
-              title: 'DashBoard',
-              onTap: null,
-              iconData: Icons.dashboard,
-            ),
-            Divider(thickness: 1.0),
-            MenuTitle(
-              title: 'Hollow block',
-            ),
-            MenuItem(
-              title: 'Material Purchase',
-              onTap: null,
-              iconData: Icons.note,
-            ),
-            MenuItem(
-              title: 'Production',
-              onTap: null,
-              iconData: Icons.add_circle,
-            ),
-            MenuItem(
-              title: 'Sales',
-              onTap: null,
-              iconData: Icons.trending_up,
-            ),
-            MenuItem(
-              title: 'Stock Details',
-              onTap: null,
-              iconData: Icons.pie_chart,
-            ),
-            MenuItem(
-              title: 'Payment',
-              onTap: null,
-              iconData: Icons.attach_money,
-            ),
-            MenuItem(
-              title: 'Material Purchase',
-              onTap: null,
-              iconData: Icons.note,
-            ),
-            Divider(thickness: 1.0),
-            MenuTitle(title: 'Menu'),
-            MenuItem(
-              title: 'Settings',
-              onTap: () {},
-              iconData: Icons.settings,
-            ),
-            MenuItem(
-              title: 'Logout',
-              onTap: null,
-              iconData: Icons.exit_to_app,
-            ),
-          ],
-        ),
-      ),
+      drawer: MenuDrawer(),
       appBar: AppBar(
         title: Text(title),
       ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor:
-                MaterialDemoThemeData.themeData.scaffoldBackgroundColor,
-            floating: true,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0.0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Container(
-                  height: 48.0,
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Current User: Mohan',
-                        style: TextStyle(
-                            // color: kTextColor,
-                            ),
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.settings,
-                                // color: kTextColor,
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(context, kConfigScreen);
-                              }),
-                          IconButton(
-                              icon: Icon(
-                                Icons.account_circle,
-                                // color: kTextColor,
-                              ),
-                              onPressed: () {}),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          FloatingAppbar(),
           buildHomeList(context, MediaQuery.of(context).orientation),
         ],
       ),
@@ -211,5 +105,133 @@ class HomeScreen extends StatelessWidget {
         // backgroundColor: Colors.teal,
       ),
     ];
+  }
+}
+
+class FloatingAppbar extends StatelessWidget {
+  const FloatingAppbar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      backgroundColor: MaterialDemoThemeData.themeData.scaffoldBackgroundColor,
+      floating: true,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(0.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            height: 48.0,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Current User: Mohan',
+                  style: TextStyle(
+                      // color: kTextColor,
+                      ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.settings,
+                          // color: kTextColor,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, kConfigScreen);
+                        }),
+                    IconButton(
+                        icon: Icon(
+                          Icons.account_circle,
+                          // color: kTextColor,
+                        ),
+                        onPressed: () {}),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MenuDrawer extends StatelessWidget {
+  const MenuDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Sangeetha groups'),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+            ),
+          ),
+          MenuItem(
+            title: 'DashBoard',
+            onTap: null,
+            iconData: Icons.dashboard,
+          ),
+          Divider(thickness: 1.0),
+          MenuTitle(
+            title: 'Hollow block',
+          ),
+          MenuItem(
+            title: 'Material Purchase',
+            onTap: null,
+            iconData: Icons.note,
+          ),
+          MenuItem(
+            title: 'Production',
+            onTap: null,
+            iconData: Icons.add_circle,
+          ),
+          MenuItem(
+            title: 'Sales',
+            onTap: null,
+            iconData: Icons.trending_up,
+          ),
+          MenuItem(
+            title: 'Stock Details',
+            onTap: null,
+            iconData: Icons.pie_chart,
+          ),
+          MenuItem(
+            title: 'Payment',
+            onTap: null,
+            iconData: Icons.attach_money,
+          ),
+          MenuItem(
+            title: 'Material Purchase',
+            onTap: null,
+            iconData: Icons.note,
+          ),
+          Divider(thickness: 1.0),
+          MenuTitle(title: 'Menu'),
+          MenuItem(
+            title: 'Settings',
+            onTap: () {},
+            iconData: Icons.settings,
+          ),
+          MenuItem(
+            title: 'Logout',
+            onTap: null,
+            iconData: Icons.exit_to_app,
+          ),
+        ],
+      ),
+    );
   }
 }

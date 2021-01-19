@@ -9,7 +9,4 @@ abstract class MaterialPurchaseService {
   Future<ResponseResult> deleteMaterialPurchase(Map<String, dynamic> mpcode);
 
   Future<MaterialPurchases> getAllMaterialPurchases();
-
-  Future<MaterialPurchases> getMaterialPurchaseByName(
-      String materialPurchaseName);
 }

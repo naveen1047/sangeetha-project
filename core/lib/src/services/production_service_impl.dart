@@ -1,21 +1,20 @@
 import 'dart:convert';
 
-import 'package:core/src/business_logics/models/material_purchase.dart';
+import 'package:core/src/business_logics/models/production.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/services/config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import 'material_purchase_service.dart';
+import 'production_service.dart';
 
-class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
+class ProductionServiceImpl implements ProductionService {
   String _baseUrl = kBaseUrl;
 
   @override
-  Future<ResponseResult> submitMaterialPurchase(
-      MaterialPurchase materialPurchase) async {
+  Future<ResponseResult> submitProduction(Production materialPurchase) async {
     final data = materialPurchase.toJson();
-    final url = "$_baseUrl/add_material_purchase.php";
+    final url = "$_baseUrl/add_production.php";
     print(data.toString());
     var response = await http.post(url, body: json.encode(data));
     print(response.headers);
@@ -30,11 +29,11 @@ class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
   }
 
   @override
-  Future<ResponseResult> editMaterialPurchaseByCode(
-      MaterialPurchase materialPurchase) async {
+  Future<ResponseResult> editProductionByCode(
+      Production materialPurchase) async {
     final data = materialPurchase.toJson();
     print(data.toString());
-    final url = "$_baseUrl/edit_existing_material_purchase.php";
+    final url = "$_baseUrl/edit_production.php";
     var response = await http.post(url, body: json.encode(data));
     print(response.body.toString());
 
@@ -48,9 +47,8 @@ class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
   }
 
   @override
-  Future<ResponseResult> deleteMaterialPurchase(
-      Map<String, dynamic> mpcode) async {
-    final url = "$_baseUrl/delete_material_purchase.php";
+  Future<ResponseResult> deleteProduction(Map<String, dynamic> mpcode) async {
+    final url = "$_baseUrl/delete_production.php";
     var response = await http.post(url, body: json.encode(mpcode));
     print('here');
     print(response.body.toString());
@@ -64,26 +62,19 @@ class MaterialPurchaseServiceImpl implements MaterialPurchaseService {
   }
 
   @override
-  Future<MaterialPurchases> getAllMaterialPurchases() async {
-    final url = "$_baseUrl/fetch_material_purchase.php";
+  Future<Productions> getAllProductions() async {
+    final url = "$_baseUrl/fetch_production.php";
     var response = await http.get(url);
     print(response.body.toString());
     if (response.statusCode == 200) {
-      return compute(parseMaterialPurchases, response.body);
+      return compute(parseProductions, response.body);
     } else {
       throw Exception(
           'Error Code: ${response.statusCode}\nWe were not able to successfully download the json data.');
     }
   }
-
-  // @override
-  // Future<MaterialPurchases> getMaterialPurchaseByName(
-  //     String materialPurchaseName) {
-  //   // TODO: implement getMaterialPurchaseByName
-  //   throw UnimplementedError();
-  // }
 }
 
-MaterialPurchases parseMaterialPurchases(String response) {
-  return MaterialPurchases.fromJson(json.decode(response));
+Productions parseProductions(String response) {
+  return Productions.fromJson(json.decode(response));
 }

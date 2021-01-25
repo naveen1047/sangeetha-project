@@ -6,6 +6,8 @@ import 'package:core/src/services/material_service.dart';
 import 'package:core/src/services/material_service_impl.dart';
 import 'package:core/src/services/product_service.dart';
 import 'package:core/src/services/product_service_impl.dart';
+import 'package:core/src/services/production_service.dart';
+import 'package:core/src/services/production_service_impl.dart';
 import 'package:core/src/services/supplier_service.dart';
 import 'package:core/src/services/supplier_service_impl.dart';
 import 'package:get_it/get_it.dart';
@@ -24,6 +26,9 @@ void setupServiceLocator() {
 
   serviceLocator.registerLazySingleton<MaterialPurchaseService>(
       () => MaterialPurchaseServiceImpl());
+
+  serviceLocator
+      .registerLazySingleton<ProductionService>(() => ProductionServiceImpl());
 
   serviceLocator
       .registerLazySingleton<CustomerService>(() => CustomerServiceImpl());

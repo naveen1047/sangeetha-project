@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'production.g.dart';
@@ -16,15 +17,15 @@ class Production extends Equatable {
   final String remarks;
 
   Production({
-    this.pdcode,
-    this.date,
-    this.pcode,
-    this.ecode,
-    this.sps,
-    this.nos,
-    this.nosps,
-    this.salary,
-    this.remarks,
+    @required this.pdcode,
+    @required this.date,
+    @required this.pcode,
+    @required this.ecode,
+    @required this.sps,
+    @required this.nos,
+    @required this.nosps,
+    @required this.salary,
+    @required this.remarks,
   });
 
   factory Production.fromJson(Map<String, dynamic> json) =>

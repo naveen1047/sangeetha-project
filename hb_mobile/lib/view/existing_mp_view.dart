@@ -223,7 +223,7 @@ class AppbarDropDownMenu extends StatelessWidget {
       BlocProvider.of<ViewMPBloc>(context).add(FetchMPEvent());
     } else if (choice == MPConstants.AddMP) {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          kAddMaterialScreen, ModalRoute.withName(kHomeScreen));
+          kAddMaterialScreen, ModalRoute.withName(kHome));
     }
   }
 }

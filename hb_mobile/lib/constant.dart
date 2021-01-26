@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hb_mobile/theme.dart';
 
-const String kHomeScreen = '/dash_board';
+const String kHome = '/dash_board';
 const String kExistingMaterialPurchase = '/existing_material_purchase';
 const String kAddMaterialPurchase = '/add_material_purchase';
 const String kConfigScreen = '/configScreen';

@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: kHomeScreen,
+      initialRoute: kHome,
       routes: {
-        kHomeScreen: (context) => HomeScreen(title: title),
+        kHome: (context) => HomeScreen(title: title),
         // kMaterialPurchase: (context) => MaterialPurchase(),
         kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
         kExistingMaterialPurchase: (context) => ExistingMPScreen(),

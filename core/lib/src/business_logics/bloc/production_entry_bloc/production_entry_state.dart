@@ -1,33 +1,33 @@
-part of 'production_bloc.dart';
+part of 'production_entry_bloc.dart';
 
-abstract class ProductionState {
-  const ProductionState();
+abstract class ProductionEntryState {
+  const ProductionEntryState();
 }
 
-class ProductionIdle extends ProductionState {}
+class ProductionIdle extends ProductionEntryState {}
 
-class ProductionLoading extends ProductionState {
+class ProductionLoading extends ProductionEntryState {
   final bool status;
   final String message;
 
   ProductionLoading(this.status, this.message);
 }
 
-class ProductionSuccess extends ProductionState {
+class ProductionSuccess extends ProductionEntryState {
   final bool status;
   final String message;
 
   ProductionSuccess(this.status, this.message);
 }
 
-class ProductionError extends ProductionState {
+class ProductionError extends ProductionEntryState {
   final bool status;
   final String message;
 
   ProductionError(this.status, this.message);
 }
 
-class ProductionErrorAndClear extends ProductionState {
+class ProductionErrorAndClear extends ProductionEntryState {
   final bool status;
   final String message;
 

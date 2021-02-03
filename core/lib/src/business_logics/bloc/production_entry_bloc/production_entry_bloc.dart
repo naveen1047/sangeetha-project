@@ -6,18 +6,18 @@ import 'package:core/src/services/production_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
 
-part 'production_event.dart';
+part 'production_entry_event.dart';
 
-part 'production_state.dart';
+part 'production_entry_state.dart';
 
 //TODO: start here find and replace MP to production
-class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
-  ProductionBloc() : super(ProductionIdle());
+class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
+  ProductionEntryBloc() : super(ProductionIdle());
 
   final ProductionService _pServices = serviceLocator<ProductionService>();
 
   @override
-  Stream<ProductionState> mapEventToState(ProductionEvent event) async* {
+  Stream<ProductionEntryState> mapEventToState(ProductionEvent event) async* {
     if (event is ProductionEntry) {
       yield* _mapAddProductionToState(event);
     } else if (event is EditProduction) {
@@ -42,11 +42,11 @@ class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
     return false;
   }
 
-  ProductionState _success(ResponseResult result) {
+  ProductionEntryState _success(ResponseResult result) {
     return ProductionSuccess(result.status, result.message);
   }
 
-  ProductionState _loading() {
+  ProductionEntryState _loading() {
     return ProductionLoading(true, "Uploading...");
   }
 
@@ -54,15 +54,15 @@ class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
   //   return ProductionErrorAndClear(result.status, result.message);
   // }
 
-  ProductionState _error(ResponseResult result) {
+  ProductionEntryState _error(ResponseResult result) {
     return ProductionError(result.status, result.message);
   }
 
-  ProductionState _nullValueError() {
+  ProductionEntryState _nullValueError() {
     return ProductionError(false, 'please fill required fields');
   }
 
-  Production _materialPurchase(var event) {
+  Production _production(var event) {
     return Production(
       ecode: event.ecode,
       sps: event.sps,
@@ -76,11 +76,12 @@ class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
     );
   }
 
-  Stream<ProductionState> _mapAddProductionToState(ProductionEntry event) async* {
+  Stream<ProductionEntryState> _mapAddProductionToState(
+      ProductionEntry event) async* {
     if (_isEventAttributeIsNotNull(event)) {
       yield _loading();
-      Production mp = _materialPurchase(event);
-      ResponseResult result = await _pServices.submitProduction(mp);
+      Production p = _production(event);
+      ResponseResult result = await _pServices.submitProduction(p);
       if (result.status == true) {
         yield _success(result);
       } else {
@@ -91,10 +92,11 @@ class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
     }
   }
 
-  Stream<ProductionState> _mapEditProductionToState(EditProduction event) async* {
+  Stream<ProductionEntryState> _mapEditProductionToState(
+      EditProduction event) async* {
     if (_isEventAttributeIsNotNull(event)) {
       yield _loading();
-      Production mp = _materialPurchase(event);
+      Production mp = _production(event);
       ResponseResult result = await _pServices.editProductionByCode(mp);
       await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
@@ -117,7 +119,8 @@ class ProductionBloc extends Bloc<ProductionEvent, ProductionState> {
 // }
   }
 
-  Stream<ProductionState> _mapDeleteProductionToState(DeleteProduction deleteProduction) async* {
+  Stream<ProductionEntryState> _mapDeleteProductionToState(
+      DeleteProduction deleteProduction) async* {
     Map<String, String> pdcode = {'mpcode': deleteProduction.pdcode};
     ResponseResult result = await _pServices.deleteProduction(pdcode);
     if (result.status == true) {

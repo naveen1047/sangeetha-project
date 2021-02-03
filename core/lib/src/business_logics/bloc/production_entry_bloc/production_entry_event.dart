@@ -1,4 +1,4 @@
-part of 'production_bloc.dart';
+part of 'production_entry_bloc.dart';
 
 abstract class ProductionEvent extends Equatable {
   const ProductionEvent();

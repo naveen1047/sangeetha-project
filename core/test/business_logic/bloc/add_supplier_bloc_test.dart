@@ -22,7 +22,7 @@ void main() {
 
     test('should return today date', () {
       String testDate = addSupplierBloc.getDateInFormat;
-      expect('08-09-2020', testDate);
+      expect('2021-02-03', testDate);
     });
 
 //    test('initial state is loading', () {

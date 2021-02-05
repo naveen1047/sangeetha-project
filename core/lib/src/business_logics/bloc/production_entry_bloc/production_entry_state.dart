@@ -1,7 +1,10 @@
 part of 'production_entry_bloc.dart';
 
-abstract class ProductionEntryState {
+abstract class ProductionEntryState extends Equatable {
   const ProductionEntryState();
+
+  @override
+  List<Object> get props => [];
 }
 
 class ProductionIdle extends ProductionEntryState {}

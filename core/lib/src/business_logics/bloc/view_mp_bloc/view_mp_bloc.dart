@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:core/core.dart';
-import 'package:core/src/business_logics/models/material.dart';
 import 'package:core/src/services/material_purchase_service.dart';
-import 'package:core/src/services/material_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:core/src/business_logics/util/util.dart';

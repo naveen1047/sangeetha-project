@@ -1,25 +1,50 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
 import 'package:core/src/business_logics/bloc/production_entry_bloc/production_entry_bloc.dart';
+import 'package:core/src/business_logics/models/response_result.dart';
+import 'package:core/src/services/production_service.dart';
+import 'package:core/src/services/production_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+class MockProductionService extends Mock implements ProductionServiceImpl {}
 
 void main() {
   group('add production Bloc test', () {
     ProductionEntryBloc productionEntryBloc;
-    Production production;
+    ProductionService _pServices;
+    ProductionEntry sampleEntry;
+    Production sampleData;
+
+    Production _production(var event) {
+      return Production(
+        ecode: event.ecode,
+        sps: event.sps,
+        pdcode: event.pdcode,
+        nosps: event.nosps,
+        nos: event.nos,
+        date: event.date,
+        salary: event.salary,
+        remarks: event.remarks,
+        pcode: event.pcode,
+      );
+    }
 
     setUp(() {
       productionEntryBloc = ProductionEntryBloc();
-      production = Production(
-          pdcode: "null",
-          date: "null",
-          pcode: "null",
-          ecode: "null",
-          sps: "null",
-          nos: "null",
-          nosps: "null",
-          salary: "null",
-          remarks: "null");
+      _pServices = MockProductionService();
+      sampleEntry = ProductionEntry(
+        pdcode: "null",
+        date: "null",
+        pcode: "null",
+        ecode: "null",
+        sps: "null",
+        nos: "null",
+        nosps: "null",
+        salary: "null",
+        remarks: "null",
+      );
+      sampleData = _production(sampleEntry);
     });
 
     setUpAll(() {
@@ -31,13 +56,8 @@ void main() {
     });
 
     test('initial state is Idle', () {
-      expect(productionEntryBloc.state.toString(), ProductionIdle().toString());
+      expect(productionEntryBloc.state, ProductionIdle());
     });
-
-    // test('should return today date', () {
-    //   String testDate = addSupplierBloc.getDateInFormat;
-    //   expect('2021-02-03', testDate);
-    // });
 
     blocTest<ProductionEntryBloc, ProductionEntryState>(
       "emit [] when nothing is added",
@@ -48,11 +68,39 @@ void main() {
     );
 
     blocTest<ProductionEntryBloc, ProductionEntryState>(
-      "emit [ProductionSuccess] when added",
+      "emit [ProductionError] when added",
       build: () {
+        when(_pServices.submitProduction(sampleData)).thenAnswer(
+          (_) => Future.value(
+            ResponseResult(
+                status: false,
+                message: "Duplicate entry 'null' for key 'PRIMARY'"),
+          ),
+        );
         return ProductionEntryBloc();
       },
-      act: (bloc) async => bloc.add(ProductionEntry(
+      act: (productionEntryBloc) async => productionEntryBloc.add(sampleEntry),
+      expect: <ProductionEntryState>[
+        // ProductionLoading(true, "Uploading..."),
+        ProductionError(false, "Duplicate entry 'null' for key 'PRIMARY'"),
+      ],
+      skip: 1,
+    );
+
+    blocTest<ProductionEntryBloc, ProductionEntryState>(
+      "emit [ProductionSuccess] when edited",
+      build: () {
+        when(_pServices.editProductionByCode(sampleData)).thenAnswer(
+          (value) => Future.value(
+            ResponseResult(
+                status: false,
+                message: "Duplicate entry 'null' for key 'PRIMARY'"),
+          ),
+        );
+        return ProductionEntryBloc();
+      },
+      act: (productionEntryBloc) async =>
+          productionEntryBloc.add(EditProduction(
         pdcode: "null",
         date: "null",
         pcode: "null",
@@ -60,15 +108,16 @@ void main() {
         sps: "null",
         nos: "null",
         nosps: "null",
-        salary: "null",
+        salary: "edited",
         remarks: "null",
       )),
       expect: <ProductionEntryState>[
         ProductionLoading(true, "Uploading..."),
-        ProductionError(false, "message"),
+        ProductionSuccess(true, "null inserted"),
       ],
     );
-    // blocTest("should emit loading and loaded", build: null);
+
+// blocTest("should emit loading and loaded", build: null);
 //    blocTest(
 //      'should emit loading and loaded',
 //      build: () => addSupplierBloc,

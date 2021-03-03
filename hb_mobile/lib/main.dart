@@ -5,6 +5,7 @@ import 'package:hb_mobile/simple_bloc_observer.dart';
 import 'package:hb_mobile/theme.dart';
 import 'package:hb_mobile/view/add_customer_view.dart';
 import 'package:hb_mobile/view/add_product_view.dart';
+import 'package:hb_mobile/view/add_production_view.dart';
 import 'package:hb_mobile/view/edit_mp_view.dart';
 import 'package:hb_mobile/view/existing_customer_view.dart';
 import 'package:hb_mobile/view/existing_material_view.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         kHome: (context) => HomeScreen(title: title),
         // kMaterialPurchase: (context) => MaterialPurchase(),
+        kAddProductionScreen: (context) => AddProductionScreen(),
         kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
         kExistingMaterialPurchase: (context) => ExistingMPScreen(),
         kConfigScreen: (context) => ConfigScreen(),

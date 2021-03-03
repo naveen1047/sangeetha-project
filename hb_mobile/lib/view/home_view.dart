@@ -66,6 +66,8 @@ class HomeScreen extends StatelessWidget {
         title: 'Production',
         titleIcon: Icons.add_circle,
         subTitle: 'view production done and change production',
+        onPressedSecondary: () =>
+            Navigator.pushNamed(context, kAddProductionScreen),
         // subTitleIcon: Icons.description,
         // backgroundColor: Colors.deepOrange,
       ),

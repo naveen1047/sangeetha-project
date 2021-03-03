@@ -32,7 +32,7 @@ class ViewProductBloc extends Bloc<ViewProductEvent, ViewProductState> {
   @override
   Future<void> close() {
     _products = null;
-    _filteredProduct.clear();
+    // _filteredProduct.clear();
     return super.close();
   }
 

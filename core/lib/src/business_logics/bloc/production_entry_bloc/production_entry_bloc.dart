@@ -10,9 +10,8 @@ part 'production_entry_event.dart';
 
 part 'production_entry_state.dart';
 
-//TODO: start here find and replace MP to production
 class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
-  ProductionEntryBloc() : super(ProductionIdle());
+  ProductionEntryBloc() : super(ProductionEntryIdle());
 
   final ProductionService _pServices = serviceLocator<ProductionService>();
 
@@ -43,11 +42,11 @@ class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
   }
 
   ProductionEntryState _success(ResponseResult result) {
-    return ProductionSuccess(result.status, result.message);
+    return ProductionEntrySuccess(result.status, result.message);
   }
 
   ProductionEntryState _loading() {
-    return ProductionLoading(true, "Uploading...");
+    return ProductionEntryLoading(true, "Uploading...");
   }
 
   // ProductionState _errorAndClear(ResponseResult result) {
@@ -55,11 +54,11 @@ class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
   // }
 
   ProductionEntryState _error(ResponseResult result) {
-    return ProductionError(result.status, result.message);
+    return ProductionEntryError(result.status, result.message);
   }
 
   ProductionEntryState _nullValueError() {
-    return ProductionError(false, 'please fill required fields');
+    return ProductionEntryError(false, 'please fill required fields');
   }
 
   Production _production(var event) {

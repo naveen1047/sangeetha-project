@@ -56,7 +56,7 @@ void main() {
     });
 
     test('initial state is Idle', () {
-      expect(productionEntryBloc.state, ProductionIdle());
+      expect(productionEntryBloc.state, ProductionEntryIdle());
     });
 
     blocTest<ProductionEntryBloc, ProductionEntryState>(
@@ -82,7 +82,7 @@ void main() {
       act: (productionEntryBloc) async => productionEntryBloc.add(sampleEntry),
       expect: <ProductionEntryState>[
         // ProductionLoading(true, "Uploading..."),
-        ProductionError(false, "Duplicate entry 'null' for key 'PRIMARY'"),
+        ProductionEntryError(false, "Duplicate entry 'null' for key 'PRIMARY'"),
       ],
       skip: 1,
     );
@@ -112,8 +112,8 @@ void main() {
         remarks: "null",
       )),
       expect: <ProductionEntryState>[
-        ProductionLoading(true, "Uploading..."),
-        ProductionSuccess(true, "null inserted"),
+        ProductionEntryLoading(true, "Uploading..."),
+        ProductionEntrySuccess(true, "null inserted"),
       ],
     );
 

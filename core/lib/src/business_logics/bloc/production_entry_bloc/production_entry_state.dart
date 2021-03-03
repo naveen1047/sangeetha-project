@@ -7,32 +7,32 @@ abstract class ProductionEntryState extends Equatable {
   List<Object> get props => [];
 }
 
-class ProductionIdle extends ProductionEntryState {}
+class ProductionEntryIdle extends ProductionEntryState {}
 
-class ProductionLoading extends ProductionEntryState {
+class ProductionEntryLoading extends ProductionEntryState {
   final bool status;
   final String message;
 
-  ProductionLoading(this.status, this.message);
+  ProductionEntryLoading(this.status, this.message);
 }
 
-class ProductionSuccess extends ProductionEntryState {
+class ProductionEntrySuccess extends ProductionEntryState {
   final bool status;
   final String message;
 
-  ProductionSuccess(this.status, this.message);
+  ProductionEntrySuccess(this.status, this.message);
 }
 
-class ProductionError extends ProductionEntryState {
+class ProductionEntryError extends ProductionEntryState {
   final bool status;
   final String message;
 
-  ProductionError(this.status, this.message);
+  ProductionEntryError(this.status, this.message);
 }
 
-class ProductionErrorAndClear extends ProductionEntryState {
+class ProductionEntryErrorAndClear extends ProductionEntryState {
   final bool status;
   final String message;
 
-  ProductionErrorAndClear(this.status, this.message);
+  ProductionEntryErrorAndClear(this.status, this.message);
 }

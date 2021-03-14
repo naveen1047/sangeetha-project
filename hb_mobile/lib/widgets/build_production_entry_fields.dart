@@ -81,8 +81,6 @@ class _BuildProductionEntryFieldsState
 
       selectedProduct = widget.p.pcode;
       selectedEmployees = widget.p.ecode;
-
-      // calculatePrice(widget.p.unitprice, widget.p.quantity);
     }
 
     super.initState();
@@ -142,19 +140,19 @@ class _BuildProductionEntryFieldsState
           _teamDropdown(context),
           _salaryPerStroke(),
           _unitProducedPerStroke(context),
-
           _noOfStroke(context),
           Container(
             alignment: AlignmentDirectional.centerEnd,
             child: Text(
               "Current Stock: "
-              "$unitProducedPerStroke X $noOfStroke",
+                      "$unitProducedPerStroke X $noOfStroke = " +
+                  (unitProducedPerStroke * noOfStroke).toString(),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondaryVariant,
               ),
             ),
           ),
-          // _totalPrice(),
+          _totalPrice(),
           _remarks(context),
           _upload(context),
           widget.isEditable ? _cancel(context) : _navigator(context),
@@ -188,18 +186,14 @@ class _BuildProductionEntryFieldsState
       onChanged: (str) {
         setState(() {
           // TODO: add decimal point exception
-          noOfStroke = int.parse(str);
+          if (str.length > 0) {
+            noOfStroke = int.parse(str);
+            _salaryController.text =
+                (noOfStroke * int.parse(_salaryPerStrokeController.text))
+                    .toString();
+          }
         });
       },
-      // onChanged: (text) {
-      //   double q;
-      //   if (text != null && text != "") {
-      //     q = double.parse(text);
-      //   } else {
-      //     q = 0.0;
-      //   }
-      //   context.bloc<TotalPriceCubit>().setQuantity(q);
-      // },
       maxLength: 10,
       decoration: InputDecoration(
         icon: Icon(Icons.repeat),
@@ -211,155 +205,93 @@ class _BuildProductionEntryFieldsState
     );
   }
 
-  BlocBuilder<TotalPriceCubit, double> _totalPrice() {
-    return BlocBuilder<TotalPriceCubit, double>(
-      builder: (BuildContext context, state) {
-        _salaryController.text = '$state';
-        return TextFormField(
-          keyboardType: TextInputType.number,
-          controller: _salaryController,
-          maxLength: 12,
-          decoration: InputDecoration(
-            icon: rupee,
-            labelText: 'Total price',
+  Widget _totalPrice() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      controller: _salaryController,
+      maxLength: 12,
+      decoration: InputDecoration(
+        icon: rupee,
+        labelText: 'Total price',
 
-            // helperText: '',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(),
-            ),
-          ),
-        );
-      },
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(),
+        ),
+      ),
     );
   }
 
   Widget _unitProducedPerStroke(BuildContext context) {
-    return BlocBuilder<ProductionWorkerCubit, ProductionWorker>(
-      builder: (BuildContext context, state) {
-        if (_unitsProducedPerStrokeController.text == '') {
-          String upps = state.nosps.toString();
-          print(upps);
-          _unitsProducedPerStrokeController.text = upps;
-          unitProducedPerStroke = int.parse(upps);
-        }
-
-        return Padding(
-          padding: kTopPadding,
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: _unitsProducedPerStrokeController,
-                  onChanged: (str) {
-                    setState(() {
-                      unitProducedPerStroke = int.parse(str);
-                    });
-                  },
-                  enabled: !isNospsDisabled,
-                  // onChanged: (text) {
-                  //   double p;
-                  //   print("a");
-                  //   if (text != null && text != "") {
-                  //     p = double.parse(text);
-                  //   } else {
-                  //     p = 0.0;
-                  //   }
-                  //   context.bloc<TotalPriceCubit>().setPrice(p);
-                  // },
-                  maxLength: 10,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.storage),
-                    labelText: 'Units produced per stroke',
-
-                    // helperText: '',
-                    enabledBorder: UnderlineInputBorder(),
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  setState(() {
-                    isNospsDisabled = !isNospsDisabled;
-                  });
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  BlocBuilder<ProductionWorkerCubit, ProductionWorker> _salaryPerStroke() {
-    return BlocBuilder<ProductionWorkerCubit, ProductionWorker>(
-      builder: (BuildContext context, state) {
-        // if (_salaryPerStrokeController.text == null) {
-        if (!isSpsChanged) {
-          _salaryPerStrokeController.text = state.sps.toString();
-          isSpsChanged = false;
-        }
-        return Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                onChanged: (text) {
-                  isSpsChanged = true;
-                },
-                keyboardType: TextInputType.numberWithOptions(),
-                maxLength: 20,
-                enabled: !isSpsDisabled,
-                decoration: InputDecoration(
-                  icon: rupee,
-                  labelText: 'Salary per Stroke',
-                  // helperText: '',
-                  enabledBorder: UnderlineInputBorder(),
-                ),
-                controller: _salaryPerStrokeController,
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
+    return Padding(
+      padding: kTopPadding,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              controller: _unitsProducedPerStrokeController,
+              onChanged: (str) {
                 setState(() {
-                  isSpsDisabled = !isSpsDisabled;
+                  // TODO: add decimal point exception
+                  unitProducedPerStroke = int.parse(str);
                 });
               },
+              enabled: !isNospsDisabled,
+              maxLength: 10,
+              decoration: InputDecoration(
+                icon: Icon(Icons.storage),
+                labelText: 'Units produced per stroke',
+
+                // helperText: '',
+                enabledBorder: UnderlineInputBorder(),
+              ),
             ),
-          ],
-        );
-        // return TextFormField(
-        //   keyboardType: TextInputType.number,
-        //   controller: _totalPriceController,
-        //   maxLength: 12,
-        //   decoration: InputDecoration(
-        //     icon: rupee,
-        //     labelText: 'Total price',
-        //
-        //     // helperText: '',
-        //     enabledBorder: UnderlineInputBorder(
-        //       borderSide: BorderSide(),
-        //     ),
-        //   ),
-        // );
-      },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              setState(() {
+                isNospsDisabled = !isNospsDisabled;
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  // TextFormField _salaryPerStroke() {
-  //   return TextFormField(
-  //     maxLength: 20,
-  //     enabled: !widget.isEditable,
-  //     decoration: InputDecoration(
-  //       icon: rupee,
-  //       labelText: 'Salary per Stroke',
-  //       // helperText: '',
-  //       enabledBorder: UnderlineInputBorder(),
-  //     ),
-  //     controller: _salaryPerStrokeController,
-  //   );
-  // }
+  Widget _salaryPerStroke() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            keyboardType: TextInputType.numberWithOptions(),
+            maxLength: 20,
+            enabled: !isSpsDisabled,
+            decoration: InputDecoration(
+              icon: rupee,
+              labelText: 'Salary per Stroke',
+              // helperText: '',
+              enabledBorder: UnderlineInputBorder(),
+            ),
+            controller: _salaryPerStrokeController,
+            onChanged: (str) {
+              _salaryController.text = (int.parse(str) * noOfStroke).toString();
+            },
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() {
+              isSpsDisabled = !isSpsDisabled;
+            });
+          },
+        ),
+      ],
+    );
+  }
 
   GestureDetector _datePicker(BuildContext context) {
     return GestureDetector(
@@ -468,10 +400,6 @@ class _BuildProductionEntryFieldsState
                         selectedEmployees = newValue;
                         var employee = employees.where(
                             (element) => element.ecode == selectedEmployees);
-                        // _noOfStrokeController.text =
-                        //     material.first.mpriceperunit.toString();
-                        // context.bloc<TotalPriceCubit>().setPrice(
-                        //     double.parse(material.first.mpriceperunit));
                       });
                       print(selectedEmployees);
                     },
@@ -492,7 +420,7 @@ class _BuildProductionEntryFieldsState
   }
 
   void uploadData() {
-    print(selectedProduct);
+    // print(_unitsProducedPerStrokeController.text);
     _productionEntryBloc.add(ProductionEntry(
       sps: _salaryPerStrokeController.text,
       pcode: selectedProduct,
@@ -525,13 +453,8 @@ class _BuildProductionEntryFieldsState
                   hint: Text("Select Product"),
                   value: selectedProduct,
                   onChanged: (String newValue) {
-                    // if (p.length > 0) {
-                    //   context
-                    //       .bloc<ProductionWorkerCubit>()
-                    //       .selectProduct(p.first.salaryps, p.first.nosps);
-                    // }
-
                     // To check whether sps text is changed
+                    isNospsDisabled = true;
                     isSpsChanged = false;
                     setState(() {
                       selectedProduct = newValue;
@@ -540,12 +463,10 @@ class _BuildProductionEntryFieldsState
                         .where((element) => element.pcode == selectedProduct)
                         .first;
                     print(p.pcode);
-
-                    // _salaryPerStrokeController.text = null;
-                    // print("set null");
-                    context
-                        .bloc<ProductionWorkerCubit>()
-                        .selectProduct(p.salaryps, p.nosps);
+                    _salaryPerStrokeController.text = p.salaryps;
+                    _unitsProducedPerStrokeController.text = p.nosps;
+                    unitProducedPerStroke = int.parse(p.nosps);
+                    _salaryController.text = p.salaryps * noOfStroke;
                   },
                   items: products.map((Product p) {
                     return DropdownMenuItem<String>(

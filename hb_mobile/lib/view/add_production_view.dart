@@ -116,6 +116,10 @@ class _AddProductionFormState extends State<AddProductionForm> {
           BlocProvider(
               create: (BuildContext context) =>
                   ProductionWorkerCubit(ProductionWorker("0", "0"))),
+          BlocProvider(
+            create: (BuildContext context) =>
+                RandomCodeCubit("Production code"),
+          ),
           // BlocProvider(
           //   create: (BuildContext context) => MPBloc(),
           // ),

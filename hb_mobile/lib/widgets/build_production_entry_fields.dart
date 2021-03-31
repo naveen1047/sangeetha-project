@@ -32,6 +32,7 @@ class _BuildProductionEntryFieldsState
   bool isSpsChanged = false;
 
   ProductionEntryBloc _productionEntryBloc;
+  RandomCodeCubit _randomCodeCubit;
   List<Product> products;
   List<Employee> employees;
   TextEditingController _salaryPerStrokeController;
@@ -40,6 +41,8 @@ class _BuildProductionEntryFieldsState
   TextEditingController _salaryController;
   TextEditingController _remarksController;
   TextEditingController _dateController;
+  TextEditingController _pdCodeController;
+
   Production p;
 
   _BuildProductionEntryFieldsState(
@@ -57,6 +60,7 @@ class _BuildProductionEntryFieldsState
   @override
   void initState() {
     _productionEntryBloc = BlocProvider.of<ProductionEntryBloc>(context);
+    _randomCodeCubit = BlocProvider.of<RandomCodeCubit>(context);
 
     _salaryPerStrokeController = TextEditingController();
     _unitsProducedPerStrokeController = TextEditingController();
@@ -64,6 +68,7 @@ class _BuildProductionEntryFieldsState
     _salaryController = TextEditingController();
     _remarksController = TextEditingController();
     _dateController = TextEditingController();
+    _pdCodeController = TextEditingController();
     _dateController.text = selectedDate.toString();
 
     _noOfStrokeController.text = '0';
@@ -136,6 +141,7 @@ class _BuildProductionEntryFieldsState
       child: ListView(
         children: [
           _datePicker(context),
+          _code(context),
           _productDropdown(),
           _teamDropdown(context),
           _salaryPerStroke(),
@@ -158,6 +164,24 @@ class _BuildProductionEntryFieldsState
           widget.isEditable ? _cancel(context) : _navigator(context),
         ],
       ),
+    );
+  }
+
+  Widget _code(BuildContext context) {
+    return BlocBuilder<RandomCodeCubit, String>(
+      builder: (context, state) {
+        _pdCodeController.text = '$state';
+        return TextFormField(
+          enabled: false,
+          controller: _pdCodeController,
+          decoration: InputDecoration(
+            icon: Icon(Icons.info),
+            labelText: 'Production code',
+            // helperText: '',
+            enabledBorder: UnderlineInputBorder(),
+          ),
+        );
+      },
     );
   }
 
@@ -188,9 +212,8 @@ class _BuildProductionEntryFieldsState
           // TODO: add decimal point exception
           if (str.length > 0) {
             noOfStroke = int.parse(str);
-            _salaryController.text =
-                (noOfStroke * int.parse(_salaryPerStrokeController.text))
-                    .toString();
+            int sps = int.parse(_salaryPerStrokeController.text);
+            _salaryController.text = (noOfStroke * sps).toString();
           }
         });
       },
@@ -396,6 +419,11 @@ class _BuildProductionEntryFieldsState
                     hint: Text("Select Team"),
                     value: selectedEmployees,
                     onChanged: (String newValue) {
+                      if (selectedDate != null && selectedProduct != null) {
+                        context
+                            .bloc<RandomCodeCubit>()
+                            .generate(selectedProduct + newValue);
+                      }
                       setState(() {
                         selectedEmployees = newValue;
                         var employee = employees.where(
@@ -424,7 +452,7 @@ class _BuildProductionEntryFieldsState
     _productionEntryBloc.add(ProductionEntry(
       sps: _salaryPerStrokeController.text,
       pcode: selectedProduct,
-      // pdcode: _,
+      pdcode: _pdCodeController.text,
       date: _dateController.text,
       // billno: _salaryPerStrokeController.text,
       ecode: selectedEmployees,
@@ -453,6 +481,12 @@ class _BuildProductionEntryFieldsState
                   hint: Text("Select Product"),
                   value: selectedProduct,
                   onChanged: (String newValue) {
+                    if (selectedDate != null && selectedEmployees != null) {
+                      context
+                          .bloc<RandomCodeCubit>()
+                          .generate(selectedEmployees + newValue);
+                    }
+
                     // To check whether sps text is changed
                     isNospsDisabled = true;
                     isSpsChanged = false;
@@ -466,7 +500,8 @@ class _BuildProductionEntryFieldsState
                     _salaryPerStrokeController.text = p.salaryps;
                     _unitsProducedPerStrokeController.text = p.nosps;
                     unitProducedPerStroke = int.parse(p.nosps);
-                    _salaryController.text = p.salaryps * noOfStroke;
+                    int salary = int.parse(p.salaryps) * noOfStroke;
+                    _salaryController.text = salary.toString();
                   },
                   items: products.map((Product p) {
                     return DropdownMenuItem<String>(

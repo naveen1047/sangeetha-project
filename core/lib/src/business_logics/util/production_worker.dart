@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../core.dart';
-
 class ProductionWorker {
   String nosps;
   String sps;

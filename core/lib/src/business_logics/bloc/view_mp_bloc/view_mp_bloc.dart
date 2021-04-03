@@ -10,9 +10,6 @@ import 'package:core/src/business_logics/util/util.dart';
 part 'view_mp_event.dart';
 part 'view_mp_state.dart';
 
-// TODO: return state with value (sortBy, sorting)
-enum sortMPBy { name, unit, price }
-
 // bloc
 class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   ViewMPBloc() : super(ViewMPLoadingState());
@@ -134,23 +131,23 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
     }
   }
 
-  Stream<ViewMPState> _mapSortMPByDateToState() async* {
-    try {
-      _filteredMP = _mp.materialPurchases.toList();
-      if (sortByDate != sorting.ascending) {
-        _extractResult();
-        _sortAscendingByDate();
-        sortByDate = sorting.ascending;
-      } else {
-        _extractResult();
-        _sortDescendingByDate();
-        sortByDate = sorting.descending;
-      }
-      yield _eventResult();
-    } catch (e) {
-      yield ViewMPErrorState(e.toString());
-    }
-  }
+  // Stream<ViewMPState> _mapSortMPByDateToState() async* {
+  //   try {
+  //     _filteredMP = _mp.materialPurchases.toList();
+  //     if (sortByDate != sorting.ascending) {
+  //       _extractResult();
+  //       _sortAscendingByDate();
+  //       sortByDate = sorting.ascending;
+  //     } else {
+  //       _extractResult();
+  //       _sortDescendingByDate();
+  //       sortByDate = sorting.descending;
+  //     }
+  //     yield _eventResult();
+  //   } catch (e) {
+  //     yield ViewMPErrorState(e.toString());
+  //   }
+  // }
 
   Stream<ViewMPState> _mapSortMPByMNameToState() async* {
     try {
@@ -209,6 +206,7 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
   Stream<ViewMPState> _mapSortMPByUnitPriceToState() async* {
     try {
       _filteredMP = _mp.materialPurchases.toList();
+      // TODO: error here change it to sortByUnitPrice
       if (sortByTotal != sorting.ascending) {
         _extractResult();
         _sortAscendingByUnitPrice();
@@ -252,15 +250,15 @@ class ViewMPBloc extends Bloc<ViewMPEvent, ViewMPState> {
         .sort((a, b) => b.sname.toLowerCase().compareTo(a.sname.toLowerCase()));
   }
 
-  void _sortAscendingByDate() {
-    _filteredMP
-        .sort((a, b) => a.date.toLowerCase().compareTo(b.date.toLowerCase()));
-  }
-
-  void _sortDescendingByDate() {
-    _filteredMP
-        .sort((a, b) => b.date.toLowerCase().compareTo(a.date.toLowerCase()));
-  }
+  // void _sortAscendingByDate() {
+  //   _filteredMP
+  //       .sort((a, b) => a.date.toLowerCase().compareTo(b.date.toLowerCase()));
+  // }
+  //
+  // void _sortDescendingByDate() {
+  //   _filteredMP
+  //       .sort((a, b) => b.date.toLowerCase().compareTo(a.date.toLowerCase()));
+  // }
 
   void _sortAscendingByMName() {
     _filteredMP

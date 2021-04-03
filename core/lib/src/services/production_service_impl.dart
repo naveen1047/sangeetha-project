@@ -65,7 +65,7 @@ class ProductionServiceImpl implements ProductionService {
   Future<Productions> getAllProductions() async {
     final url = "$_baseUrl/fetch_production.php";
     var response = await http.get(url);
-    print(response.body.toString());
+    // print(response.body.toString());
     if (response.statusCode == 200) {
       return compute(parseProductions, response.body);
     } else {

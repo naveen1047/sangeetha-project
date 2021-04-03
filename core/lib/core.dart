@@ -17,6 +17,7 @@ export 'src/business_logics/bloc/mp_entry_bloc/mp_entry_bloc.dart';
 export 'src/business_logics/bloc/view_mp_bloc/view_mp_bloc.dart';
 export 'src/business_logics/bloc/production_prerequisite_bloc/production_prerequisite_bloc.dart';
 export 'src/business_logics/bloc/production_entry_bloc/production_entry_bloc.dart';
+export 'src/business_logics/bloc/view_production_bloc/view_production_bloc.dart';
 
 export 'src/business_logics/util/random_code_generator.dart';
 export 'src/business_logics/util/util.dart';
@@ -35,4 +36,4 @@ export 'src/business_logics/models/customer.dart';
 export 'src/business_logics/models/material_purchase.dart';
 export 'src/business_logics/models/production.dart';
 export 'src/business_logics/models/supplier_name_code.dart';
-export 'src/business_logics/models/production.dart';
+// export 'src/business_logics/models/production.dart';

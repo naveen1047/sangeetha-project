@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:core/core.dart';
-import 'package:core/src/business_logics/models/production.dart';
+// import 'package:core/src/business_logics/models/production.dart';
 import 'package:core/src/business_logics/models/response_result.dart';
 import 'package:core/src/services/production_service.dart';
 import 'package:core/src/services/service_locator.dart';

@@ -1,13 +1,13 @@
 part of 'view_supplier_bloc.dart';
 
-abstract class ViewSupplierState {
+abstract class ViewSupplierState extends Equatable {
   const ViewSupplierState();
+
+  @override
+  List<Object> get props => [];
 }
 
-class ViewSupplierLoading extends ViewSupplierState {
-  // @override
-  // List<Object> get props => [];
-}
+class ViewSupplierLoading extends ViewSupplierState {}
 
 class ViewSupplierLoaded extends ViewSupplierState {
   final List<Supplier> suppliers;

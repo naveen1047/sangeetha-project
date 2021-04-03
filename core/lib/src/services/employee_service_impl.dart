@@ -59,7 +59,6 @@ class EmployeeServiceImpl implements EmployeeService {
   Future<Employees> getAllEmployees() async {
     final url = "$_baseUrl/fetch_employee.php";
     var response = await http.get(url);
-    print(response.body.toString());
     if (response.statusCode == 200) {
       return compute(parseEmployees, response.body);
     } else {

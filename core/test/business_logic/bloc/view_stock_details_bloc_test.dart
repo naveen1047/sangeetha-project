@@ -46,18 +46,6 @@ void main() {
       ],
     );
 
-    blocTest(
-      'should emit loaded and sorted',
-      build: () => viewStockDetailsBloc,
-      act: (bloc) => bloc.add(SortStockByPName()),
-      verify: (_) {
-        expect(viewStockDetailsBloc.sortByPName, sorting.descending);
-      },
-      expect: [
-        ViewStockDetailsLoaded(stocks),
-      ],
-    );
-
     [
       SortStockByPName(),
       SortStockByLStock(),
@@ -90,20 +78,6 @@ void main() {
         ],
       );
     });
-
-    blocTest(
-      'should emit loaded and sorted',
-      build: () => viewStockDetailsBloc,
-      act: (bloc) {
-        return bloc.add(SortStockByLStock());
-      },
-      verify: (_) {
-        expect(viewStockDetailsBloc.sortByLStock, sorting.descending);
-      },
-      expect: [
-        ViewStockDetailsLoaded(stocks),
-      ],
-    );
 
     blocTest(
       'should emit  loaded when searching',

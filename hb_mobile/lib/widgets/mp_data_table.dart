@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+
 // import 'package:core/src/business_logics/models/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hb_mobile/constant.dart';
@@ -131,8 +132,14 @@ class _DataSource extends DataTableSource {
               Icons.edit,
               // color: kPrimaryAccentColor,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, kEditMPScreen, arguments: data);
+            onPressed: () async {
+              final dynamic res = await Navigator.pushNamed(
+                  context, kEditMPScreen,
+                  arguments: data);
+
+              if (res[1] == true) {
+                _viewMPBloc.add(FetchMPEvent());
+              }
             },
           ),
           IconButton(
@@ -166,28 +173,28 @@ class _DataSource extends DataTableSource {
     );
   }
 
-  // Future<void> _showModalBottomSheet(BuildContext context, material.MP data) {
-  //   return showModalBottomSheet<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return SingleChildScrollView(
-  //         child: Container(
-  //           padding: EdgeInsets.only(
-  //               bottom: MediaQuery.of(context).viewInsets.bottom),
-  //           child: BlocProvider(
-  //             create: (BuildContext context) => MPBloc(),
-  //             child: MPBottomSheet(
-  //               viewMPBloc: _viewMPBloc,
-  //               materialName: data.mname,
-  //               materialcode: data.mcode,
-  //               materialUnit: data.munit,
-  //               materialPrice: data.mpriceperunit,
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //     isScrollControlled: true,
-  //   );
-  // }
+// Future<void> _showModalBottomSheet(BuildContext context, material.MP data) {
+//   return showModalBottomSheet<void>(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return SingleChildScrollView(
+//         child: Container(
+//           padding: EdgeInsets.only(
+//               bottom: MediaQuery.of(context).viewInsets.bottom),
+//           child: BlocProvider(
+//             create: (BuildContext context) => MPBloc(),
+//             child: MPBottomSheet(
+//               viewMPBloc: _viewMPBloc,
+//               materialName: data.mname,
+//               materialcode: data.mcode,
+//               materialUnit: data.munit,
+//               materialPrice: data.mpriceperunit,
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//     isScrollControlled: true,
+//   );
+// }
 }

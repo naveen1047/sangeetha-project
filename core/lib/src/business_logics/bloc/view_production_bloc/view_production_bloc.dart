@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:core/core.dart';
 import 'package:core/src/services/employee_service.dart';
+import 'package:core/src/services/product_service.dart';
 import 'package:core/src/services/production_service.dart';
 import 'package:core/src/services/service_locator.dart';
 import 'package:equatable/equatable.dart';
@@ -19,10 +20,8 @@ class ViewProductionBloc
 
   final ProductionService _viewProductionService =
       serviceLocator<ProductionService>();
-  final EmployeeService _employeeService = serviceLocator<EmployeeService>();
 
   Productions _pd;
-  Employees _emp;
   List<Production> _filteredProduction;
 
   // search key
@@ -48,7 +47,7 @@ class ViewProductionBloc
   Stream<ViewProductionState> mapEventToState(
       ViewProductionEvent event) async* {
     if (event is FetchProductionEvent) {
-      yield* _mapFetchProductionToState(event);
+      yield* _mapFetchProductionToState();
     }
     if (event is SearchAndFetchProductionEvent) {
       yield* _mapSearchAndFetchProductionToState(event.ename);
@@ -68,6 +67,9 @@ class ViewProductionBloc
     if (event is SortProductionBySalaryPS) {
       yield* _mapSortProductionBySalaryPSToState();
     }
+    if (event is SortProductionByNoOfS) {
+      yield* _mapSortProductionByNoOfSToState();
+    }
     if (event is SortProductionBySalary) {
       yield* _mapSortProductionBySalaryToState();
     }
@@ -79,32 +81,32 @@ class ViewProductionBloc
   Stream<ViewProductionState> _mapSearchAndFetchProductionToState(
       String teamName) async* {
     try {
-      yield ViewProductionLoadingState();
+      // yield ViewProductionLoadingState();
       _query = teamName;
-      if (_query != null) {
+      if (_query != null || _query != "") {
         print(_pd.toString());
 
         if (_pd == null) {
           _pd = await _viewProductionService.getAllProductions();
         }
-        _emp = await _employeeService.getAllEmployees();
         _extractResult();
-        // if (sortByName == sorting.ascending) {
-        //   _sortAscendingByMName();
+        // if (sortProductionByEName == sorting.ascending) {
+        //   _sortAscendingByEName();
         // } else {
-        //   _sortDescendingByMName();
+        //   _sortDescendingByEName();
         // }
         print(_filteredProduction.toString());
 
         yield ViewProductionLoadedState(_filteredProduction);
+      } else {
+        _mapFetchProductionToState();
       }
     } catch (e) {
       yield ViewProductionErrorState(e.toString());
     }
   }
 
-  Stream<ViewProductionState> _mapFetchProductionToState(
-      ViewProductionEvent event) async* {
+  Stream<ViewProductionState> _mapFetchProductionToState() async* {
     try {
       yield ViewProductionLoadingState();
 
@@ -114,6 +116,8 @@ class ViewProductionBloc
       yield ViewProductionLoadedState(_filteredProduction);
       // yield _eventResult();
     } catch (e) {
+      print(e.toString());
+
       yield ViewProductionErrorState(e.toString());
     }
   }
@@ -121,13 +125,14 @@ class ViewProductionBloc
   Stream<ViewProductionState> _mapSortProductionByENameToState() async* {
     try {
       _filteredProduction = _pd.productions.toList();
+
       if (sortProductionByEName != sorting.ascending) {
         _extractResult();
-        // _sortAscendingByEName();
+        _sortAscendingByEName();
         sortProductionByEName = sorting.ascending;
       } else {
         _extractResult();
-        // _sortDescendingByEName();
+        _sortDescendingByEName();
         sortProductionByEName = sorting.descending;
       }
       yield _eventResult();
@@ -144,6 +149,8 @@ class ViewProductionBloc
       print(_filteredProduction.length);
 
       if (sortProductionByDate != sorting.ascending) {
+        print("asdfasfdasdf");
+
         _extractResult();
         _sortAscendingByDate();
         sortProductionByDate = sorting.ascending;
@@ -165,11 +172,11 @@ class ViewProductionBloc
       _filteredProduction = _pd.productions.toList();
       if (sortProductionByPName != sorting.ascending) {
         _extractResult();
-        // _sortAscendingByPName();
+        _sortAscendingByPName();
         sortProductionByPName = sorting.ascending;
       } else {
         _extractResult();
-        // _sortDescendingByPName();
+        _sortDescendingByPName();
         sortProductionByPName = sorting.descending;
       }
       yield _eventResult();
@@ -196,6 +203,24 @@ class ViewProductionBloc
     }
   }
 
+  Stream<ViewProductionState> _mapSortProductionByNoOfSToState() async* {
+    try {
+      _filteredProduction = _pd.productions.toList();
+      if (sortProductionByNoOfS != sorting.ascending) {
+        _extractResult();
+        _sortAscendingByNoOfS();
+        sortProductionByNoOfS = sorting.ascending;
+      } else {
+        _extractResult();
+        _sortDescendingByNoOfS();
+        sortProductionByNoOfS = sorting.descending;
+      }
+      yield _eventResult();
+    } catch (e) {
+      yield ViewProductionErrorState(e.toString());
+    }
+  }
+
   Stream<ViewProductionState> _mapSortProductionBySalaryToState() async* {
     try {
       _filteredProduction = _pd.productions.toList();
@@ -214,15 +239,24 @@ class ViewProductionBloc
     }
   }
 
-  // void _sortAscendingByEName() {
-  //   _filteredProduction
-  //       .sort((a, b) => aename.toLowerCase().compareTo(b.sname.toLowerCase()));
-  // }
-  //
-  // void _sortDescendingByEName() {
-  //   _filteredProduction
-  //       .sort((a, b) => b.sname.toLowerCase().compareTo(a.sname.toLowerCase()));
-  // }
+  void _sortAscendingByEName() {
+    _filteredProduction
+        .sort((a, b) => a.ename.toLowerCase().compareTo(b.ename.toLowerCase()));
+  }
+
+  void _sortDescendingByEName() {
+    _filteredProduction
+        .sort((a, b) => b.ename.toLowerCase().compareTo(a.ename.toLowerCase()));
+  }
+
+  // TODO: nos is not sorting properly
+  void _sortAscendingByNoOfS() {
+    _filteredProduction.sort((a, b) => a.nos.compareTo(b.nos));
+  }
+
+  void _sortDescendingByNoOfS() {
+    _filteredProduction.sort((a, b) => b.nos.compareTo(a.nos));
+  }
 
   void _sortAscendingByDate() {
     _filteredProduction
@@ -234,15 +268,15 @@ class ViewProductionBloc
         .sort((a, b) => b.date.toLowerCase().compareTo(a.date.toLowerCase()));
   }
 
-  // void _sortAscendingByPName() {
-  //   _filteredProduction
-  //       .sort((a, b) => a.name.toLowerCase().compareTo(b.mname.toLowerCase()));
-  // }
-  //
-  // void _sortDescendingByPName() {
-  //   _filteredProduction
-  //       .sort((a, b) => b.mname.toLowerCase().compareTo(a.mname.toLowerCase()));
-  // }
+  void _sortAscendingByPName() {
+    _filteredProduction
+        .sort((a, b) => a.pname.toLowerCase().compareTo(b.pname.toLowerCase()));
+  }
+
+  void _sortDescendingByPName() {
+    _filteredProduction
+        .sort((b, a) => a.pname.toLowerCase().compareTo(b.pname.toLowerCase()));
+  }
 
   void _sortAscendingBySalaryPSPrice() {
     _filteredProduction
@@ -252,6 +286,9 @@ class ViewProductionBloc
   void _sortDescendingBySalaryPSPrice() {
     _filteredProduction
         .sort((a, b) => double.parse(b.sps).compareTo(double.parse(a.sps)));
+    _filteredProduction.forEach((prd) {
+      print(prd.sps);
+    });
   }
 
   void _sortAscendingSalary() {
@@ -266,14 +303,15 @@ class ViewProductionBloc
 
   void _extractResult() {
     if (_query != "") {
-      String ecode = _emp.employees
-          .where(
-              (emps) => emps.ename.toLowerCase().contains(_query.toLowerCase()))
-          .first
-          .ecode;
+      // String ecode = _emp.employees
+      //     .where(
+      //         (emps) => emps.ename.toLowerCase().contains(_query.toLowerCase()))
+      //     .first
+      //     .ecode;
 
-      _filteredProduction =
-          _pd.productions.where((pd) => pd.ecode.contains(ecode)).toList();
+      _filteredProduction = _pd.productions
+          .where((pd) => pd.ename.toLowerCase().contains(_query.toLowerCase()))
+          .toList();
     }
   }
 

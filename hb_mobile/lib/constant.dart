@@ -18,6 +18,7 @@ const String kExistingCustomerScreen = '/existingCustomerScreen';
 const String kEditMPScreen = '/editMPScreen';
 const String kAddProductionScreen = '/addProductionScreen';
 const String kExistingProductionScreen = '/existingProductionScreen';
+const String kEditProductionScreen = '/editProductionScreen';
 
 const Text rupee = Text(
   ' \u20B9 ',
@@ -197,4 +198,17 @@ class ProductConstants {
   static const String AddProduct = 'Add Product';
 
   static const List<String> choices = <String>[Refresh, AddProduct, Settings];
+}
+
+// Production constants
+class ProductionConstants {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+  static const String AddProduction = 'Add Production';
+
+  static const List<String> choices = <String>[
+    Refresh,
+    AddProduction,
+    Settings
+  ];
 }

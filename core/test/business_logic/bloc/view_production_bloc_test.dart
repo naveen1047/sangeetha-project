@@ -36,17 +36,17 @@ void main() {
         build: () => viewProductionBloc,
         act: (bloc) => bloc.add(SearchAndFetchProductionEvent(ename: "kavin")),
         expect: [
-          ViewProductionLoadingState(),
+          // ViewProductionLoadingState(),
           ViewProductionLoadedState(productions),
         ]);
 
-    blocTest("emit[loading, error] when fetching",
+    blocTest("emit[loading, Loaded] when fetching nothing",
         build: () => viewProductionBloc,
         act: (bloc) =>
             bloc.add(SearchAndFetchProductionEvent(ename: "kavasdfin")),
         expect: [
-          ViewProductionLoadingState(),
-          ViewProductionErrorState("message"),
+          ViewProductionLoadedState(productions)
+          // ViewProductionErrorState("message"),
         ]);
 
     blocTest("sort by date ",

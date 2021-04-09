@@ -1,10 +1,10 @@
 part of 'view_production_bloc.dart';
 
-abstract class ViewProductionState extends Equatable {
+abstract class ViewProductionState /*extends Equatable*/ {
   const ViewProductionState();
 
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewProductionLoadingState extends ViewProductionState {}

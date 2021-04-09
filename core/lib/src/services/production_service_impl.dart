@@ -12,8 +12,8 @@ class ProductionServiceImpl implements ProductionService {
   String _baseUrl = kBaseUrl;
 
   @override
-  Future<ResponseResult> submitProduction(Production materialPurchase) async {
-    final data = materialPurchase.toJson();
+  Future<ResponseResult> submitProduction(Production prd) async {
+    final data = prd.toJson();
     final url = "$_baseUrl/add_production.php";
     print(data.toString());
     var response = await http.post(url, body: json.encode(data));
@@ -29,9 +29,8 @@ class ProductionServiceImpl implements ProductionService {
   }
 
   @override
-  Future<ResponseResult> editProductionByCode(
-      Production materialPurchase) async {
-    final data = materialPurchase.toJson();
+  Future<ResponseResult> editProductionByCode(Production prd) async {
+    final data = prd.toJson();
     print(data.toString());
     final url = "$_baseUrl/edit_production.php";
     var response = await http.post(url, body: json.encode(data));

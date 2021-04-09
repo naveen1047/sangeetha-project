@@ -101,7 +101,7 @@ void main() {
       },
       act: (productionEntryBloc) async =>
           productionEntryBloc.add(EditProduction(
-        pdcode: "null",
+        pdcode: "pdcode",
         date: "null",
         pcode: "null",
         ecode: "null",

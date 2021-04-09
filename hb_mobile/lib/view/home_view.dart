@@ -66,6 +66,7 @@ class HomeScreen extends StatelessWidget {
         title: 'Production',
         titleIcon: Icons.add_circle,
         subTitle: 'view production done and change production',
+        onTap: () => Navigator.pushNamed(context, kExistingProductionScreen),
         onPressedSecondary: () =>
             Navigator.pushNamed(context, kAddProductionScreen),
         // subTitleIcon: Icons.description,

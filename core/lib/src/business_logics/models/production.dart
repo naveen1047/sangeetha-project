@@ -15,6 +15,8 @@ class Production extends Equatable {
   final String nosps;
   final String salary;
   final String remarks;
+  final String pname;
+  final String ename;
 
   Production({
     @required this.pdcode,
@@ -26,6 +28,8 @@ class Production extends Equatable {
     @required this.nosps,
     @required this.salary,
     @required this.remarks,
+    this.pname,
+    this.ename,
   });
 
   factory Production.fromJson(Map<String, dynamic> json) =>

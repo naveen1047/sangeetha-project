@@ -74,15 +74,24 @@ class _BuildProductionEntryFieldsState
     _noOfStrokeController.text = '0';
 
     if (widget.isEditable) {
+      print("asfd");
+      print(widget.p.pdcode);
+
+      print(widget.p.date);
+
       selectedDate = DateTime.parse(widget.p.date);
       context.bloc<DatePickerCubit>().selectDate(selectedDate);
 
       _salaryPerStrokeController.text = widget.p.sps;
       _unitsProducedPerStrokeController.text = widget.p.nosps;
+      unitProducedPerStroke = int.parse(widget.p.nosps);
       _noOfStrokeController.text = widget.p.nos;
+      noOfStroke = int.parse(widget.p.nos);
+
       _salaryController.text = widget.p.salary;
       _remarksController.text = widget.p.remarks;
       _dateController.text = widget.p.date;
+      _pdCodeController.text = widget.p.pdcode;
 
       selectedProduct = widget.p.pcode;
       selectedEmployees = widget.p.ecode;
@@ -117,6 +126,7 @@ class _BuildProductionEntryFieldsState
     _salaryController.dispose();
     _remarksController.dispose();
     _dateController.dispose();
+    _pdCodeController.dispose();
     _productionEntryBloc.close();
     super.dispose();
   }
@@ -141,7 +151,7 @@ class _BuildProductionEntryFieldsState
       child: ListView(
         children: [
           _datePicker(context),
-          _code(context),
+          widget.isEditable ? _codeEdit(context) : _code(context),
           _productDropdown(),
           _teamDropdown(context),
           _salaryPerStroke(),
@@ -182,6 +192,19 @@ class _BuildProductionEntryFieldsState
           ),
         );
       },
+    );
+  }
+
+  Widget _codeEdit(BuildContext context) {
+    return TextFormField(
+      enabled: false,
+      controller: _pdCodeController,
+      decoration: InputDecoration(
+        icon: Icon(Icons.info),
+        labelText: 'Production code',
+        // helperText: '',
+        enabledBorder: UnderlineInputBorder(),
+      ),
     );
   }
 
@@ -370,10 +393,10 @@ class _BuildProductionEntryFieldsState
 
   FlatButton _navigator(BuildContext context) {
     return FlatButton(
-      child: Text('View Materials purchase'),
+      child: Text('View Production'),
       onPressed: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        Navigator.pushNamed(context, kExistingMaterialPurchase);
+        Navigator.pushNamed(context, kExistingProductionScreen);
       },
     );
   }
@@ -523,7 +546,7 @@ class _BuildProductionEntryFieldsState
     _productionEntryBloc.add(EditProduction(
       sps: _salaryPerStrokeController.text,
       pcode: selectedProduct,
-      // pdcode: _,
+      pdcode: _pdCodeController.text,
       date: _dateController.text,
       // billno: _salaryPerStrokeController.text,
       ecode: selectedEmployees,

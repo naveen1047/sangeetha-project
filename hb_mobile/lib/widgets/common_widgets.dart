@@ -454,7 +454,7 @@ SnackBar progressSnackBar({
             ? child
             : Icon(
                 Icons.check_circle,
-                // color: ColorScheme.light().secondary,
+                color: ThemeData.light().primaryColor,
               ),
       ],
     ),

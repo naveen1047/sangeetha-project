@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/core.dart';
 import 'package:hb_mobile/constant.dart';
 import 'package:hb_mobile/widgets/build_mp_entry_fields.dart';
+import 'package:hb_mobile/widgets/build_production_entry_fields.dart';
 import 'package:hb_mobile/widgets/common_widgets.dart';
 import 'package:hb_mobile/widgets/navigate_back_widget.dart';
 
-class InheritedEditMP extends InheritedWidget {
-  const InheritedEditMP({
+class InheritedEditPrd extends InheritedWidget {
+  const InheritedEditPrd({
     Key key,
     @required this.data,
     @required Widget child,
@@ -15,38 +16,38 @@ class InheritedEditMP extends InheritedWidget {
         assert(child != null),
         super(key: key, child: child);
 
-  final MaterialPurchase data;
+  final Production data;
 
-  static InheritedEditMP of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedEditMP>();
+  static InheritedEditPrd of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<InheritedEditPrd>();
   }
 
   @override
-  bool updateShouldNotify(InheritedEditMP old) => data != old.data;
+  bool updateShouldNotify(InheritedEditPrd old) => data != old.data;
 }
 
-class EditMPScreen extends StatelessWidget {
-  static const String _title = 'Edit Material Purchase';
+class EditProductionScreen extends StatelessWidget {
+  static const String _title = 'Edit Production';
 
   @override
   Widget build(BuildContext context) {
-    final MaterialPurchase arg = ModalRoute.of(context).settings.arguments;
+    final Production arg = ModalRoute.of(context).settings.arguments;
 
-    return InheritedEditMP(
+    return InheritedEditPrd(
       data: arg,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(EditMPScreen._title),
+          title: const Text(EditProductionScreen._title),
           leading: NavigateBackButton(),
         ),
         body: MultiBlocProvider(
           child: EditMaterialPurchaseForm(),
           providers: [
             BlocProvider(
-              create: (BuildContext context) => MPPrerequisiteBloc(),
+              create: (BuildContext context) => ProductionPrerequisiteBloc(),
             ),
             BlocProvider(
-              create: (BuildContext context) => MPBloc(),
+              create: (BuildContext context) => ProductionEntryBloc(),
             ),
           ],
         ),
@@ -62,33 +63,33 @@ class EditMaterialPurchaseForm extends StatefulWidget {
 }
 
 class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
-  MPPrerequisiteBloc _mpPrerequisiteBloc;
+  ProductionPrerequisiteBloc _prdPrerequisiteBloc;
 
   @override
   void initState() {
-    _mpPrerequisiteBloc = BlocProvider.of<MPPrerequisiteBloc>(context)
-      ..add(GetMPPrerequisite());
+    _prdPrerequisiteBloc = BlocProvider.of<ProductionPrerequisiteBloc>(context)
+      ..add(GetProductionPrerequisite());
     super.initState();
   }
 
   @override
   void dispose() {
-    _mpPrerequisiteBloc.close();
+    _prdPrerequisiteBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MPPrerequisiteBloc, MPPrerequisiteState>(
+    return BlocBuilder<ProductionPrerequisiteBloc, ProductionPrerequisiteState>(
       builder: (BuildContext context, state) {
-        if (state is MPPrerequisiteLoaded) {
+        if (state is ProductionPrerequisiteLoaded) {
           return _buildFields(state);
           // return _buildFields(context, state.suppliers, state.material);
         }
-        if (state is MPPrerequisiteLoading) {
+        if (state is ProductionPrerequisiteLoading) {
           return LinearProgressIndicator();
         }
-        if (state is MPPrerequisiteError) {
+        if (state is ProductionPrerequisiteError) {
           return Text("${state.message}");
         } else {
           return Text('unknown state error please report to developer');
@@ -97,17 +98,17 @@ class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
     );
   }
 
-  Widget _buildFields(MPPrerequisiteLoaded state) {
-    return BlocListener<MPBloc, MPState>(
+  Widget _buildFields(ProductionPrerequisiteLoaded state) {
+    return BlocListener<ProductionEntryBloc, ProductionEntryState>(
       listener: (BuildContext context, state) async {
-        if (state is MPError) {
+        if (state is ProductionEntryError) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               warningSnackBar(message: state.message),
             );
         }
-        if (state is MPLoading) {
+        if (state is ProductionEntryLoading) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -117,7 +118,7 @@ class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
                   child: CircularProgressIndicator()),
             );
         }
-        if (state is MPErrorAndClear) {
+        if (state is ProductionEntryErrorAndClear) {
           await Future.delayed(Duration(milliseconds: 500));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
@@ -128,32 +129,43 @@ class _EditMaterialPurchaseFormState extends State<EditMaterialPurchaseForm> {
           // _billNoController.clear();
           // _customerCodeController.clear();
         }
-        if (state is MPSuccess) {
+        if (state is ProductionEntrySuccess) {
           await Future.delayed(Duration(seconds: 1));
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(progressSnackBar(message: state.message));
           await Future.delayed(Duration(milliseconds: 2500));
-          Navigator.maybePop(context, [kExistingMaterialPurchase, true]);
+          Navigator.maybePop(context, [kExistingProductionScreen, true]);
         }
       },
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (BuildContext context) => TotalPriceCubit(0.0),
-          ),
+          BlocProvider(create: (BuildContext context) => TotalPriceCubit(0)),
           BlocProvider(
               create: (BuildContext context) => DatePickerCubit("Select Date")),
+          BlocProvider(
+              create: (BuildContext context) =>
+                  ProductionWorkerCubit(ProductionWorker("0", "0"))),
+          BlocProvider(
+            create: (BuildContext context) =>
+                RandomCodeCubit("Production code"),
+          ),
           // BlocProvider(
-          //   create: (BuildContext context) => MPBloc(),
+          //   create: (BuildContext context) => PrdBloc(),
           // ),
         ],
-        child: BuildEntryFields(
-          suppliers: state.suppliers,
-          materials: state.material,
+        child: BuildProductionEntryFields(
+          products: state.products,
+          employees: state.employee,
           isEditable: true,
-          mp: InheritedEditMP.of(context).data,
+          p: InheritedEditPrd.of(context).data,
         ),
+        // child: BuildEntryFields(
+        //   suppliers: state.suppliers,
+        //   materials: state.material,
+        //   isEditable: true,
+        //   mp: InheritedEditPrd.of(context).data,
+        // ),
       ),
     );
   }

@@ -95,8 +95,8 @@ class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
       EditProduction event) async* {
     if (_isEventAttributeIsNotNull(event)) {
       yield _loading();
-      Production mp = _production(event);
-      ResponseResult result = await _pServices.editProductionByCode(mp);
+      Production prd = _production(event);
+      ResponseResult result = await _pServices.editProductionByCode(prd);
       await Future.delayed(Duration(seconds: 1));
       if (result.status == true) {
         yield _success(result);
@@ -120,7 +120,7 @@ class ProductionEntryBloc extends Bloc<ProductionEvent, ProductionEntryState> {
 
   Stream<ProductionEntryState> _mapDeleteProductionToState(
       DeleteProduction deleteProduction) async* {
-    Map<String, String> pdcode = {'mpcode': deleteProduction.pdcode};
+    Map<String, String> pdcode = {'pdcode': deleteProduction.pdcode};
     ResponseResult result = await _pServices.deleteProduction(pdcode);
     if (result.status == true) {
       yield _success(result);

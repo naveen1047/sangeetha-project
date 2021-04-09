@@ -7,10 +7,12 @@ import 'package:hb_mobile/view/add_customer_view.dart';
 import 'package:hb_mobile/view/add_product_view.dart';
 import 'package:hb_mobile/view/add_production_view.dart';
 import 'package:hb_mobile/view/edit_mp_view.dart';
+import 'package:hb_mobile/view/edit_production_view.dart';
 import 'package:hb_mobile/view/existing_customer_view.dart';
 import 'package:hb_mobile/view/existing_material_view.dart';
 import 'package:hb_mobile/view/existing_mp_view.dart';
 import 'package:hb_mobile/view/existing_product_view.dart';
+import 'package:hb_mobile/view/existing_production_view.dart';
 import 'package:hb_mobile/view/view.dart';
 
 import 'constant.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         kHome: (context) => HomeScreen(title: title),
         // kMaterialPurchase: (context) => MaterialPurchase(),
         kAddProductionScreen: (context) => AddProductionScreen(),
+        kExistingProductionScreen: (context) => ExistingProductionsScreen(),
+        kEditProductionScreen: (context) => EditProductionScreen(),
         kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
         kExistingMaterialPurchase: (context) => ExistingMPScreen(),
         kConfigScreen: (context) => ConfigScreen(),

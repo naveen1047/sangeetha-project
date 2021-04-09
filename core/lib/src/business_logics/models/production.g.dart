@@ -17,6 +17,8 @@ Production _$ProductionFromJson(Map<String, dynamic> json) {
     nosps: json['nosps'] as String,
     salary: json['salary'] as String,
     remarks: json['remarks'] as String,
+    pname: json['pname'] as String,
+    ename: json['ename'] as String,
   );
 }
 
@@ -31,6 +33,8 @@ Map<String, dynamic> _$ProductionToJson(Production instance) =>
       'nosps': instance.nosps,
       'salary': instance.salary,
       'remarks': instance.remarks,
+      'pname': instance.pname,
+      'ename': instance.ename,
     };
 
 Productions _$ProductionsFromJson(Map<String, dynamic> json) {

@@ -13,6 +13,7 @@ import 'package:hb_mobile/view/existing_material_view.dart';
 import 'package:hb_mobile/view/existing_mp_view.dart';
 import 'package:hb_mobile/view/existing_product_view.dart';
 import 'package:hb_mobile/view/existing_production_view.dart';
+import 'package:hb_mobile/view/existing_stock_view.dart';
 import 'package:hb_mobile/view/view.dart';
 
 import 'constant.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         kEditProductionScreen: (context) => EditProductionScreen(),
         kAddMaterialPurchase: (context) => AddMaterialPurchaseScreen(),
         kExistingMaterialPurchase: (context) => ExistingMPScreen(),
+        kExistingStock: (context) => ExistingStocksScreen(),
         kConfigScreen: (context) => ConfigScreen(),
         kAddSuppliersScreen: (context) =>
             AddSuppliersScreen(title: "Add Suppliers"),

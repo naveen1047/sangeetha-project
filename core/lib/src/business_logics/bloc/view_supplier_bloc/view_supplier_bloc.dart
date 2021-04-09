@@ -36,7 +36,6 @@ class ViewSupplierBloc extends Bloc<ViewSupplierEvent, ViewSupplierState> {
   }
 
   // TODO: ugly state do sink and stream
-
   Stream<ViewSupplierState> _mapSearchAndFetchSupplierToState(
       String sname) async* {
     try {

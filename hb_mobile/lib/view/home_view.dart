@@ -73,6 +73,16 @@ class HomeScreen extends StatelessWidget {
         // backgroundColor: Colors.deepOrange,
       ),
       CategoryCard(
+        title: 'Stock Detail',
+        titleIcon: Icons.pie_chart,
+        subTitle: 'view existing stock or edit stock',
+        onTap: () {
+          Navigator.pushNamed(context, kExistingStock);
+        },
+        // subTitleIcon: Icons.edit,
+        // backgroundColor: Colors.blue,
+      ),
+      CategoryCard(
         title: 'Sales',
         titleIcon: Icons.trending_up,
         subTitle: 'Entry',

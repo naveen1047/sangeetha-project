@@ -121,8 +121,6 @@ class _AddProductionFormState extends State<AddProductionForm> {
                 RandomCodeCubit("Production code"),
           ),
           // BlocProvider(
-          //   create: (BuildContext context) => MPBloc(),
-          // ),
         ],
         child: BuildProductionEntryFields(
           products: state.products,
@@ -130,19 +128,5 @@ class _AddProductionFormState extends State<AddProductionForm> {
         ),
       ),
     );
-    // return MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider(create: (BuildContext context) => TotalPriceCubit(0)),
-    //     BlocProvider(
-    //         create: (BuildContext context) => DatePickerCubit("Select Date")),
-    //     // BlocProvider(
-    //     //   create: (BuildContext context) => MPBloc(),
-    //     // ),
-    //   ],
-    //   child: BuildEntryFields(
-    //     suppliers: state.suppliers,
-    //     materials: state.material,
-    //   ),
-    // );
   }
 }

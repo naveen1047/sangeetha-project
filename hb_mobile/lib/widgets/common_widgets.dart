@@ -111,8 +111,8 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: onTap,
+          RawMaterialButton(
+            onPressed: onTap,
             child: Row(
               children: [
                 Container(
@@ -160,13 +160,15 @@ class CategoryCard extends StatelessWidget {
           Divider(
             height: 0.0,
           ),
-          Padding(
-            padding: kRightPadding,
-            child: TextButton(
-              onPressed: onPressedSecondary,
-              child: Text('ADD'),
-            ),
-          )
+          onPressedSecondary != null
+              ? Padding(
+                  padding: kRightPadding,
+                  child: TextButton(
+                    onPressed: onPressedSecondary,
+                    child: Text('ADD'),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );
@@ -392,6 +394,7 @@ class InputField extends StatelessWidget {
 
 class PrimaryActionButton extends StatelessWidget {
   final String title;
+
   // final Color color;
   final Function onPressed;
 

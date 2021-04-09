@@ -21,7 +21,7 @@ class StockDetailsBloc extends Bloc<StockDetailsEvent, StockDetailsState> {
     StockDetailsEvent event,
   ) async* {
     if (event is EditStock) {
-      _mapEditStockToState(event);
+      yield* _mapEditStockToState(event);
     }
   }
 

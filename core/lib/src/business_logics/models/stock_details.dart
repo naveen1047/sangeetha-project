@@ -9,12 +9,14 @@ class StockDetail extends Equatable {
   final String cstock;
   final String rstock;
   final String tstock;
+  final String pname;
 
   StockDetail({
     this.pcode,
     this.cstock,
     this.rstock,
     this.tstock,
+    this.pname,
   });
 
   factory StockDetail.fromJson(Map<String, dynamic> json) =>
@@ -25,6 +27,7 @@ class StockDetail extends Equatable {
   @override
   List<Object> get props => [
         pcode,
+        pname,
         cstock,
         rstock,
         tstock,

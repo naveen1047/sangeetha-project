@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hb_mobile/theme.dart';
 
 const String kHome = '/dash_board';
+const String kConfigScreen = '/configScreen';
+
 const String kExistingMaterialPurchase = '/existing_material_purchase';
 const String kAddMaterialPurchase = '/add_material_purchase';
-const String kConfigScreen = '/configScreen';
 const String kAddSuppliersScreen = '/addSuppliers';
 const String kExistingSuppliersScreen = '/existingSuppliersScreen';
 const String kAddMaterialScreen = '/addMaterialScreen';
@@ -16,6 +17,8 @@ const String kExistingProductScreen = '/existingProductScreen';
 const String kAddCustomerScreen = '/addCustomerScreen';
 const String kExistingCustomerScreen = '/existingCustomerScreen';
 const String kEditMPScreen = '/editMPScreen';
+const String kExistingStock = '/existingStock';
+const String kEditStock = '/editStock';
 
 const Text rupee = Text(
   ' \u20B9 ',
@@ -191,4 +194,12 @@ class ProductConstants {
   static const String AddProduct = 'Add Product';
 
   static const List<String> choices = <String>[Refresh, AddProduct, Settings];
+}
+
+// Stock constants
+class StockConstants {
+  static const String Refresh = 'Refresh';
+  static const String Settings = 'Settings';
+
+  static const List<String> choices = <String>[Refresh, Settings];
 }

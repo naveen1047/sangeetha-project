@@ -29,8 +29,9 @@ class StockServiceImpl implements StockService {
   Future<ResponseResult> editStockByCode(StockDetail stock) async {
     final data = stock.toJson();
     print(data.toString());
-    final url = "$_baseUrl/edit_existing_stock.php";
+    final url = "$_baseUrl/edit_stock_details.php";
     var response = await http.post(url, body: json.encode(data));
+    print(response.body.toString());
     if (response.statusCode == 200) {
       var result = json.decode(response.body);
       return ResponseResult.fromJson(result);

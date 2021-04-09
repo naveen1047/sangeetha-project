@@ -1,10 +1,10 @@
 part of 'view_stock_details_bloc.dart';
 
-abstract class ViewStockDetailsState extends Equatable {
+abstract class ViewStockDetailsState /*extends Equatable*/ {
   const ViewStockDetailsState();
 
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
 
 class ViewStockDetailsLoading extends ViewStockDetailsState {}

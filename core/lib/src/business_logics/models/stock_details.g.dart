@@ -12,6 +12,7 @@ StockDetail _$StockDetailFromJson(Map<String, dynamic> json) {
     cstock: json['cstock'] as String,
     rstock: json['rstock'] as String,
     tstock: json['tstock'] as String,
+    pname: json['pname'] as String,
   );
 }
 
@@ -21,6 +22,7 @@ Map<String, dynamic> _$StockDetailToJson(StockDetail instance) =>
       'cstock': instance.cstock,
       'rstock': instance.rstock,
       'tstock': instance.tstock,
+      'pname': instance.pname,
     };
 
 StockDetails _$StockDetailsFromJson(Map<String, dynamic> json) {
